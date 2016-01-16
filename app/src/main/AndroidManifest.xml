@@ -12,7 +12,7 @@
         android:name="in.flashfetch.sellerapp.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.kevinselvaprasanna.flashfetch_seller.permission.C2D_MESSAGE" />
+    <uses-permission android:name="in.flashfetch.sellerapp.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application

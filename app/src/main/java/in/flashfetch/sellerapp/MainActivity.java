@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,12 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
 import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 import java.util.ArrayList;
 
@@ -25,6 +31,7 @@ public class MainActivity extends AppCompatActivity
     LinearLayoutManager layoutManager;
     RecyclerView rvNot;
     ArrayList<Notification> nots;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,13 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(MainActivity.this, IE_RegistrationIntentService.class);
+            startService(intent);
+        }
+        finish();
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -71,6 +85,28 @@ public class MainActivity extends AppCompatActivity
         //Use the events feed adapter
         rvNot.setAdapter(notsAdapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkPlayServices();
+
+    }
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i("tag", "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
     @Override
