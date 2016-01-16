@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller;
+package in.flashfetch.sellerapp;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -33,8 +33,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.UserProfile;
-import com.kevinselvaprasanna.flashfetch_seller.Services.IE_RegistrationIntentService;
+import in.flashfetch.sellerapp.Objects.UserProfile;
+import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Services;
+package in.flashfetch.sellerapp.Services;
 
 
 /**
@@ -17,12 +17,9 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
-import com.kevinselvaprasanna.flashfetch_seller.Helper.DatabaseHelper;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.Notification;
-import com.kevinselvaprasanna.flashfetch_seller.R;
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 

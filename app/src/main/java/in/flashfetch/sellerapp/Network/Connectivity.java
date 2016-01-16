@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Network;
+package in.flashfetch.sellerapp.Network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

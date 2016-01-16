@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller;
+package in.flashfetch.sellerapp;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,11 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
-import com.kevinselvaprasanna.flashfetch_seller.Adapters.NotificationAdapter;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.Notification;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.UserProfile;
+import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
+import in.flashfetch.sellerapp.Objects.Notification;
 
 import java.util.ArrayList;
 

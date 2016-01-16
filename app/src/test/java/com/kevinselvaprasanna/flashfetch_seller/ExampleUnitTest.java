@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller;
+package in.flashfetch.sellerapp;
 
 import org.junit.Test;
 

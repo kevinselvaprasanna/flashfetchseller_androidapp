@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Objects;
+package in.flashfetch.sellerapp.Objects;
 
 import android.content.Context;
 import android.content.SharedPreferences;

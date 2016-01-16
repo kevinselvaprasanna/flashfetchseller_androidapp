@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.kevinselvaprasanna.flashfetch_seller"
+        applicationId "in.flashfetch.sellerapp"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

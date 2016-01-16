@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Services;
+package in.flashfetch.sellerapp.Services;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -9,12 +9,11 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
-import com.kevinselvaprasanna.flashfetch_seller.Constants.URLConstants;
-import com.kevinselvaprasanna.flashfetch_seller.Network.PostRequest;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.PostParam;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.UserProfile;
+import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.Objects.UserProfile;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Network;
+package in.flashfetch.sellerapp.Network;
 
 import android.util.Log;
 

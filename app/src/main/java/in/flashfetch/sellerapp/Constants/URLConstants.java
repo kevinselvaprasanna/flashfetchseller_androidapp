@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Constants;
+package in.flashfetch.sellerapp.Constants;
 
 /**
  * Created by kevinselvaprasanna on 25/12/15.

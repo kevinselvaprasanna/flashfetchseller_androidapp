@@ -1,21 +1,19 @@
-package com.kevinselvaprasanna.flashfetch_seller;
+package in.flashfetch.sellerapp;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.BoringLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import com.kevinselvaprasanna.flashfetch_seller.Constants.URLConstants;
-import com.kevinselvaprasanna.flashfetch_seller.Network.PostRequest;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.PostParam;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.UserProfile;
-import com.kevinselvaprasanna.flashfetch_seller.Services.IE_RegistrationIntentService;
+import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.Objects.UserProfile;
 
 import org.json.JSONObject;
 

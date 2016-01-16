@@ -1,9 +1,8 @@
-package com.kevinselvaprasanna.flashfetch_seller.Adapters;
+package in.flashfetch.sellerapp.Adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kevinselvaprasanna.flashfetch_seller.Objects.Notification;
-import com.kevinselvaprasanna.flashfetch_seller.R;
+import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.R;
 
 
 import java.util.ArrayList;

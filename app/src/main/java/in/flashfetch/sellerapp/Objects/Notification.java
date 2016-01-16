@@ -1,16 +1,14 @@
-package com.kevinselvaprasanna.flashfetch_seller.Objects;
+package in.flashfetch.sellerapp.Objects;
 
 import android.content.Context;
 import android.database.Cursor;
 
 import com.google.gson.Gson;
-import com.kevinselvaprasanna.flashfetch_seller.Helper.DatabaseHelper;
-import com.kevinselvaprasanna.flashfetch_seller.LoginActivity;
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 /**

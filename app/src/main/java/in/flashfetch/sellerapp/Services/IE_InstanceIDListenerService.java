@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Services;
+package in.flashfetch.sellerapp.Services;
 
 import android.content.Intent;
 

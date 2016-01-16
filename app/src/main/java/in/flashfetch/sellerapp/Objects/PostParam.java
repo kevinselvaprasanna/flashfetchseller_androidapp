@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Objects;
+package in.flashfetch.sellerapp.Objects;
 
 /**
  * Created by Ahammad on 16/06/15.

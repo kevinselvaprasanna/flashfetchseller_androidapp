@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Helper;
+package in.flashfetch.sellerapp.Helper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,10 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.kevinselvaprasanna.flashfetch_seller.Objects.Notification;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import in.flashfetch.sellerapp.Objects.Notification;
 
 import java.util.ArrayList;
 

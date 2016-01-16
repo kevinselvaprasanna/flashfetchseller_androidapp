@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller;
+package in.flashfetch.sellerapp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

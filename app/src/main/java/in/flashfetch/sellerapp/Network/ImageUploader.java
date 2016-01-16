@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller.Network;
+package in.flashfetch.sellerapp.Network;
 
 import android.graphics.Bitmap;
 import android.util.Log;

@@ -1,4 +1,4 @@
-package com.kevinselvaprasanna.flashfetch_seller;
+package in.flashfetch.sellerapp;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,10 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.kevinselvaprasanna.flashfetch_seller.Constants.URLConstants;
-import com.kevinselvaprasanna.flashfetch_seller.Network.PostRequest;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.PostParam;
-import com.kevinselvaprasanna.flashfetch_seller.Objects.UserProfile;
+import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.Objects.UserProfile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
