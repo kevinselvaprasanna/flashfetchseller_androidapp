@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
+
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
@@ -20,9 +22,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SignUpActivity extends AppCompatActivity {
-    EditText firstname, lastname ,email, phone, fax, company, company_id, address1, address2, city, postal_code, country, state, password;
-    Button Submit;
-    TextView tvv;
+    EditText name, shop_name, email, phone,password, confpassword, shop_id, shop_telephone, address1, address2, address3; //city, postal_code, country, state,
+    Button Submit,Next1,Back;
+    TextView loc_gps;
+    ViewFlipper viewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,25 +34,48 @@ public class SignUpActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Next1 = (Button)findViewById(R.id.Next);
+        Back = (Button)findViewById(R.id.back);
+
+        viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper2);
 
 
+        name = (EditText)findViewById(R.id.Name);
+        email = (EditText)findViewById(R.id.EmailID);
+        phone = (EditText)findViewById(R.id.MobileNum);
+        password = (EditText)findViewById(R.id.Password);
+        confpassword = (EditText)findViewbyId(R.id.confPass);
 
-        firstname = (EditText)findViewById(R.id.firstname);
-        lastname = (EditText)findViewById(R.id.lastname);
-        email = (EditText)findViewById(R.id.email);
-        phone = (EditText)findViewById(R.id.phone);
-        fax = (EditText)findViewById(R.id.fax);
-        company = (EditText)findViewById(R.id.company);
-        company_id = (EditText)findViewById(R.id.company_id);
-        address1 = (EditText)findViewById(R.id.address1);
-        address2 = (EditText)findViewById(R.id.address2);
+        shop_name = (EditText)findViewById(R.id.shop_name);
+        shop_id = (EditText)findViewById(R.id.shop_id);
+        shop_telephone = (EditText)findViewById(R.id.telephone);
+        address1 = (EditText)findViewById(R.id.add_1);
+        address2 = (EditText)findViewById(R.id.add_2);
+        address3 = (EditText)findViewById(R.id.add_3);
+        /*
         city = (EditText)findViewById(R.id.city);
         postal_code = (EditText)findViewById(R.id.postal_code);
         country = (EditText)findViewById(R.id.country);
         state = (EditText)findViewById(R.id.state);
-        password = (EditText)findViewById(R.id.password1);
-        Submit = (Button)findViewById(R.id.submit);
-        tvv = (TextView)findViewById(R.id.tvv);
+        */
+        Submit = (Button)findViewById(R.id.next);
+
+        loc_gps = (TextView)findViewById(R.id.location);
+
+        Next1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewFlipper.showNext();
+            }
+        });
+
+        Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewFlipper.showPrevious();
+            }
+        });
+
         Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,7 +87,7 @@ public class SignUpActivity extends AppCompatActivity {
     class Signup extends AsyncTask<String, Void, Void> {
         JSONObject data = new JSONObject();
         JSONObject ResponseJSON;
-        String tname = firstname.getText().toString();
+        String tname = name.getText().toString();
         String temail = email.getText().toString();
         String tpassword = password.getText().toString();
 
