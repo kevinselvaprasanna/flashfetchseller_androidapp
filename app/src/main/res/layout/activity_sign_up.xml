@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_sign_up" />
+    <include layout="@layout/flipper_signup" />
 
 
 </android.support.design.widget.CoordinatorLayout>
