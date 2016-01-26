@@ -90,9 +90,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             finish();*/
         }
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login_main);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.EmailID);
         populateAutoComplete();
 
         //checkPlayServices();
@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             startService(intent);
         }*/
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = (EditText) findViewById(R.id.Password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.submit);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,17 +123,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignUp = (Button)findViewById(R.id.email_sign_up);
+        /*Button mEmailSignUp = (Button)findViewById(R.id.email_sign_up);
         mEmailSignUp.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(i);
                 }
-        });
+        });*/
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        /*mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);*/
     }
 
     private void populateAutoComplete() {
@@ -259,7 +259,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+   /* @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -290,7 +290,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
-    }
+    }*/
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
