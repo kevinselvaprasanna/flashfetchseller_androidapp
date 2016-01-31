@@ -31,16 +31,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
-import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         {
             Intent i =new Intent(LoginActivity.this,MainActivity.class);
             startActivity(i);
+            finish();
             /*if (checkPlayServices()) {
                 // Start IntentService to register this application with GCM.
                 Intent intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
@@ -253,13 +251,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 2;
     }
 
     /**
      * Shows the progress UI and hides the login form.
      */
-   /* @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -290,7 +288,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
-    }*/
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

@@ -40,13 +40,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (checkPlayServices()) {
+      if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
             Intent intent = new Intent(MainActivity.this, IE_RegistrationIntentService.class);
             startService(intent);
         }
-        finish();
-
+        else {
+          finish();
+      }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

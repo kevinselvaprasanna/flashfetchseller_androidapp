@@ -44,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         email = (EditText)findViewById(R.id.EmailID);
         phone = (EditText)findViewById(R.id.MobileNum);
         password = (EditText)findViewById(R.id.Password);
-        confpassword = (EditText)findViewbyId(R.id.confPass);
+        confpassword = (EditText)findViewById(R.id.confPass);
 
         shop_name = (EditText)findViewById(R.id.shop_name);
         shop_id = (EditText)findViewById(R.id.shop_id);

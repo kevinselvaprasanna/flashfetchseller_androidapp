@@ -1,3 +1,4 @@
+/*
 package in.flashfetch.sellerapp;
 
 import android.app.Activity;
@@ -9,9 +10,11 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+*/
 /**
  * Created by SAM10795 on 25-01-2016.
- */
+ *//*
+
 public class Intro extends Activity {
 
     ViewFlipper viewFlipper;
@@ -67,3 +70,4 @@ public class Intro extends Activity {
         });
     }
 }
+*/
