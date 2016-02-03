@@ -3,6 +3,7 @@ package in.flashfetch.sellerapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -37,38 +38,28 @@ public class Intro extends Activity{
         viewFlipper.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                float last=0;
-                switch (event.getAction()) {
+                Point point = new Point();
+                getWindowManager().getDefaultDisplay().getSize(point);
+                float mid = (point.x)/2;
+                float current = event.getX();
+                Log.i("Pointer", Float.toString(current) + "-" + Float.toString(mid));
+                if (mid < current) {
+                    if (viewFlipper.getDisplayedChild() == 3) {
 
-                    case MotionEvent.ACTION_DOWN:
-                        last = event.getX();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        float current = event.getX();
-                        if(last>current)
-                        {
-                            if(viewFlipper.getDisplayedChild()==3)
-                            {
-                                break;
-                            }
-                            viewFlipper.setInAnimation(Intro.this,android.R.anim.slide_in_left);
-                            viewFlipper.setOutAnimation(Intro.this,android.R.anim.slide_out_right);
-                            viewFlipper.showNext();
-                        }
-                        else
-                        {
-                            if(viewFlipper.getDisplayedChild()==0)
-                            {
-                                break;
-                            }
-                            viewFlipper.setInAnimation(Intro.this,android.R.anim.slide_out_right);
-                            viewFlipper.setOutAnimation(Intro.this,android.R.anim.slide_in_left);
-                            viewFlipper.showPrevious();
+                    }
+                    //viewFlipper.setInAnimation(Intro.this, android.R.anim.slide_in_left);
+                    //viewFlipper.setOutAnimation(Intro.this, android.R.anim.slide_out_right);
+                    viewFlipper.showNext();
+                } else {
+                    if (viewFlipper.getDisplayedChild() == 0) {
 
-                        }
-                        break;
+                    }
+                    //viewFlipper.setInAnimation(Intro.this, android.R.anim.slide_out_right);
+                    //viewFlipper.setOutAnimation(Intro.this, android.R.anim.slide_in_left);
+                    viewFlipper.showPrevious();
+
                 }
-                return true;
+                return false;
             }
         });
     }

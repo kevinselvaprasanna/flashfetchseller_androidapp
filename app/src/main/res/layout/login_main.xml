@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#d5d6d9">
+
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
@@ -19,7 +21,7 @@
     tools:context=".MainActivity$PlaceholderFragment"
     android:orientation="vertical"
     android:gravity="center_vertical"
-    android:background="#aaf2ed38"
+    android:background="#d5d6d9"
     android:id="@+id/login_form">
 
     <ImageView
@@ -39,7 +41,10 @@
         android:background="@android:drawable/editbox_background"
         android:layout_margin="5dp"
         android:hint="EmailID/Phone Number"
-        android:padding="10dp" />
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="15dp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -51,7 +56,10 @@
         android:background="@android:drawable/editbox_background"
         android:layout_margin="5dp"
         android:hint="Password"
-        android:padding="10dp" />
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="15dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -63,15 +71,30 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:text="SUBMIT"
         android:id="@+id/submit"
         android:layout_gravity="center_horizontal"
-        android:textColor="#aaf2ed38"
-        android:background="#ff040404"
+        android:textColor="#fff"
+        android:background="#0bc6a0"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="5dp"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SIGN UP"
+            android:id="@+id/signup"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#fff"
+            android:background="#0bc6a0"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
 </LinearLayout>
 
 </LinearLayout>
