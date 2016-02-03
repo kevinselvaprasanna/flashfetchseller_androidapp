@@ -10,14 +10,16 @@
     tools:context=".MainActivity$PlaceholderFragment"
     android:orientation="vertical"
     android:gravity="center_vertical"
-    android:background="#aaf2ed38">
+    android:background="#aaf2ed38"
+    android:id="@+id/login_form">
 
     <ProgressBar
-        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/login_progress"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
     <ImageView
         android:layout_width="wrap_content"

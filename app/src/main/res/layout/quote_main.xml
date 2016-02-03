@@ -9,7 +9,9 @@
         android:layout_height="0dp"
         android:id="@+id/imageView2"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="5" />
+        android:layout_weight="5"
+        android:scrollIndicators="none"
+        android:isScrollContainer="true" />
 
     <TextView
         android:layout_width="match_parent"

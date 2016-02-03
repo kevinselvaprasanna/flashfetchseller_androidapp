@@ -1,7 +1,8 @@
-/*
+
 package in.flashfetch.sellerapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -10,10 +11,9 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-*/
 /**
  * Created by SAM10795 on 25-01-2016.
- *//*
+ */
 
 public class Intro extends Activity {
 
@@ -28,7 +28,8 @@ public class Intro extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add intent to go to next activity
+                Intent intent = new Intent(Intro.this,MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -48,8 +49,8 @@ public class Intro extends Activity {
                             {
                                 break;
                             }
-                            viewFlipper.setInAnimation(MainActivity.this,android.R.anim.slide_in_left);
-                            viewFlipper.setOutAnimation(MainActivity.this,android.R.anim.slide_out_right);
+                            viewFlipper.setInAnimation(Intro.this,android.R.anim.slide_in_left);
+                            viewFlipper.setOutAnimation(Intro.this,android.R.anim.slide_out_right);
                             viewFlipper.showNext();
                         }
                         else
@@ -58,8 +59,8 @@ public class Intro extends Activity {
                             {
                                 break;
                             }
-                            viewFlipper.setInAnimation(MainActivity.this,android.R.anim.slide_out_right);
-                            viewFlipper.setOutAnimation(MainActivity.this,android.R.anim.slide_in_left);
+                            viewFlipper.setInAnimation(Intro.this,android.R.anim.slide_out_right);
+                            viewFlipper.setOutAnimation(Intro.this,android.R.anim.slide_in_left);
                             viewFlipper.showPrevious();
 
                         }
@@ -70,4 +71,4 @@ public class Intro extends Activity {
         });
     }
 }
-*/
+
