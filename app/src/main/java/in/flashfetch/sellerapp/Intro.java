@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,7 @@ import android.widget.ViewFlipper;
  * Created by SAM10795 on 25-01-2016.
  */
 
-public class Intro extends Activity {
+public class Intro extends Activity{
 
     ViewFlipper viewFlipper;
 
@@ -38,6 +39,7 @@ public class Intro extends Activity {
             public boolean onTouch(View v, MotionEvent event) {
                 float last=0;
                 switch (event.getAction()) {
+
                     case MotionEvent.ACTION_DOWN:
                         last = event.getX();
                         break;
@@ -66,7 +68,7 @@ public class Intro extends Activity {
                         }
                         break;
                 }
-                return false;
+                return true;
             }
         });
     }
