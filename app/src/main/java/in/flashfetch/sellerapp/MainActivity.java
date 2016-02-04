@@ -17,14 +17,55 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
+import in.flashfetch.sellerapp.Adapters.PagerAdapter;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 import java.util.ArrayList;
+
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
+
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,6 +80,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ViewPager pager = (ViewPager)findViewById(R.id.pager);
+        PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip)findViewById(R.id.tabs);
+        pager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        pagerSlidingTabStrip.setViewPager(pager);
+
 
       if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
@@ -70,11 +117,11 @@ public class MainActivity extends AppCompatActivity
         //TextView email = (TextView)findViewById(R.id.textView3);
         //email.setText(UserProfile.getEmail(MainActivity.this));
 
-        rvNot = (RecyclerView)findViewById(R.id.rvNotifications);
-        layoutManager = new LinearLayoutManager(this);
+        //rvNot = (RecyclerView)findViewById(R.id.rvNotifications);
+        //layoutManager = new LinearLayoutManager(this);
 
        //set the recycler view to use the linear layout manager
-        rvNot.setLayoutManager(layoutManager);
+        //rvNot.setLayoutManager(layoutManager);
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
@@ -84,7 +131,7 @@ public class MainActivity extends AppCompatActivity
         NotificationAdapter notsAdapter = new NotificationAdapter(this, nots);
 
         //Use the events feed adapter
-        rvNot.setAdapter(notsAdapter);
+        //rvNot.setAdapter(notsAdapter);
 
     }
 

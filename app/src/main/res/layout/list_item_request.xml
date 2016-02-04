@@ -23,14 +23,35 @@
             android:layout_weight="3"
             android:layout_marginLeft="5dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Name"
-                android:id="@+id/name"
-                android:layout_gravity="center_horizontal"
-                android:padding="2dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Name"
+                    android:id="@+id/name"
+                    android:padding="2dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Time"
+                    android:id="@+id/time"
+                    android:layout_gravity="end"
+                    android:background="#f16565"
+                    android:textColor="#fff"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="5dp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,7 +59,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Rs. X"
                 android:id="@+id/price"
-                android:layout_gravity="center_horizontal"
                 android:padding="2dp" />
 
             <LinearLayout
@@ -51,10 +71,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Time Left"
-                    android:id="@+id/time"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal" />
+                    android:text="Decline"
+                    android:id="@+id/decline"
+                    android:gravity="center_horizontal"
+                    android:padding="5dp"
+                    android:background="#29303f"
+                    android:textColor="#fff"
+                    android:layout_weight="1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -62,8 +85,11 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Quote"
                     android:id="@+id/quote"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal" />
+                    android:layout_weight="2"
+                    android:gravity="center_horizontal"
+                    android:padding="5dp"
+                    android:textColor="#fff"
+                    android:background="#0bc6a0" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
