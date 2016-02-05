@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,30 +25,58 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     ArrayList<Notification> mItems;
     //TimeHelper th;
     private static String LOG_TAG = "EventDetails";
+    int LayoutSelector;
+
+    /*0 -> item_notification
+     1 -> list_item_provided_1
+     2 -> list_item_provided_2
+     3-> list_item_accepted
+    */
 
 
-    public NotificationAdapter(Context context, ArrayList<Notification> items) {
+    public NotificationAdapter(Context context, ArrayList<Notification> items, int LayoutSelect) {
         mContext = context;
         mItems = items;
+        LayoutSelector = LayoutSelect;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView tvheading, tvnot;
+        TextView name,price,quoted,bargain,time,decline,quote;
         LinearLayout notsfeed;
+        ImageView imageview;
         CardView cv;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvheading =(TextView)itemView.findViewById(R.id.tvHeading);
-            tvnot = (TextView)itemView.findViewById(R.id.tvNot);
+            imageview = (ImageView)itemView.findViewById(R.id.imageView);
+            name =(TextView)itemView.findViewById(R.id.name);
+            price = (TextView)itemView.findViewById(R.id.price);
+            time = (TextView)itemView.findViewById(R.id.time);
+            decline = (TextView)itemView.findViewById(R.id.decline);
+            quote = (TextView)itemView.findViewById(R.id.quote);
             notsfeed = (LinearLayout)itemView.findViewById(R.id.notsfeed);
             cv = (CardView)itemView.findViewById(R.id.card_view);
         }
     }
 
     public NotificationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        int layout = R.layout.item_notifications;
+        switch (LayoutSelector)
+        {
+            case 1:
+                layout = R.layout.list_item_provided_1;
+                break;
+            case 2:
+                layout = R.layout.list_item_provided_1;//change
+                break;
+            case 3:
+                layout = R.layout.list_item_accepted;
+                break;
+            default:
+                layout = R.layout.item_notifications;
+        }
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_notifications, parent, false);
+                .inflate(layout, parent, false);
         return new ViewHolder(view);
     }
 
@@ -56,8 +85,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         //th = new TimeHelper();
 
-        holder.tvheading.setText(mItems.get(position).category);
-        holder.tvnot.setText(mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs."+ mItems.get(position).price);
+        holder.name.setText(mItems.get(position).email);
+        holder.price.setText(mItems.get(position).price);
+        holder.time.setText(Long.toString(mItems.get(position).time));
+        //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
         holder.notsfeed.setOnClickListener(new View.OnClickListener() {
 
             @Override

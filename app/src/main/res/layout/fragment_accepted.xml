@@ -2,13 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.flashfetch.sellerapp.Accepted">
+    tools:context="in.flashfetch.sellerapp.Accepted"
+    android:background="#d5d6d9">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvNotifications"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list_accepted"
-        android:layout_gravity="center_horizontal|top" />
+        android:fastScrollAlwaysVisible="true"
+        android:fastScrollEnabled="true"
+        android:overScrollMode="always" />
+
 </FrameLayout>

@@ -69,10 +69,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    LinearLayoutManager layoutManager;
-    RecyclerView rvNot;
-    ArrayList<Notification> nots;
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+       private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         ViewPager pager = (ViewPager)findViewById(R.id.pager);
         PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip)findViewById(R.id.tabs);
-        pager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(),this));
         pagerSlidingTabStrip.setViewPager(pager);
 
 
@@ -117,21 +114,6 @@ public class MainActivity extends AppCompatActivity
         //TextView email = (TextView)findViewById(R.id.textView3);
         //email.setText(UserProfile.getEmail(MainActivity.this));
 
-        //rvNot = (RecyclerView)findViewById(R.id.rvNotifications);
-        //layoutManager = new LinearLayoutManager(this);
-
-       //set the recycler view to use the linear layout manager
-        //rvNot.setLayoutManager(layoutManager);
-
-        // Load events from Database
-        // events = Event.getAllRelevantEvents(getActivity());
-        nots = Notification.getAllNotifications(this);
-
-        //initialize events feed adapter
-        NotificationAdapter notsAdapter = new NotificationAdapter(this, nots);
-
-        //Use the events feed adapter
-        //rvNot.setAdapter(notsAdapter);
 
     }
 

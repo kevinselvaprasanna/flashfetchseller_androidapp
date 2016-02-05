@@ -4,9 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+
+import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
+import in.flashfetch.sellerapp.Objects.Notification;
 
 
 /**
@@ -20,16 +27,19 @@ import android.view.ViewGroup;
 public class Requested extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    //private static final String ARG_PARAM1 = "param1";
+    //private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    //private String mParam1;
+    //private String mParam2;
+
+    private Context mContext;
 
    // private OnFragmentInteractionListener mListener;
 
-    public Requested() {
+    public Requested(Context context) {
+        mContext = context;
         // Required empty public constructor
     }
 
@@ -42,29 +52,53 @@ public class Requested extends Fragment {
      * @return A new instance of fragment Requested.
      */
     // TODO: Rename and change types and number of parameters
-    public static Requested newInstance(String param1, String param2) {
-        Requested fragment = new Requested();
+    /*public static Requested newInstance(String param1, String param2) {
+        Requested fragment = new Requested(mContext);
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        /*if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        }*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_requested, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_requested, container, false);
+
+        LinearLayoutManager layoutManager;
+        RecyclerView rvNot;
+        ArrayList<Notification> nots;
+
+
+        rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
+        layoutManager = new LinearLayoutManager(mContext);
+
+        //set the recycler view to use the linear layout manager
+        rvNot.setLayoutManager(layoutManager);
+
+        // Load events from Database
+        // events = Event.getAllRelevantEvents(getActivity());
+        nots = Notification.getAllNotifications(mContext);
+
+        //initialize events feed adapter
+        NotificationAdapter notsAdapter = new NotificationAdapter(mContext, nots,0);
+
+        //Use the events feed adapter
+        rvNot.setAdapter(notsAdapter);
+        return view;
+
     }/*
 
     // TODO: Rename method, update argument and hook method into UI event

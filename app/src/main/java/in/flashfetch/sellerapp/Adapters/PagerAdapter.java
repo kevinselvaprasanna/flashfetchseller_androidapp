@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp.Adapters;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,20 +14,22 @@ import in.flashfetch.sellerapp.Requested;
  */public class PagerAdapter extends FragmentStatePagerAdapter {
 
     private String[] titles = {"Requested", "Provided", "Accepted" };
+    private Context mContext;
 
-    public PagerAdapter(FragmentManager fm) {
+    public PagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+        mContext = context;
     }
 
     @Override
     public Fragment getItem(int i) {
         switch(i){
             case 0:
-                return new Requested();
+                return new Requested(mContext);
             case 1:
-                return new Provided();
+                return new Provided(mContext);
             case 2:
-                return new Accepted();
+                return new Accepted(mContext);
         }
         return null;
     }
