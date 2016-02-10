@@ -47,15 +47,15 @@ public class Intro extends Activity{
                     if (viewFlipper.getDisplayedChild() == 3) {
 
                     }
-                    //viewFlipper.setInAnimation(Intro.this, android.R.anim.slide_in_left);
-                    //viewFlipper.setOutAnimation(Intro.this, android.R.anim.slide_out_right);
+                    viewFlipper.setInAnimation(Intro.this, R.anim.left_out);
+                    viewFlipper.setOutAnimation(Intro.this, R.anim.right_in);
                     viewFlipper.showNext();
                 } else {
                     if (viewFlipper.getDisplayedChild() == 0) {
 
                     }
-                    //viewFlipper.setInAnimation(Intro.this, android.R.anim.slide_out_right);
-                    //viewFlipper.setOutAnimation(Intro.this, android.R.anim.slide_in_left);
+                    viewFlipper.setInAnimation(Intro.this, R.anim.right_out);
+                    viewFlipper.setOutAnimation(Intro.this, R.anim.left_in);
                     viewFlipper.showPrevious();
 
                 }

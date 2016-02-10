@@ -23,13 +23,13 @@ public class QuoteActivity extends AppCompatActivity {
         flipper = (ViewFlipper)findViewById(R.id.mainflipper);
         imflipper = (ViewFlipper)findViewById(R.id.flipperimg);
 
-        TextView textView = (TextView)findViewById(R.id.textView4);
+        TextView textView = (TextView)findViewById(R.id.quote_now);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 flipper.showNext();
-                flipper.setOutAnimation(QuoteActivity.this,android.R.anim.fade_out);
-                flipper.setInAnimation(QuoteActivity.this,android.R.anim.fade_in);
+                flipper.setOutAnimation(QuoteActivity.this,R.anim.top_up);
+                flipper.setInAnimation(QuoteActivity.this,R.anim.bottom_up);
             }
         });
 
@@ -45,7 +45,8 @@ public class QuoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 imflipper.showNext();
-
+                imflipper.setInAnimation(QuoteActivity.this, R.anim.right_in);
+                imflipper.setOutAnimation(QuoteActivity.this, R.anim.left_out);
             }
         });
 
