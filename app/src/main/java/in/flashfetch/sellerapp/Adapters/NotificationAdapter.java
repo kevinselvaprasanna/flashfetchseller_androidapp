@@ -3,6 +3,7 @@ package in.flashfetch.sellerapp.Adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
 
     Context mContext;
+    Typeface font;
     ArrayList<Notification> mItems;
     //TimeHelper th;
     private static String LOG_TAG = "EventDetails";
@@ -124,6 +126,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public NotificationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout;
+
+
+        font = Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/Lato-Medium.ttf");
+
         switch (LayoutSelector)
         {
             case 1:
@@ -157,6 +164,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(NotificationAdapter.ViewHolder holder, final int position) {
 
         //TODO: Populate items depending on the holder returned via LayoutSelect
+        //TODO: Set typeface for text
 
         //th = new TimeHelper();
         holder.name.setText(mItems.get(position).email);

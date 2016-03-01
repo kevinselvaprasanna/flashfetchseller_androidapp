@@ -12,7 +12,7 @@
         <LinearLayout
             android:orientation="vertical" android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#d5d6d9">
+            android:background="#fff">
 
             <TextView
                 android:layout_width="match_parent"
@@ -36,8 +36,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/background_light"
                 android:layout_marginBottom="5dp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -46,9 +46,8 @@
                     android:ems="10"
                     android:id="@+id/Name"
                     android:layout_weight="1"
-                    android:hint="Name"
-                    android:background="#ffffff"
-                    android:layout_margin="10dp" />
+                    android:hint="Name" />
+
             </LinearLayout>
 
 
@@ -61,8 +60,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/background_light"
                 android:layout_marginBottom="5dp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -71,9 +70,7 @@
                     android:ems="10"
                     android:id="@+id/EmailID"
                     android:layout_weight="1"
-                    android:hint="Email ID"
-                    android:background="#ffffff"
-                    android:layout_margin="10dp" />
+                    android:hint="Email ID" />
             </LinearLayout>
 
             <LinearLayout
@@ -85,8 +82,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/background_light"
                 android:layout_marginBottom="5dp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -95,9 +92,7 @@
                     android:ems="10"
                     android:id="@+id/MobileNum"
                     android:layout_weight="1"
-                    android:hint="Mobile Number"
-                    android:background="#ffffff"
-                    android:layout_margin="10dp" />
+                    android:hint="Mobile Number" />
 
             </LinearLayout>
 
@@ -109,8 +104,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/background_light"
                 android:layout_marginBottom="5dp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -119,9 +114,7 @@
                     android:ems="10"
                     android:id="@+id/Password"
                     android:layout_weight="1"
-                    android:hint="Password"
-                    android:background="#ffffff"
-                    android:layout_margin="10dp" />
+                    android:hint="Password" />
             </LinearLayout>
 
             <LinearLayout
@@ -133,8 +126,8 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/background_light"
                 android:layout_marginBottom="5dp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -143,9 +136,7 @@
                     android:ems="10"
                     android:id="@+id/confPass"
                     android:layout_weight="1"
-                    android:hint="Confirm Password"
-                    android:background="#ffffff"
-                    android:layout_margin="10dp" />
+                    android:hint="Confirm Password" />
 
             </LinearLayout>
 
@@ -157,205 +148,205 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Next"
+                    android:text="NEXT"
                     android:id="@+id/Next"
                     android:layout_gravity="bottom"
                     android:padding="10dp"
-                    android:background="#0bc6a0"
-                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                    android:background="#29303F"
+                    android:textColor="#fff"
+                    android:textAppearance="@android:style/TextAppearance.Holo.Large"
+                    android:layout_margin="10dp" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical" android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#d5d6d9">
+        <?xml version="1.0" encoding="utf-8"?>
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout android:orientation="vertical" android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="FlashFetch"
-                android:id="@+id/FlashFetch"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textSize="36sp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:background="@android:color/background_light"
-                android:layout_marginTop="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp">
-
-                <EditText
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:ems="10"
-                    android:id="@+id/shop_name"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="FlashFetch"
+                    android:id="@+id/FlashFetch"
                     android:layout_gravity="center_horizontal"
-                    android:hint="Shop Name"
-                    android:background="#fff" />
-            </LinearLayout>
+                    android:gravity="center_horizontal"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:textSize="36sp" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:background="@android:color/background_light"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp">
-
-                <EditText
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/shop_id"
-                    android:layout_gravity="center_horizontal"
-                    android:hint="Shop ID"
-                    android:background="#fff" />
-            </LinearLayout>
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@android:color/background_light"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:background="@android:color/background_light"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:ems="10"
+                        android:id="@+id/shop_name"
+                        android:layout_gravity="center_horizontal"
+                        android:hint="Shop Name" />
+                </LinearLayout>
 
-                <EditText
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    android:ems="10"
-                    android:id="@+id/telephone"
-                    android:layout_gravity="center_horizontal"
-                    android:hint="Telephone"
-                    android:background="#fff" />
-            </LinearLayout>
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@android:color/background_light"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:background="@android:color/background_light"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/shop_id"
+                        android:layout_gravity="center_horizontal"
+                        android:hint="Shop ID" />
+                </LinearLayout>
 
-                <EditText
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPostalAddress"
-                    android:ems="10"
-                    android:id="@+id/add_1"
-                    android:layout_gravity="center_horizontal"
-                    android:hint="Address 1"
-                    android:background="#fff" />
-            </LinearLayout>
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@android:color/background_light"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:background="@android:color/background_light"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:ems="10"
+                        android:id="@+id/telephone"
+                        android:layout_gravity="center_horizontal"
+                        android:hint="Telephone" />
+                </LinearLayout>
 
-                <EditText
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPostalAddress"
-                    android:ems="10"
-                    android:id="@+id/add_2"
-                    android:layout_gravity="center_horizontal"
-                    android:hint="Address 2"
-                    android:background="#fff" />
-            </LinearLayout>
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@android:color/background_light"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:background="@android:color/background_light"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPostalAddress"
+                        android:ems="10"
+                        android:id="@+id/add_1"
+                        android:layout_gravity="center_horizontal"
+                        android:hint="Address 1" />
+                </LinearLayout>
 
-                <EditText
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPostalAddress"
-                    android:ems="10"
-                    android:id="@+id/add_3"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@android:color/background_light"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPostalAddress"
+                        android:ems="10"
+                        android:id="@+id/add_2"
+                        android:layout_gravity="center_horizontal"
+                        android:hint="Address 2" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Location"
+                    android:id="@+id/location"
                     android:layout_gravity="center_horizontal"
-                    android:hint="Address 3"
-                    android:background="#fff" />
-            </LinearLayout>
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@android:color/holo_blue_dark"
+                    android:visibility="visible" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Location"
-                android:id="@+id/location"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:gravity="center_horizontal"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:background="@android:color/holo_blue_dark"
-                android:visibility="visible" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
-
-                <Button
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Back"
-                    android:id="@+id/back"
-                    android:layout_weight="1"
-                    android:layout_gravity="bottom" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Shop Image"
+                    android:id="@+id/shop_img"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@android:color/holo_blue_dark"
+                    android:visibility="visible"
+                    android:layout_marginTop="10dp" />
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Next"
-                    android:id="@+id/next"
-                    android:layout_weight="1"
-                    android:layout_gravity="bottom" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Back"
+                        android:id="@+id/back"
+                        android:layout_weight="1"
+                        android:layout_gravity="bottom"
+                        android:background="#29303F"
+                        android:textColor="#fff" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Next"
+                        android:id="@+id/next"
+                        android:layout_weight="1"
+                        android:layout_gravity="bottom"
+                        android:textColor="#fff"
+                        android:background="#0BC6A0" />
+                </LinearLayout>
+
             </LinearLayout>
-
-        </LinearLayout>
-
+        </ScrollView>
     </ViewFlipper>
 
 </LinearLayout>

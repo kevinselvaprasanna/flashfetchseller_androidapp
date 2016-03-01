@@ -1,6 +1,7 @@
 package in.flashfetch.sellerapp;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,10 +25,17 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
     CheckBox cmobiles,claptops, ctablets;
     Boolean mobiles, laptops, tablets;
     Button submit;
+    Typeface font;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
+
+        font = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Medium.ttf");
+
+        //TODO: Set typeface for text
 
         mobiles =false;
         laptops=false;

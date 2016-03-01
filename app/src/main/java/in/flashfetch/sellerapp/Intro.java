@@ -4,6 +4,7 @@ package in.flashfetch.sellerapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -20,6 +21,8 @@ import android.widget.ViewFlipper;
 public class Intro extends Activity{
 
     ViewFlipper viewFlipper;
+    Typeface font;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,10 @@ public class Intro extends Activity{
                 startActivity(intent);
             }
         });
+
+
+        font = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Medium.ttf");
 
         viewFlipper.setOnTouchListener(new View.OnTouchListener() {
             @Override

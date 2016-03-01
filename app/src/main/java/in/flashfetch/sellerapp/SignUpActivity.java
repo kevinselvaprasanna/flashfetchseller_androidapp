@@ -1,6 +1,7 @@
 package in.flashfetch.sellerapp;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import in.flashfetch.sellerapp.Constants.URLConstants;
@@ -26,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     Button Submit,Next1,Back;
     TextView loc_gps;
     ViewFlipper viewFlipper;
+    Typeface font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,11 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //TODO: Set typeface for text
+
+        font = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Medium.ttf");
 
         Next1 = (Button)findViewById(R.id.Next);
         Back = (Button)findViewById(R.id.back);
@@ -61,6 +69,14 @@ public class SignUpActivity extends AppCompatActivity {
         Submit = (Button)findViewById(R.id.next);
 
         loc_gps = (TextView)findViewById(R.id.location);
+
+        loc_gps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO : Populate
+                Toast.makeText(SignUpActivity.this, "Shop location", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Next1.setOnClickListener(new View.OnClickListener() {
             @Override
