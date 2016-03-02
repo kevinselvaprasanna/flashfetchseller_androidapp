@@ -85,12 +85,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
         //th = new TimeHelper();
-        holder.name.setText(mItems.get(position).email);
+        holder.name.setText("Name");
         holder.name.setTypeface(font);
         holder.price.setTypeface(font);
         holder.time.setTypeface(font);
-        holder.price.setText(mItems.get(position).price);
-        holder.time.setText(Long.toString(mItems.get(position).time));
+        holder.price.setText("Price");
+        holder.time.setText("Time");
         //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
         holder.notsfeed.setOnClickListener(new View.OnClickListener() {
 

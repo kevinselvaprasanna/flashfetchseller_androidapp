@@ -96,7 +96,7 @@ public class NotificationAdapter2 extends RecyclerView.Adapter<NotificationAdapt
 
 
         //th = new TimeHelper();
-        holder.name.setText(mItems.get(position).email);
+        holder.name.setText("Name");
         holder.name.setTypeface(font);
         holder.timeleft.setText("Timer Left");
         holder.timeleft.setTypeface(font);

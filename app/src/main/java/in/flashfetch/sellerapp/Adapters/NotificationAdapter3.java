@@ -90,7 +90,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         //TODO: Set typeface for text
         //th = new TimeHelper();
 
-        holder.name.setText(mItems.get(position).email);
+        holder.name.setText("Name");
         holder.name.setTypeface(font);
         holder.price_final.setTypeface(font);
         holder.price_final.setText("Final price");

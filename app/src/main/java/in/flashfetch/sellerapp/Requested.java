@@ -100,10 +100,10 @@ public class Requested extends Fragment {
         nots = Notification.getAllNotifications(mContext);
 
         //initialize events feed adapter
-        NotificationAdapter notsAdapter = new NotificationAdapter(mContext, nots,0);
+       NotificationAdapter notsAdapter = new NotificationAdapter(mContext,nots,0);
 
         //Use the events feed adapter
-        rvNot.setAdapter(notsAdapter);
+       rvNot.setAdapter(notsAdapter);
         return view;
 
     }/*

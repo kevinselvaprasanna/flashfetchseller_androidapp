@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SignUpActivity extends AppCompatActivity {
-    EditText name, shop_name, email, phone,password, confpassword, shop_id, shop_telephone, address1, address2, address3; //city, postal_code, country, state,
+    EditText name, shop_name, email, phone,password, confpassword, shop_id, shop_telephone, address1, address2; //city, postal_code, country, state,
     Button Submit,Next1,Back;
     TextView loc_gps;
     ViewFlipper viewFlipper;
@@ -59,7 +59,6 @@ public class SignUpActivity extends AppCompatActivity {
         shop_telephone = (EditText)findViewById(R.id.telephone);
         address1 = (EditText)findViewById(R.id.add_1);
         address2 = (EditText)findViewById(R.id.add_2);
-        address3 = (EditText)findViewById(R.id.add_3);
         /*
         city = (EditText)findViewById(R.id.city);
         postal_code = (EditText)findViewById(R.id.postal_code);

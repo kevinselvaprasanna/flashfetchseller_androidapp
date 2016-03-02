@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
+import in.flashfetch.sellerapp.Adapters.NotificationAdapter1;
 import in.flashfetch.sellerapp.Objects.Notification;
 
 
@@ -102,7 +103,7 @@ public class Provided extends Fragment {
         //initialize events feed adapter
 
         //put conidition to switch layout
-        NotificationAdapter notsAdapter = new NotificationAdapter(mContext, nots, 2);
+        NotificationAdapter1 notsAdapter = new NotificationAdapter1(mContext, nots, 2);
 
         //Use the events feed adapter
         rvNot.setAdapter(notsAdapter);
