@@ -1,5 +1,9 @@
 package in.flashfetch.sellerapp.Adapters;
 
+/**
+ * Created by SAM10795 on 02-03-2016.
+ */
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.R;
@@ -20,7 +25,7 @@ import in.flashfetch.sellerapp.R;
 
 import java.util.ArrayList;
 
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
+public class NotificationAdapter2 extends RecyclerView.Adapter<NotificationAdapter2.ViewHolder> {
 
     Context mContext;
     Typeface font;
@@ -36,27 +41,31 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     */
 
 
-    public NotificationAdapter(Context context, ArrayList<Notification> items, int LayoutSelect) {
+    public NotificationAdapter2(Context context, ArrayList<Notification> items, int LayoutSelect) {
         mContext = context;
         mItems = items;
         LayoutSelector = LayoutSelect;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView name,price,time,decline,quote;
-        LinearLayout notsfeed;
+
+    public static class ViewHolder extends NotificationAdapter.ViewHolder{
+        TextView name,price_quoted,price_bargained,timeleft,decline,accept;
+        LinearLayout requested,offered;
         ImageView imageview;
         CardView cv;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageview = (ImageView)itemView.findViewById(R.id.imageView);
+            imageview = (ImageView)itemView.findViewById(R.id.image);
             name =(TextView)itemView.findViewById(R.id.name);
-            price = (TextView)itemView.findViewById(R.id.price);
-            time = (TextView)itemView.findViewById(R.id.time);
+            price_quoted = (TextView)itemView.findViewById(R.id.price_quoted);
+            price_bargained = (TextView)itemView.findViewById(R.id.price_bargain);
+            timeleft = (TextView)itemView.findViewById(R.id.time_left);
             decline = (TextView)itemView.findViewById(R.id.decline);
-            quote = (TextView)itemView.findViewById(R.id.quote);
+            accept = (TextView)itemView.findViewById(R.id.accept);
             notsfeed = (LinearLayout)itemView.findViewById(R.id.notsfeed);
+            requested = (LinearLayout)itemView.findViewById(R.id.requested);
+            offered = (LinearLayout)itemView.findViewById(R.id.offered);
             cv = (CardView)itemView.findViewById(R.id.card_view);
         }
     }
@@ -66,14 +75,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return super.getItemViewType(position);
     }
 
-    public NotificationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NotificationAdapter2.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout;
 
 
         font = Typeface.createFromAsset(mContext.getAssets(),
                 "fonts/Lato-Medium.ttf");
 
-                layout = R.layout.item_notifications;
+
+                layout = R.layout.list_item_provided_2;
+
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(layout, parent, false);
 
@@ -81,18 +92,34 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     @Override
-    public void onBindViewHolder(NotificationAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(NotificationAdapter2.ViewHolder holder, final int position) {
 
 
         //th = new TimeHelper();
         holder.name.setText(mItems.get(position).email);
         holder.name.setTypeface(font);
-        holder.price.setTypeface(font);
-        holder.time.setTypeface(font);
-        holder.price.setText(mItems.get(position).price);
-        holder.time.setText(Long.toString(mItems.get(position).time));
+        holder.timeleft.setText("Timer Left");
+        holder.timeleft.setTypeface(font);
+        holder.accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext,"Accepted",Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.accept.setTypeface(font);
+        holder.decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext,"Accepted",Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.decline.setTypeface(font);
+        holder.price_bargained.setTypeface(font);
+        holder.price_quoted.setTypeface(font);
+        holder.price_quoted.setText("Quoted");
+        holder.price_bargained.setText("BargPrice");
         //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
-        holder.notsfeed.setOnClickListener(new View.OnClickListener() {
+       /* holder.notsfeed.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -113,7 +140,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 builder.show();
 
             }
-        });
+        });*/
 
 
     }
