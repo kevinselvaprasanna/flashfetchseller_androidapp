@@ -36,9 +36,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     */
 
 
-    public NotificationAdapter(Context context, ArrayList<Notification> items, int LayoutSelect) {
+    public NotificationAdapter(Context context, int LayoutSelect) {
         mContext = context;
-        mItems = items;
+       // mItems = items;
         LayoutSelector = LayoutSelect;
     }
 
@@ -120,6 +120,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return 5;//mItems.size();
     }
 }

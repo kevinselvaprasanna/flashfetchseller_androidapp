@@ -97,10 +97,10 @@ public class Requested extends Fragment {
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
-        nots = Notification.getAllNotifications(mContext);
+        //nots = Notification.getAllNotifications(mContext);
 
         //initialize events feed adapter
-       NotificationAdapter notsAdapter = new NotificationAdapter(mContext,nots,0);
+       NotificationAdapter notsAdapter = new NotificationAdapter(mContext,0);
 
         //Use the events feed adapter
        rvNot.setAdapter(notsAdapter);

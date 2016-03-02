@@ -98,12 +98,12 @@ public class Provided extends Fragment {
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
-        nots = Notification.getAllNotifications(mContext);
+        //nots = Notification.getAllNotifications(mContext);
 
         //initialize events feed adapter
 
         //put conidition to switch layout
-        NotificationAdapter1 notsAdapter = new NotificationAdapter1(mContext, nots, 2);
+        NotificationAdapter1 notsAdapter = new NotificationAdapter1(mContext, 2);
 
         //Use the events feed adapter
         rvNot.setAdapter(notsAdapter);
