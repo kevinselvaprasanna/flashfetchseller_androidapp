@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray">
+    android:background="#fff">
 
     <TextView
         android:layout_width="match_parent"
@@ -37,6 +37,7 @@
             android:id="@+id/Name"
             android:layout_weight="1"
             android:hint="Name" />
+
     </LinearLayout>
 
 
@@ -137,10 +138,14 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next"
+            android:text="NEXT"
             android:id="@+id/Next"
             android:layout_gravity="bottom"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:background="#29303F"
+            android:textColor="#fff"
+            android:textAppearance="@android:style/TextAppearance.Holo.Large"
+            android:layout_margin="10dp" />
     </LinearLayout>
 
 </LinearLayout>

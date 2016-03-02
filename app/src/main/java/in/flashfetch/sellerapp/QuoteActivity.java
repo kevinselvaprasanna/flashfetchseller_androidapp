@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -14,6 +15,8 @@ import android.widget.ViewFlipper;
 public class QuoteActivity extends AppCompatActivity {
 
     ViewFlipper flipper,imflipper;
+    Typeface font;
+    TextView name,price,buyer_name,buyer_location,timer,price_2,ptype,same,similar,deltype,home_del,shop_vis,comments,tv8,more_deals,quote_now;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,12 @@ public class QuoteActivity extends AppCompatActivity {
                 flipper.setInAnimation(QuoteActivity.this,R.anim.bottom_up);
             }
         });
+
+        font = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Medium.ttf");
+
+        //TODO: Set typeface for text
+
 
         AppBarLayout appBar = (AppBarLayout)findViewById(R.id.appbar);
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.user_profile_coordinatorlayout);

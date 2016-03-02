@@ -1,6 +1,7 @@
 package in.flashfetch.sellerapp;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,8 @@ public class Accepted extends Fragment {
     //private String mParam2;
 
     private Context mContext;
+
+    Typeface font;
 
     // private OnFragmentInteractionListener mListener;
 
@@ -73,7 +76,14 @@ public class Accepted extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+        font = Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/Lato-Medium.ttf");
         // Inflate the layout for this fragment
+
+        //TODO: Set typeface for text
+
 
         View view = inflater.inflate(R.layout.fragment_accepted, container, false);
 

@@ -1,6 +1,7 @@
 package in.flashfetch.sellerapp.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import in.flashfetch.sellerapp.R;
 public class CategoryAdapter extends BaseExpandableListAdapter {
 
     private Context context;
+    Typeface font;
+    //TODO: Set typeface for text
     private List<String> headcategory; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> subcategory;
@@ -45,6 +48,10 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         final String childText = (String) getChild(groupPosition, childPosition);
+
+
+        font = Typeface.createFromAsset(context.getAssets(),
+                "fonts/Lato-Medium.ttf");
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context

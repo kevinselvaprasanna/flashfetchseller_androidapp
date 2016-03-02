@@ -2,6 +2,7 @@ package in.flashfetch.sellerapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -73,6 +74,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
        private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    Typeface font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        font = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Medium.ttf");
+
+        //TODO: Set typeface for text
 
         ViewPager pager = (ViewPager)findViewById(R.id.pager);
         PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip)findViewById(R.id.tabs);

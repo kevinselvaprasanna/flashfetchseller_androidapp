@@ -15,15 +15,16 @@
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
     android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_gravity="top">
+        android:layout_gravity="top"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp">
 
         <ImageView
             android:layout_width="0dp"
@@ -135,7 +136,9 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="2dp">
+                android:paddingLeft="2dp"
+                android:paddingTop="2dp"
+                android:paddingRight="2dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -146,9 +149,9 @@
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     style="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:padding="5dp"
                     android:background="#29303f"
-                    android:textColor="#fff" />
+                    android:textColor="#fff"
+                    android:padding="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -160,8 +163,8 @@
                     android:gravity="center_horizontal"
                     style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:background="#0bc6a0"
-                    android:padding="5dp"
-                    android:textColor="#fff" />
+                    android:textColor="#fff"
+                    android:padding="5dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
