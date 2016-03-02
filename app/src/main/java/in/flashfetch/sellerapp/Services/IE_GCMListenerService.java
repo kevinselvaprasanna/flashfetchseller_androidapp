@@ -49,17 +49,18 @@ public class IE_GCMListenerService extends GcmListenerService{
          *     - Store message in local database.
          *     - Update UI.
          */
-        JSONObject notjs;
+        //JSONObject notjs;
         Log.i("GCM-message",data.toString());
         //try {
             //notjs = new JSONObject(String.valueOf(data));
             //Notification not = new Notification(notjs);
             ContentValues cv = new ContentValues();
-            cv.put("email", data.getString("email"));
-            cv.put("category", data.getString("category"));
-            cv.put("price", Integer.parseInt(data.getString("price")));
-            cv.put("time", Long.getLong(data.getString("time")));
-            cv.put("id", Long.getLong(data.getString("id")));
+            cv.put("name", data.getString("name"));
+            cv.put("imgurl", data.getString("imgurl"));
+            cv.put("price", Long.parseLong(data.getString("price")));
+            //cv.put("price", Integer.parseInt(data.getString("price")));
+            cv.put("time", Long.parseLong(data.getString("time")));
+            cv.put("id",data.getString("id"));
             DatabaseHelper dh = new DatabaseHelper(this);
             dh.addNot(cv);
         //} catch (JSONException e) {
@@ -72,7 +73,7 @@ public class IE_GCMListenerService extends GcmListenerService{
          */
 
 
-        sendNotification(data.getString("email"), data.getString("category"), data.getString("price"));
+        sendNotification(data.getString("name"), data.getString("imgurl"), data.getString("price"),data.getString("id"),data.getString("time"));
     }
     // [END receive_message]
 
@@ -81,7 +82,7 @@ public class IE_GCMListenerService extends GcmListenerService{
      *
      * message GCM message received.
      */
-    private void sendNotification(String email, String category, String price){
+    private void sendNotification(String email, String category, String price,String id, String time){
         PendingIntent pendingIntent;
         Uri defaultSoundUri;
         NotificationCompat.Builder notificationBuilder;
