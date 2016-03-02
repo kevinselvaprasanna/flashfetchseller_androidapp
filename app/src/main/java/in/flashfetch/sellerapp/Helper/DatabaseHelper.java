@@ -34,13 +34,14 @@ public class DatabaseHelper {
         @Override
         public void onCreate(SQLiteDatabase db) {
             // TODO Auto-generated method stub _id INTEGER PRIMARY KEY
-            db.execSQL("CREATE TABLE Notifications( id BIGINT PRIMARY KEY, email VARCHAR(30), category VARCHAR(30),price INT ,time BIGINT)");
-            Log.d("dmydb","DATABSE CREATED");
+            db.execSQL(" DROP TABLE IF EXISTS " + Notification.TABLE_NAME);
+            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY, name VARCHAR, imgurl VARCHAR, price INT, time BIGINT, qouted INT DEFAULT 0, qprice INT DEFAULT 0, type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',cuscon INT DEFAULT 0,selcon INT DEFAULT 0)");
+                    Log.d("dmydb", "DATABSE CREATED");
         }
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             // TODO Auto-generated method stub
-            db.execSQL(" DROP TABLE IF EXISTS Notifications "  );
+            db.execSQL(" DROP TABLE IF EXISTS " + Notification.TABLE_NAME  );
             Log.d("dmydb", "DATABSE dropped");
         }
 
@@ -62,19 +63,42 @@ public class DatabaseHelper {
 
     public long addNot(ContentValues cv) {
         open();
-        long id = ourDatabase.insert("Notifications", null, cv);
+        long id = ourDatabase.insert(Notification.TABLE_NAME, null, cv);
         Log.d("dmydb","NOTIFICATION ADDED");
         close();
         return id;
     }
+
+    public void updateNot(String id,ContentValues cv){
+        open();
+        ourDatabase.update(Notification.TABLE_NAME, cv, "id" + " = ?", new String[]{id});
+        close();
+
+    }
     public ArrayList<Notification> getAllNotifications () {
         open();
         String[] columns = Notification.columns;
-        Cursor c = ourDatabase.query("Notifications", columns, null, null, null, null, null);
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, null, null, null, null, null);
+        ArrayList<Notification> arrayList = Notification.getArrayList(c);
+        close();
+        return arrayList;
+        /*Notification not1 = new Notification("1232","dell laptop","",(long)1234,(long)32472367);
+        Notification not2 = new Notification("1232","dell laptop","",(long)1234,(long)32472367,true,(long)234,true,true,"sgsg",false,false);
+        ArrayList<Notification> arrayList = {not1,not2}*/
+    }
+
+    public ArrayList<Notification> getQNotifications () {
+        open();
+        String[] columns = Notification.columns;
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "qouted = TRUE" , null, null, null, null);
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;
     }
+
+
+
+
 
 
 

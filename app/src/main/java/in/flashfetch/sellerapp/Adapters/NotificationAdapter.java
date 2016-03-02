@@ -1,6 +1,7 @@
 package in.flashfetch.sellerapp.Adapters;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.CardView;
@@ -158,11 +159,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         //TODO: Populate items depending on the holder returned via LayoutSelect
 
-        //th = new TimeHelper();
-        holder.name.setText(mItems.get(position).email);
-        holder.price.setText(mItems.get(position).price);
-        holder.time.setText(Long.toString(mItems.get(position).time));
-        //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
+        holder.name.setText(mItems.get(position).name);
+        holder.price.setText("name: " + mItems.get(position).name +  "img: " + mItems.get(position).imgurl + "price" + mItems.get(position).price + " time:" + mItems.get(position).time + "id" + mItems.get(position).id + " qp:" + mItems.get(position).qprice) ;
         holder.notsfeed.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -177,8 +175,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-
+                        ContentValues cv = new ContentValues();
+                        cv.put("price", price.getText().toString());
+                        Notification.updateNot(mContext ,mItems.get(position).id, cv);
                     }
                 });
                 builder.show();
