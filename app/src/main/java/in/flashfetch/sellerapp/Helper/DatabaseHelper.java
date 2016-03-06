@@ -17,7 +17,7 @@ public class DatabaseHelper {
     private static String LOG_TAG = "DatabaseHelper";
 
     private static final String DATABASE_NAME = "FlashFetch";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private DbHelper ourHelper;
     private final Context ourContext;

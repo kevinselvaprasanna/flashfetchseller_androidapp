@@ -27,8 +27,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="5dp">
+            android:layout_gravity="center_horizontal">
 
             <ImageView
                 android:layout_width="0dp"
@@ -64,16 +63,15 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="2dp">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_marginRight="2dp"
-                        android:id="@+id/call">
+                        android:id="@+id/call"
+                        android:background="#29303F">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -88,7 +86,8 @@
                             android:text="Call"
                             android:id="@+id/caller"
                             android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal" />
+                            android:gravity="center_vertical|center_horizontal"
+                            android:textColor="#fff" />
 
                     </LinearLayout>
 
@@ -97,8 +96,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginLeft="2dp"
-                        android:id="@+id/location">
+                        android:id="@+id/location"
+                        android:background="#0BC6A0">
 
                         <ImageView
                             android:layout_width="wrap_content"
