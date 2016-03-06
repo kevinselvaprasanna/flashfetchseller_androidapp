@@ -49,8 +49,7 @@ public class Requested extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment Requested.
      */
     // TODO: Rename and change types and number of parameters
@@ -77,8 +76,8 @@ public class Requested extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");
+       /* font = Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/Lato-Medium.ttf");*/
 
         //TODO: Set typeface for text
 
@@ -97,10 +96,10 @@ public class Requested extends Fragment {
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
-        //nots = Notification.getAllNotifications(mContext);
+        nots = Notification.getAllNotifications(mContext);
 
         //initialize events feed adapter
-       NotificationAdapter notsAdapter = new NotificationAdapter(mContext,0);
+       NotificationAdapter notsAdapter = new NotificationAdapter(mContext,0,nots);
 
         //Use the events feed adapter
        rvNot.setAdapter(notsAdapter);

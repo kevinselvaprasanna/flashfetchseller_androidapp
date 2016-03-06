@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.R;
 
@@ -36,9 +38,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     */
 
 
-    public NotificationAdapter(Context context, int LayoutSelect) {
+    public NotificationAdapter(Context context, int LayoutSelect, ArrayList<Notification> items) {
         mContext = context;
-       // mItems = items;
+        mItems = items;
         LayoutSelector = LayoutSelect;
     }
 
@@ -50,7 +52,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageview = (ImageView)itemView.findViewById(R.id.imageView);
+            imageview = (ImageView)itemView.findViewById(R.id.image);
             name =(TextView)itemView.findViewById(R.id.name);
             price = (TextView)itemView.findViewById(R.id.price);
             time = (TextView)itemView.findViewById(R.id.time);
@@ -70,8 +72,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         int layout;
 
 
-        font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");
+       /* font = Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/Lato-Medium.ttf");*/
 
                 layout = R.layout.item_notifications;
         View view = LayoutInflater.from(parent.getContext())
@@ -85,18 +87,23 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
         //th = new TimeHelper();
-        holder.name.setText("Name");
-        holder.name.setTypeface(font);
+        holder.name.setText(mItems.get(position).name);
+        /*holder.name.setTypeface(font);
         holder.price.setTypeface(font);
-        holder.time.setTypeface(font);
-        holder.price.setText("Price");
-        holder.time.setText("Time");
+        holder.time.setTypeface(font);*/
+        holder.price.setText(String.valueOf(mItems.get(position).price));
+        holder.time.setText(String.valueOf(System.currentTimeMillis()-mItems.get(position).time)+ "s");
+        Glide
+                .with(mContext)
+                .load(mItems.get(position).imgurl)
+                .centerCrop()
+                .into(holder.imageview);
         //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
         holder.notsfeed.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+               /* AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("Price");
                 builder.setMessage("Enter price that you want to bargain");
                 final EditText price = new EditText(mContext);
@@ -110,7 +117,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                     }
                 });
-                builder.show();
+                builder.show();*/
 
             }
         });
@@ -120,6 +127,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public int getItemCount() {
-        return 5;//mItems.size();
+        return mItems.size();
     }
 }

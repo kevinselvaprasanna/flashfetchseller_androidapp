@@ -75,8 +75,8 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         int layout;
 
 
-        font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");
+       /* font = Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/Lato-Medium.ttf");*/
                 layout = R.layout.list_item_accepted;
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(layout, parent, false);

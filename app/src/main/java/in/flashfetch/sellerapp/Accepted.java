@@ -79,8 +79,8 @@ public class Accepted extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");
+       /* font = Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/Lato-Medium.ttf");*/
         // Inflate the layout for this fragment
 
         //TODO: Set typeface for text

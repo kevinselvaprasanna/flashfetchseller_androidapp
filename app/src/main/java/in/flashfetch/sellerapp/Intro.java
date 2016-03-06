@@ -39,8 +39,8 @@ public class Intro extends Activity{
         });
 
 
-        font = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Medium.ttf");
+       /* font = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Medium.ttf");*/
 
         viewFlipper.setOnTouchListener(new View.OnTouchListener() {
             @Override

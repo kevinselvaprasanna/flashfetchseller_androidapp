@@ -39,8 +39,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         //TODO: Set typeface for text
 
-        font = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Medium.ttf");
+       /* font = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Medium.ttf");*/
 
         Next1 = (Button)findViewById(R.id.Next);
         Back = (Button)findViewById(R.id.back);
@@ -104,7 +104,13 @@ public class SignUpActivity extends AppCompatActivity {
         JSONObject ResponseJSON;
         String tname = name.getText().toString();
         String temail = email.getText().toString();
+        String tsname = shop_name.getText().toString();
+        String tsid = shop_id.getText().toString();
+        String tstelph = shop_telephone.getText().toString();
+        String tshadd1 = address1.getText().toString();
+        String tshadd2 = address2.getText().toString();
         String tpassword = password.getText().toString();
+
 
         @Override
         protected void onPreExecute() {
