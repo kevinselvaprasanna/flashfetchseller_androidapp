@@ -32,9 +32,9 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         setContentView(R.layout.activity_category);
 
 
-        font = Typeface.createFromAsset(getAssets(),
+      /*  font = Typeface.createFromAsset(getAssets(),
                 "fonts/Lato-Medium.ttf");
-
+*/
         //TODO: Set typeface for text
 
         mobiles =false;

@@ -16,8 +16,8 @@ import java.util.ArrayList;
  * Created by kevinselvaprasanna on 3/1/16.
  */
 public class Notification {
-    public String name,imgurl;
-    public long time,price,qprice;
+    public String name,imgurl,price;
+    public long time,qprice;
     public String  id,comment;
     Boolean qouted=false,type,deltype,cuscon,selcon;
 
@@ -26,7 +26,7 @@ public class Notification {
     public Notification(JSONObject not) {
         try {
             //this.email = not.getString("email");
-            this.price = not.getLong("price");
+            this.price = not.getString("price");
             this.imgurl = not.getString("imgurl");
             this.time = not.getLong("time");
             this.id = not.getString("id");
@@ -39,7 +39,7 @@ public class Notification {
     public Notification(JSONObject not, Boolean qouted) {
         try {
             //this.email = not.getString("email");
-            this.price = not.getLong("price");
+            this.price = not.getString("price");
             this.imgurl = not.getString("imgurl");
             this.time = not.getLong("time");
             this.id = not.getString("id");
@@ -53,7 +53,7 @@ public class Notification {
     public static String[] columns = {"id", "name", "imgurl", "price", "time","qouted","qprice","type","deltype","comment","cuscon","selcon"};
     public static String TABLE_NAME = "Notifications";
 
-    public Notification(String id, String name, String imgurl, Long price ,Long time) {
+    public Notification(String id, String name, String imgurl, String price ,Long time) {
         this.id = id;
         this.name = name;
         this.imgurl = imgurl;
@@ -61,7 +61,7 @@ public class Notification {
         this.time = time;
         this.qouted =false;
     }
-    public Notification(String id, String name, String imgurl, Long price ,Long time, Boolean quoted, Long qprice, Boolean type,Boolean deltype,String comment, Boolean cuscon, Boolean selcon) {
+    public Notification(String id, String name, String imgurl, String price ,Long time, Boolean quoted, Long qprice, Boolean type,Boolean deltype,String comment, Boolean cuscon, Boolean selcon) {
         this.id = id;
         this.name = name;
         this.imgurl = imgurl;
@@ -87,7 +87,7 @@ public class Notification {
 
     public static Notification parseNot(Cursor c) {
         //Gson gson = new Gson();
-        Notification not = new Notification(c.getString(0), c.getString(1), c.getString(2), c.getLong(3),c.getLong(4),c.getInt(5) >0, c.getLong(6),c.getInt(7) > 0, c.getInt(8)>0,c.getString(9),c.getInt(10) >0, c.getInt(11)>0);
+        Notification not = new Notification(c.getString(0), c.getString(1), c.getString(2), c.getString(3),c.getLong(4),c.getInt(5) >0, c.getLong(6),c.getInt(7) > 0, c.getInt(8)>0,c.getString(9),c.getInt(10) >0, c.getInt(11)>0);
         return not;
     }
 

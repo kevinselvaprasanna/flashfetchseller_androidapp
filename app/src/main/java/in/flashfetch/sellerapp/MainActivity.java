@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        font = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Medium.ttf");
+       /* font = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Medium.ttf");*/
 
         //TODO: Set typeface for text
 

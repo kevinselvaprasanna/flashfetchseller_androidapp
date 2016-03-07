@@ -95,8 +95,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
 
-        font = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Medium.ttf");
+        /*font = Typeface.createFromAsset(getAssets(),
+                "fonts/Lato-Medium.ttf");*/
         setContentView(R.layout.login_main);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.EmailID);

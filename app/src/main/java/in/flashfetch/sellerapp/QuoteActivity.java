@@ -35,9 +35,9 @@ public class QuoteActivity extends AppCompatActivity {
                 flipper.setInAnimation(QuoteActivity.this,R.anim.bottom_up);
             }
         });
-
+/*
         font = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Medium.ttf");
+                "fonts/Lato-Medium.ttf");*/
 
         //TODO: Set typeface for text
 

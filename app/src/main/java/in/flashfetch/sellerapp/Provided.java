@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter1;
 import in.flashfetch.sellerapp.Objects.Notification;
-
-
-/**
+/*
+*//*
+*//**//**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link Provided.OnFragmentInteractionListener} interface
@@ -79,8 +79,8 @@ public class Provided extends Fragment {
         // Inflate the layout for this fragment
 
 
-        font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");
+      /*  font = Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/Lato-Medium.ttf");*/
 
         //TODO: Set typeface for text
         View view = inflater.inflate(R.layout.fragment_provided, container, false);

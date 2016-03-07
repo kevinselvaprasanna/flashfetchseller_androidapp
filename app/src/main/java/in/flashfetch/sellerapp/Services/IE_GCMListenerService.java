@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.MainActivity;
 import in.flashfetch.sellerapp.R;
 
 import org.json.JSONObject;
@@ -57,9 +58,9 @@ public class IE_GCMListenerService extends GcmListenerService{
             ContentValues cv = new ContentValues();
             cv.put("name", data.getString("name"));
             cv.put("imgurl", data.getString("imgurl"));
-            cv.put("price", Long.parseLong(data.getString("price")));
+            cv.put("price", data.getString("price"));
             //cv.put("price", Integer.parseInt(data.getString("price")));
-            cv.put("time", Long.parseLong(data.getString("time")));
+           // cv.put("time", Long.parseLong(data.getString("time")));
             cv.put("id",data.getString("id"));
             DatabaseHelper dh = new DatabaseHelper(this);
             dh.addNot(cv);
@@ -86,15 +87,18 @@ public class IE_GCMListenerService extends GcmListenerService{
         PendingIntent pendingIntent;
         Uri defaultSoundUri;
         NotificationCompat.Builder notificationBuilder;
+        Intent i = new Intent(IE_GCMListenerService.this, MainActivity.class);
         NotificationManager notificationManager;
-        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(),
+        pendingIntent = PendingIntent.getActivity(this, 0, i,
                 PendingIntent.FLAG_ONE_SHOT);
+
+
 
         defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("FlashFetch")
-                .setContentText(email + " wants " + category + " at price Rs." + price)
+                .setContentText(email + " at price" +  price)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
