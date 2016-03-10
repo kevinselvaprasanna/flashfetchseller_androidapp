@@ -111,6 +111,7 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         protected void onPostExecute(Void aVoid) {
             Intent i = new Intent(CategoryActivity.this, MainActivity.class);
             startActivity(i);
+            finish();
             super.onPostExecute(aVoid);
         }
     }

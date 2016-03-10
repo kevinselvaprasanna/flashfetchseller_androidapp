@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -13,6 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Network.PostRequest;
@@ -29,6 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
     TextView loc_gps;
     ViewFlipper viewFlipper;
     Typeface font;
+    int PLACE_PICKER_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +80,18 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO : Populate
-                Toast.makeText(SignUpActivity.this, "Shop location", Toast.LENGTH_SHORT).show();
+
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                //Context context = getApplicationContext();
+                try {
+                    startActivityForResult(builder.build(SignUpActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+                //Toast.makeText(SignUpActivity.this, "Shop location", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -98,6 +116,15 @@ public class SignUpActivity extends AppCompatActivity {
                 signuptask.execute();
             }
         });
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+            }
+        }
     }
     class Signup extends AsyncTask<String, Void, Void> {
         JSONObject data = new JSONObject();
@@ -146,6 +173,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
             Intent i = new Intent(SignUpActivity.this, CategoryActivity.class);
             startActivity(i);
+            finish();
             super.onPostExecute(aVoid);
         }
     }

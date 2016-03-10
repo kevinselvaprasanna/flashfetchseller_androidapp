@@ -53,21 +53,22 @@ public class Notification {
     public static String[] columns = {"id", "name", "imgurl", "price", "time","qouted","qprice","type","deltype","comment","cuscon","selcon"};
     public static String TABLE_NAME = "Notifications";
 
-    public Notification(String id, String name, String imgurl, String price ,Long time) {
+    /*public Notification(String id, String name, String imgurl, String price ,Long time) {
         this.id = id;
         this.name = name;
         this.imgurl = imgurl;
         this.price = price;
         this.time = time;
         this.qouted =false;
-    }
+    }*/
     public Notification(String id, String name, String imgurl, String price ,Long time, Boolean quoted, Long qprice, Boolean type,Boolean deltype,String comment, Boolean cuscon, Boolean selcon) {
         this.id = id;
         this.name = name;
         this.imgurl = imgurl;
         this.price = price;
         this.time = time;
-        this.qouted =qouted;
+        this.qouted = quoted;
+        this.qprice = qprice;
         this.type = type;
         this.deltype = deltype;
         this.comment = comment;
@@ -78,7 +79,6 @@ public class Notification {
 
     public static ArrayList<Notification> getArrayList(Cursor c) {
         ArrayList<Notification> arrayList = new ArrayList<>();
-        //Gson gson = new Gson();
         while (c.moveToNext()) {
             arrayList.add(parseNot(c));
         }
@@ -86,7 +86,6 @@ public class Notification {
     }
 
     public static Notification parseNot(Cursor c) {
-        //Gson gson = new Gson();
         Notification not = new Notification(c.getString(0), c.getString(1), c.getString(2), c.getString(3),c.getLong(4),c.getInt(5) >0, c.getLong(6),c.getInt(7) > 0, c.getInt(8)>0,c.getString(9),c.getInt(10) >0, c.getInt(11)>0);
         return not;
     }

@@ -33,7 +33,7 @@ public class Intro extends Activity{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intro.this,MainActivity.class);
+                Intent intent = new Intent(Intro.this,SignUpActivity.class);
                 startActivity(intent);
             }
         });
