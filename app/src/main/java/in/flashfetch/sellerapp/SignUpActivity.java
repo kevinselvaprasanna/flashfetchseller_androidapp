@@ -114,6 +114,8 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Signup signuptask = new Signup();
                 signuptask.execute();
+                Intent intent = new Intent(SignUpActivity.this,CategoryActivity.class);
+                startActivity(intent);
             }
         });
     }

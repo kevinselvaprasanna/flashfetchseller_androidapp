@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ExpandableListView;
 
+import in.flashfetch.sellerapp.Adapters.CategoryAdapter;
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
@@ -19,23 +21,61 @@ import in.flashfetch.sellerapp.Objects.UserProfile;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class CategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     CheckBox cmobiles,claptops, ctablets;
     Boolean mobiles, laptops, tablets;
     Button submit;
+    CategoryAdapter categoryAdapter;
     Typeface font;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category);
+        setContentView(R.layout.category_list);
+
+        final List<String> headers = Arrays.asList("Mobiles","Laptops","Tablets");
+
+        List<String> mobiles = Arrays.asList("Phone1","Phone2","Phone3");
+        List<String> laptops = Arrays.asList("Laptop1","Laptop2","Laptop3");
+        List<String> tablets = Arrays.asList("Tablet1","Tablet2","Tablet3");
+        List<Boolean> mobcheck = Arrays.asList(false,false,false);
+        List<Boolean> lapcheck = Arrays.asList(false,false,false);
+        List<Boolean> tabcheck = Arrays.asList(false,false,false);
+
+        HashMap<String,List<String>> subhead = new HashMap<>();
+        subhead.put("Mobiles",mobiles);
+        subhead.put("Laptops",laptops);
+        subhead.put("Tablets",tablets);
+
+
+        final HashMap<String,List<Boolean>> subcheck = new HashMap<>();
+        subcheck.put("Mobiles",mobcheck);
+        subcheck.put("Laptops",lapcheck);
+        subcheck.put("Tablets",tabcheck);
+
+        categoryAdapter = new CategoryAdapter(this,headers,subhead,subcheck);
+
+        ExpandableListView expandableListView = (ExpandableListView)findViewById(R.id.lvExp);
+        expandableListView.setAdapter(categoryAdapter);
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                subcheck.get(headers.get(groupPosition)).set(childPosition,!subcheck.get(headers.get(groupPosition)).get(childPosition));
+                categoryAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
 
 
       /*  font = Typeface.createFromAsset(getAssets(),
                 "fonts/Lato-Medium.ttf");
 */
         //TODO: Set typeface for text
+        /*
 
         mobiles =false;
         laptops=false;
@@ -49,6 +89,9 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         cmobiles.setOnCheckedChangeListener(this);
         claptops.setOnCheckedChangeListener(this);
         ctablets.setOnCheckedChangeListener(this);
+        */
+
+        submit = (Button)findViewById(R.id.Submit);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -3,6 +3,7 @@ package in.flashfetch.sellerapp.Adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.QuoteActivity;
 import in.flashfetch.sellerapp.R;
 
 
@@ -93,6 +95,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.time.setTypeface(font);*/
         holder.price.setText(String.valueOf(mItems.get(position).price));
         holder.time.setText(String.valueOf(System.currentTimeMillis()-mItems.get(position).time)+ "s");
+        holder.quote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, QuoteActivity.class);
+                //TODO: Populate the intent with required data
+                mContext.startActivity(intent);
+            }
+        });
         Glide
                 .with(mContext)
                 .load(mItems.get(position).imgurl)

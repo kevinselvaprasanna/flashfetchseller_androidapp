@@ -8,5 +8,9 @@
 <color name="secondary_text">#727272</color>
 <color name="icons">#FFFFFF</color>
 <color name="divider">#B6B6B6</color>
+    <color name="ff_black">#29303F</color>
+    <color name="ff_green">#0BC6A0</color>
+    <color name="ff_red">#F16565</color>
+    <color name="ff_gray">#D5D6D9</color>
 
 </resources>

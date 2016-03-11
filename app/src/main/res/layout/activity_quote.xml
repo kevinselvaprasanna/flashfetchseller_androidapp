@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="More Deals"
-                    android:id="@+id/textView3"
+                    android:id="@+id/deals_more"
                     android:layout_weight="0.4"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_vertical"
@@ -267,14 +267,14 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Upload image"
-            android:id="@+id/textView8"
+            android:id="@+id/up_img_text"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView3" />
+            android:id="@+id/uploadimg" />
 
         <EditText
             android:layout_width="match_parent"
@@ -289,7 +289,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
-            android:id="@+id/button"
+            android:id="@+id/submit"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp" />
 

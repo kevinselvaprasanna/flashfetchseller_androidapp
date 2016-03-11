@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -24,12 +25,14 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     private List<String> headcategory; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> subcategory;
+    private HashMap<String,List<Boolean>> checks;
 
     public CategoryAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<String>> listChildData, HashMap<String,List<Boolean>> checks) {
         this.context = context;
         headcategory = listDataHeader;
         subcategory = listChildData;
+        this.checks = checks;
     }
 
     @Override
@@ -61,6 +64,8 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
         TextView subcat = (TextView) convertView
                 .findViewById(R.id.subcat);
+        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
+        checkBox.setChecked(checks.get(headcategory.get(groupPosition)).get(childPosition));
 
         subcat.setText(childText);
         return convertView;
