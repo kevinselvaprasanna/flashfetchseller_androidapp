@@ -17,7 +17,7 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/main_screen_1"
                 android:layout_gravity="center"
-                android:src="@mipmap/ic_launcher"
+                android:src="@drawable/slide2"
                 android:scaleType="fitXY" />
 
 
@@ -28,7 +28,7 @@
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginBottom="100dp"
                 android:layout_marginRight="100dp"
-                android:src="@drawable/ic_menu_manage" />
+                android:src="@drawable/abc_btn_radio_to_on_mtrl_000" />
 
             <ImageView
                 android:layout_width="40dp"

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
 
 import in.flashfetch.sellerapp.Adapters.CategoryAdapter;
 import in.flashfetch.sellerapp.Constants.URLConstants;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 public class CategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
@@ -32,30 +35,74 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
     Button submit;
     CategoryAdapter categoryAdapter;
     Typeface font;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
-        final List<String> headers = Arrays.asList("Mobiles","Laptops","Tablets");
+        final List<String> headers = Arrays.asList("Audio and Video","Books","Computers and Accessories","Cameras","Game and Accessories",
+                "Mobiles and Tablets","Musical Instruments","Sports, Fitness and Outdoors","Watches");
 
-        List<String> mobiles = Arrays.asList("Phone1","Phone2","Phone3");
-        List<String> laptops = Arrays.asList("Laptop1","Laptop2","Laptop3");
-        List<String> tablets = Arrays.asList("Tablet1","Tablet2","Tablet3");
-        List<Boolean> mobcheck = Arrays.asList(false,false,false);
-        List<Boolean> lapcheck = Arrays.asList(false,false,false);
-        List<Boolean> tabcheck = Arrays.asList(false,false,false);
+        List<String> av = Arrays.asList("Headphones","Speakers","Home Entertainment Systems","MP3 & Media Players","Audio & Video Accessories");
+        List<String> books = Arrays.asList("All books","Bestseller","Literature & Fiction","Children's & Young Adult","Textbooks","Exam Related books");
+        List<String> comp = Arrays.asList("Laptops","Desktops & Monitors", "Pen Drives", "Hard Drives","Memory Cards",
+                "Printers & Ink","Networking & Internet Devices","Computer Accessories");
+        List<String> cam = Arrays.asList("Digital SLRs","Point & Shoot Cameras","Lenses","Camera Accessories");
+        List<String> game = Arrays.asList("PC Games","Consoles","Accessories");
+        List<String> mob = Arrays.asList("All Mobile Phones","Smartphones","Android Mobiles","Windows Mobiles"
+                ,"All Mobile Accessories","Cases & Covers","Screen Protectors","Power Banks","On the go Pendrives");
+        List<String> music = Arrays.asList("Musical Instrument Accessories","Bass Guitars & Gear","DJ & VJ Equipment"
+                ,"Drums & Percussion","General Music-Making Accessories ","Guitars & Gear","Karaoke Equipment","Microphones",
+                "PA & Stage","Piano & Keyboard","Recording & Computer","String Instruments","Synthesizer & Sampler","Wind Instruments");
+        List<String> sports = Arrays.asList("Exercise & Fitness","Camping & Hiking","Cycling","Cricket","Badminton","Swimming"
+                ,"Football","Tennis","Running","Sport Shoes");
+        List<String> watches = Arrays.asList("Men's watches","Women's watches","Kids Watches");
 
         HashMap<String,List<String>> subhead = new HashMap<>();
-        subhead.put("Mobiles",mobiles);
-        subhead.put("Laptops",laptops);
-        subhead.put("Tablets",tablets);
+        subhead.put(headers.get(0),av);
+        subhead.put(headers.get(1),books);
+        subhead.put(headers.get(2),comp);
+        subhead.put(headers.get(3),cam);
+        subhead.put(headers.get(4),game);
+        subhead.put(headers.get(5),mob);
+        subhead.put(headers.get(6),music);
+        subhead.put(headers.get(7),sports);
+        subhead.put(headers.get(8),watches);
 
 
         final HashMap<String,List<Boolean>> subcheck = new HashMap<>();
-        subcheck.put("Mobiles",mobcheck);
-        subcheck.put("Laptops",lapcheck);
-        subcheck.put("Tablets",tabcheck);
+        List<Boolean> avcheck = new ArrayList<>();
+        List<Boolean> bookcheck = new ArrayList<>();
+        List<Boolean> compcheck = new ArrayList<>();
+        List<Boolean> camcheck = new ArrayList<>();
+        List<Boolean> gamecheck = new ArrayList<>();
+        List<Boolean> mobcheck = new ArrayList<>();
+        List<Boolean> sportcheck = new ArrayList<>();
+        List<Boolean> watcheck = new ArrayList<>();
+        List<Boolean> musicheck = new ArrayList<>();
+
+        avcheck = populate(av,avcheck);
+        bookcheck = populate(books,bookcheck);
+        compcheck = populate(comp,compcheck);
+        camcheck = populate(cam,camcheck);
+        gamecheck = populate(game,gamecheck);
+        mobcheck = populate(comp,mobcheck);
+        musicheck = populate(music,musicheck);
+        sportcheck = populate(comp,sportcheck);
+        watcheck = populate(comp,watcheck);
+
+        subcheck.put(headers.get(0),avcheck);
+        subcheck.put(headers.get(1),bookcheck);
+        subcheck.put(headers.get(2),compcheck);
+        subcheck.put(headers.get(3),camcheck);
+        subcheck.put(headers.get(4),gamecheck);
+        subcheck.put(headers.get(5),mobcheck);
+        subcheck.put(headers.get(6),musicheck);
+        subcheck.put(headers.get(7),sportcheck);
+        subcheck.put(headers.get(8),watcheck);
+
 
         categoryAdapter = new CategoryAdapter(this,headers,subhead,subcheck);
 
@@ -96,11 +143,39 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Submit submittask = new Submit();
-                submittask.execute();
+                if(validate(subcheck)) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    submit.setVisibility(View.GONE);
+                    Submit submittask = new Submit();
+                    submittask.execute();
+                }
             }
         });
 
+    }
+
+    private List<Boolean> populate(List<String> string, List<Boolean> bool)
+    {
+        for(String s:string)
+        {
+            bool.add(false);
+        }
+        return bool;
+    }
+
+    private boolean validate(HashMap<String,List<Boolean>> check)
+    {
+        boolean b = false;
+        Set<String> keys = check.keySet();
+        for(String key:keys)
+        {
+            List<Boolean> bools = check.get(key);
+            for(boolean b1:bools)
+            {
+                b = b||b1;
+            }
+        }
+        return b;
     }
 
     @Override
