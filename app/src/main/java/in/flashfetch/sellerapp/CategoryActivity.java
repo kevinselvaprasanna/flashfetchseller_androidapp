@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
 
 import in.flashfetch.sellerapp.Adapters.CategoryAdapter;
 import in.flashfetch.sellerapp.Constants.URLConstants;
@@ -32,19 +33,22 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
     Button submit;
     CategoryAdapter categoryAdapter;
     Typeface font;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
-        final List<String> headers = Arrays.asList("Mobiles","Laptops","Tablets");
+        final List<String> headers = Arrays.asList("Books","Computers and Accessories","Cameras","Game and Accessories","Mobiles and Tablets","Sports, Fitness and Outdoors","Watches");
 
-        List<String> mobiles = Arrays.asList("Phone1","Phone2","Phone3");
-        List<String> laptops = Arrays.asList("Laptop1","Laptop2","Laptop3");
-        List<String> tablets = Arrays.asList("Tablet1","Tablet2","Tablet3");
-        List<Boolean> mobcheck = Arrays.asList(false,false,false);
-        List<Boolean> lapcheck = Arrays.asList(false,false,false);
-        List<Boolean> tabcheck = Arrays.asList(false,false,false);
+        List<String> books;
+        List<String> comp;
+        List<String> cam;
+        List<String> game;
+        List<String> mob;
+        List<String> sports;
+        List<String> watches;
 
         HashMap<String,List<String>> subhead = new HashMap<>();
         subhead.put("Mobiles",mobiles);
@@ -96,6 +100,8 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                submit.setVisibility(View.GONE);
                 Submit submittask = new Submit();
                 submittask.execute();
             }

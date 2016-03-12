@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -36,6 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
     ViewFlipper viewFlipper;
     Typeface font;
     int PLACE_PICKER_REQUEST = 1;
+    ProgressBar signupprogress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,9 @@ public class SignUpActivity extends AppCompatActivity {
         Next1 = (Button)findViewById(R.id.Next);
         Back = (Button)findViewById(R.id.back);
 
+        signupprogress = (ProgressBar)findViewById(R.id.signup_progress);
+        //set signupprogress visible and viewflipper invisible when showing progress
+
         viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper2);
 
 
@@ -66,6 +71,9 @@ public class SignUpActivity extends AppCompatActivity {
         shop_telephone = (EditText)findViewById(R.id.telephone);
         address1 = (EditText)findViewById(R.id.add_1);
         address2 = (EditText)findViewById(R.id.add_2);
+
+
+
         /*
         city = (EditText)findViewById(R.id.city);
         postal_code = (EditText)findViewById(R.id.postal_code);
@@ -98,7 +106,9 @@ public class SignUpActivity extends AppCompatActivity {
         Next1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewFlipper.showNext();
+                if(validate1()) {
+                    viewFlipper.showNext();
+                }
             }
         });
 
@@ -112,10 +122,14 @@ public class SignUpActivity extends AppCompatActivity {
         Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Signup signuptask = new Signup();
-                signuptask.execute();
-                Intent intent = new Intent(SignUpActivity.this,CategoryActivity.class);
-                startActivity(intent);
+                if(validate2()) {
+                    signupprogress.setVisibility(View.VISIBLE);
+                    viewFlipper.setVisibility(View.GONE);
+                    Signup signuptask = new Signup();
+                    signuptask.execute();
+                    Intent intent = new Intent(SignUpActivity.this, CategoryActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -128,6 +142,80 @@ public class SignUpActivity extends AppCompatActivity {
             }
         }
     }
+
+    private boolean validate1()
+    {
+
+        if(isempty(name))
+        {
+            Toast.makeText(this,"Name cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(isempty(email))
+        {
+            Toast.makeText(this,"Email cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(isempty(phone))
+        {
+            Toast.makeText(this,"Phone cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(isempty(password))
+        {
+            Toast.makeText(this,"Password cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(isempty(confpassword))
+        {
+            Toast.makeText(this,"Password cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(!password.getText().toString().equals(confpassword.getText().toString()))
+        {
+            Toast.makeText(this, "Password and Confirm Password do not match", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validate2()
+    {
+        if(isempty(shop_name))
+        {
+            Toast.makeText(this,"Shop Name cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(isempty(shop_id))
+        {
+            Toast.makeText(this,"Shop ID cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(isempty(shop_telephone))
+        {
+            Toast.makeText(this,"Shop Telephone cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(isempty(address1))
+        {
+            Toast.makeText(this,"Address 1 cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(isempty(address2))
+        {
+            Toast.makeText(this,"Address 2 cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+
+    private boolean isempty(EditText editText)
+    {
+        return editText.getText().toString().isEmpty();
+    }
+
     class Signup extends AsyncTask<String, Void, Void> {
         JSONObject data = new JSONObject();
         JSONObject ResponseJSON;
@@ -178,6 +266,7 @@ public class SignUpActivity extends AppCompatActivity {
             finish();
             super.onPostExecute(aVoid);
         }
+
     }
 
 }
