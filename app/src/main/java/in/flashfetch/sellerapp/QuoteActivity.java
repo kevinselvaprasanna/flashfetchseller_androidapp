@@ -73,14 +73,14 @@ public class QuoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-                shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 //Home del selected
             }
         });
         shop_vis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
                 //Shop vis selected
             }
@@ -92,14 +92,14 @@ public class QuoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-                similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 //same selected
             }
         });
         similar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
                 //similar selected
             }

@@ -2,11 +2,13 @@ package in.flashfetch.sellerapp.Adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -105,6 +107,15 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         TextView category = (TextView) convertView
                 .findViewById(R.id.main_category);
         category.setText(headerTitle);
+        ImageView tap = (ImageView)convertView.findViewById(R.id.tap);
+        if(isExpanded)
+        {
+            tap.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.arrow_up));
+        }
+        else
+        {
+            tap.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.arrow_down));
+        }
 
         return convertView;
     }

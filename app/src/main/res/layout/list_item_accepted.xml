@@ -71,13 +71,14 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:id="@+id/call"
-                        android:background="#29303F">
+                        android:background="@color/ff_green">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/imageView"
-                            android:src="@android:drawable/sym_action_call" />
+                            android:src="@android:drawable/sym_action_call"
+                            android:visibility="gone" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -97,7 +98,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:id="@+id/location"
-                        android:background="#0BC6A0">
+                        android:background="#0BC6A0"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="wrap_content"
