@@ -24,6 +24,8 @@ public class DatabaseHelper {
     private SQLiteDatabase ourDatabase;
 
 
+
+
     private static class DbHelper extends SQLiteOpenHelper {
 
         public DbHelper(Context context) {
@@ -34,8 +36,8 @@ public class DatabaseHelper {
         @Override
         public void onCreate(SQLiteDatabase db) {
             // TODO Auto-generated method stub _id INTEGER PRIMARY KEY
-            db.execSQL(" DROP TABLE IF EXISTS " + Notification.TABLE_NAME);
-            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY, name VARCHAR, imgurl VARCHAR, price VARCHAR, time BIGINT, qouted INT DEFAULT 0, qprice INT DEFAULT 0, type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',cuscon INT DEFAULT 0,selcon INT DEFAULT 0)");
+           /* db.execSQL(" DROP TABLE IF EXISTS " + Notification.TABLE_NAME);*/
+            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY, name VARCHAR, imgurl VARCHAR, price VARCHAR, time BIGINT, quoted INT DEFAULT 0, qprice INT DEFAULT 0, type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',cuscon INT DEFAULT 0,selcon INT DEFAULT 0)");
                     Log.d("dmydb", "DATABSE CREATED");
         }
         @Override
@@ -78,7 +80,7 @@ public class DatabaseHelper {
     public ArrayList<Notification> getAllNotifications () {
         open();
         String[] columns = Notification.columns;
-        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, null, null, null, null, null);
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "quoted = 0", null, null, null, null);
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;
@@ -90,7 +92,15 @@ public class DatabaseHelper {
     public ArrayList<Notification> getQNotifications () {
         open();
         String[] columns = Notification.columns;
-        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "qouted = 1" , null, null, null, null);
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "quoted = 1" , null, null, null, null);
+        ArrayList<Notification> arrayList = Notification.getArrayList(c);
+        close();
+        return arrayList;
+    }
+    public ArrayList<Notification> getANotifications () {
+        open();
+        String[] columns = Notification.columns;
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "cuscon = 1" , null, null, null, null);
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;

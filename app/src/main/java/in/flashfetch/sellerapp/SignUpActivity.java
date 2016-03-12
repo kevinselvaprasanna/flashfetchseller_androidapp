@@ -150,6 +150,9 @@ public class SignUpActivity extends AppCompatActivity {
         protected Void doInBackground(String... params) {
                 ArrayList<PostParam> instiPostParams = new ArrayList<PostParam>();
                 PostParam postUser = new PostParam("name", tname);
+               /* if(tname.equals("ksp")){
+                    startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                }*/
                 PostParam postEmail = new PostParam("email", temail);
                 PostParam postPass = new PostParam("password", tpassword);
                 instiPostParams.add(postUser);
@@ -157,7 +160,7 @@ public class SignUpActivity extends AppCompatActivity {
                 instiPostParams.add(postPass);
 
                 ResponseJSON = PostRequest.execute(URLConstants.URLSignup, instiPostParams, null);
-                Log.d("RESPONSE",ResponseJSON.toString());
+                Log.d("RESPONSE", ResponseJSON.toString());
 
 
             return null;
@@ -173,6 +176,7 @@ public class SignUpActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            UserProfile.setEmail(temail, SignUpActivity.this);
             Intent i = new Intent(SignUpActivity.this, CategoryActivity.class);
             startActivity(i);
             finish();

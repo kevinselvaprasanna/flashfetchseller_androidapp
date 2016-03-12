@@ -30,5 +30,6 @@
     <string name="action3">Action 3</string>
     <string name="action4">Action 4</string>
     <string name="action5">Action 5</string>
+    <string name="title_activity_start">StartActivity</string>
 
 </resources>

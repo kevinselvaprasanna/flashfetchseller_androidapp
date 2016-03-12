@@ -60,8 +60,19 @@ public class IE_GCMListenerService extends GcmListenerService{
             cv.put("imgurl", data.getString("imgurl"));
             cv.put("price", data.getString("price"));
             //cv.put("price", Integer.parseInt(data.getString("price")));
-           // cv.put("time", Long.parseLong(data.getString("time")));
+            cv.put("time", Long.parseLong(data.getString("time")));
             cv.put("id",data.getString("id"));
+            if(data.getString("quoted").equals("1")) {
+                cv.put("quoted", 1);
+                cv.put("qprice",Long.parseLong(data.getString("type")));
+                cv.put("type",Integer.parseInt(data.getString("type")));
+                cv.put("deltype",Integer.parseInt(data.getString("deltype")));
+                cv.put("comment",data.getString("comment"));
+                cv.put("cuscon",Integer.parseInt(data.getString("cuscon")));
+            }
+            else {
+                cv.put("quoted", 0);
+            }
             DatabaseHelper dh = new DatabaseHelper(this);
             dh.addNot(cv);
         //} catch (JSONException e) {

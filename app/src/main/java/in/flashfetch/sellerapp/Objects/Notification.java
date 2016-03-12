@@ -19,11 +19,11 @@ public class Notification {
     public String name,imgurl,price;
     public long time,qprice;
     public String  id,comment;
-    Boolean qouted=false,type,deltype,cuscon,selcon;
+    Boolean quoted=false,type,deltype,cuscon,selcon;
 
 
 
-    public Notification(JSONObject not) {
+   /* public Notification(JSONObject not) {
         try {
             //this.email = not.getString("email");
             this.price = not.getString("price");
@@ -35,8 +35,8 @@ public class Notification {
             e.printStackTrace();
         }
     }
-
-    public Notification(JSONObject not, Boolean qouted) {
+*/
+    /*public Notification(JSONObject not, Boolean qouted) {
         try {
             //this.email = not.getString("email");
             this.price = not.getString("price");
@@ -48,9 +48,9 @@ public class Notification {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public static String[] columns = {"id", "name", "imgurl", "price", "time","qouted","qprice","type","deltype","comment","cuscon","selcon"};
+    public static String[] columns = {"id", "name", "imgurl", "price", "time","quoted","qprice","type","deltype","comment","cuscon","selcon"};
     public static String TABLE_NAME = "Notifications";
 
     /*public Notification(String id, String name, String imgurl, String price ,Long time) {
@@ -67,7 +67,7 @@ public class Notification {
         this.imgurl = imgurl;
         this.price = price;
         this.time = time;
-        this.qouted = quoted;
+        this.quoted = quoted;
         this.qprice = qprice;
         this.type = type;
         this.deltype = deltype;
@@ -86,7 +86,7 @@ public class Notification {
     }
 
     public static Notification parseNot(Cursor c) {
-        Notification not = new Notification(c.getString(0), c.getString(1), c.getString(2), c.getString(3),c.getLong(4),c.getInt(5) >0, c.getLong(6),c.getInt(7) > 0, c.getInt(8)>0,c.getString(9),c.getInt(10) >0, c.getInt(11)>0);
+        Notification not = new Notification(c.getString(0), c.getString(1), c.getString(2), c.getString(3),c.getLong(4),c.getInt(5)==1, c.getLong(6),c.getInt(7)== 1, c.getInt(8)==1,c.getString(9),c.getInt(10)==1, c.getInt(11)==1);
         return not;
     }
 
@@ -98,5 +98,13 @@ public class Notification {
     public static ArrayList<Notification> getAllNotifications(Context context){
         DatabaseHelper data = new DatabaseHelper(context);
         return data.getAllNotifications();
+    }
+    public static ArrayList<Notification> getQNotifications(Context context){
+        DatabaseHelper data = new DatabaseHelper(context);
+        return data.getQNotifications();
+    }
+    public static ArrayList<Notification> getANotifications(Context context){
+        DatabaseHelper data = new DatabaseHelper(context);
+        return data.getANotifications();
     }
 }
