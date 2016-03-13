@@ -174,7 +174,6 @@
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
 
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -202,28 +201,32 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:layout_margin="0dp">
+            android:padding="1dp"
+            android:layout_margin="0dp"
+            android:background="@color/ff_black">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Same"
                 android:id="@+id/same"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:background="#fff"
+                android:layout_marginRight="1dp" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Similar"
                 android:id="@+id/similar"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:background="#fff" />
         </LinearLayout>
 
         <TextView
@@ -240,26 +243,32 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:layout_margin="5dp">
+            android:padding="1dp"
+            android:layout_margin="0dp"
+            android:background="@color/ff_black">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Home Delivery"
                 android:id="@+id/home_del"
                 android:layout_weight="1"
-                android:gravity="center_horizontal" />
+                android:gravity="center_horizontal"
+                android:background="#fff"
+                android:layout_marginRight="1dp"
+                android:padding="5dp" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Visit Shop"
                 android:id="@+id/shop_vis"
                 android:layout_weight="1"
-                android:gravity="center_horizontal" />
+                android:gravity="center_horizontal"
+                android:background="#fff"
+                android:padding="5dp" />
         </LinearLayout>
 
         <TextView
@@ -267,14 +276,14 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Upload image"
-            android:id="@+id/up_img_text"
+            android:id="@+id/textView8"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/uploadimg" />
+            android:id="@+id/imageView3" />
 
         <EditText
             android:layout_width="match_parent"
@@ -289,7 +298,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
-            android:id="@+id/submit"
+            android:id="@+id/button"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp" />
 
