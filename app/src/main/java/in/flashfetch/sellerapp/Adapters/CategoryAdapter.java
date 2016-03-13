@@ -54,8 +54,9 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
         final String childText = (String) getChild(groupPosition, childPosition);
 
-        font = Typeface.createFromAsset(context.getAssets(),
-                "fonts/Lato-Medium.ttf");
+
+       /* font = Typeface.createFromAsset(context.getAssets(),
+                "fonts/Lato-Medium.ttf");*/
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context

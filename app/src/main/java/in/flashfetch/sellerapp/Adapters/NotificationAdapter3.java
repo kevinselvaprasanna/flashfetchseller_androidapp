@@ -41,9 +41,9 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
     */
 
 
-    public NotificationAdapter3(Context context, int LayoutSelect) {
+    public NotificationAdapter3(Context context, int LayoutSelect, ArrayList<Notification> items) {
         mContext = context;
-        //mItems = items;
+        mItems = items;
         LayoutSelector = LayoutSelect;
     }
 
@@ -90,7 +90,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         //TODO: Set typeface for text
         //th = new TimeHelper();
 
-        holder.name.setText("Name");
+        holder.name.setText(mItems.get(position).name);
         holder.name.setTypeface(font);
         holder.price_final.setTypeface(font);
         holder.price_final.setText("Final price");
@@ -136,7 +136,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
 
     @Override
     public int getItemCount() {
-        return 5;//mItems.size();
+        return mItems.size();
     }
 }
 

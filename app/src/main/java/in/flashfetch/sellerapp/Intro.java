@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import in.flashfetch.sellerapp.Objects.UserProfile;
+
 /**
  * Created by SAM10795 on 25-01-2016.
  */
@@ -27,13 +29,25 @@ public class Intro extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(UserProfile.getEmail(Intro.this)!="")
+        {
+            Intent i =new Intent(Intro.this,MainActivity.class);
+            startActivity(i);
+            finish();
+            /*if (checkPlayServices()) {
+                // Start IntentService to register this application with GCM.
+                Intent intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
+                startService(intent);
+            }
+            finish();*/
+        }
         setContentView(R.layout.introscreens);
         viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper);
         Button button = (Button)findViewById(R.id.get_start);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intro.this,SignUpActivity.class);
+                Intent intent = new Intent(Intro.this,StartActivity.class);
                 startActivity(intent);
             }
         });

@@ -104,7 +104,7 @@ public class Accepted extends Fragment {
         //nots = Notification.getAllNotifications(mContext);
 
         //initialize events feed adapter
-        NotificationAdapter3 notsAdapter = new NotificationAdapter3(mContext,3);
+        NotificationAdapter3 notsAdapter = new NotificationAdapter3(mContext,3,Notification.getANotifications(mContext));
 
         //Use the events feed adapter
         rvNot.setAdapter(notsAdapter);

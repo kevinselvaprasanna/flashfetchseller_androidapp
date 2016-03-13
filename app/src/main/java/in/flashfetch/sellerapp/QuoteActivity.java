@@ -1,6 +1,7 @@
 package in.flashfetch.sellerapp;
 
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.AppBarLayout;
@@ -10,13 +11,23 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.Objects.UserProfile;
 
 public class QuoteActivity extends AppCompatActivity {
 
@@ -25,24 +36,29 @@ public class QuoteActivity extends AppCompatActivity {
     Button submit;
     EditText comnts,price_quote;
     ImageView upimg;
-    Boolean sameprod=true,homedel=true;
-    TextView uplimg,name,price,buyer_name,buyer_location,timer,same,similar,home_del,shop_vis,more_deals,quote_now;
+    QuoteTask qt;
+    int deltype,type;
+    int price;
+    String comment,qprice,id;
+    TextView uplimg,name,tprice,buyer_name,buyer_location,timer,same,similar,home_del,shop_vis,tv8,more_deals,quote_now;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quote);
-
-        name = (TextView)findViewById(R.id.name);   //Retrieved Name of product
-        name.setText("Product Name: Name Surname");
-        price = (TextView)findViewById(R.id.price_product);  //Retrieved price of product
-        price.setText("Price: Rs. XYZ");
+        Bundle bundle = getIntent().getExtras();
+        id = bundle.getString("id");
+        ArrayList<Notification> mItem =  Notification.getNotification(this, id);
+        name = (TextView)findViewById(R.id.name);   //Name of product
+        name.setText(mItem.get(0).name);
+        tprice = (TextView)findViewById(R.id.price_product);  //Retrieved price of product
+        tprice.setText(mItem.get(0).price);
         buyer_name = (TextView)findViewById(R.id.buyer_name);
-        buyer_name.setText("Buyer: Some Buyer");
+        buyer_name.setText(mItem.get(0).buyer_name);
         buyer_location = (TextView)findViewById(R.id.buyer_location);
-        buyer_location.setText("Location: GPS Coordinates");
+        buyer_location.setText(mItem.get(0).loc);
         timer = (TextView)findViewById(R.id.timer);
-        CountDownTimer countDownTimer = new CountDownTimer(30000,1000) {    //30000->30s, time of timer 1000->1s, time of update
+        CountDownTimer countDownTimer = new CountDownTimer(mItem.get(0).time - System.currentTimeMillis(),1000) {    //30000->30s, time of timer 1000->1s, time of update
             @Override
             public void onTick(long millisUntilFinished) {
                 timer.setText(String.valueOf(millisUntilFinished/1000));
@@ -50,37 +66,28 @@ public class QuoteActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                // Do stuff if it overshoots
+                timer.setText("Expired");
             }
         };
         more_deals = (TextView)findViewById(R.id.deals_more); //Go Back
 
         submit = (Button)findViewById(R.id.submit);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(validate())
-                {
-                    //Carry over data to provided page
-                }
-            }
-        });
 
         comnts = (EditText)findViewById(R.id.Comments);
 
-        upimg = (ImageView)findViewById(R.id.upimg);
-        uplimg = (TextView)findViewById(R.id.uplimg);
-
+      /*  upimg = (ImageView)findViewById(R.id.uploadimg);
+        uplimg = (TextView)findViewById(R.id.up_img_text);
+*/
 
         home_del = (TextView)findViewById(R.id.home_del);
         shop_vis = (TextView)findViewById(R.id.shop_vis);
-        home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));//homedel is default
-        shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
         home_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homedel = true;
                 home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+                shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                deltype =0;
+
                 shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 //Home del selected
             }
@@ -88,32 +95,30 @@ public class QuoteActivity extends AppCompatActivity {
         shop_vis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homedel = false;
                 home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+                deltype =1;
                 //Shop vis selected
             }
         });
 
         same = (TextView)findViewById(R.id.same);
         similar = (TextView)findViewById(R.id.similar);
-        same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));//same is default
-        similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
         same.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sameprod = true;
                 same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-                similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
+                similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                type =0;
                 //same selected
             }
         });
         similar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sameprod = false;
                 same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+                type =1;
                 //similar selected
             }
         });
@@ -162,23 +167,50 @@ public class QuoteActivity extends AppCompatActivity {
                 imflipper.setOutAnimation(QuoteActivity.this, R.anim.left_out);
             }
         });
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qt = new QuoteTask();
+                qt.execute();
+
+            }
+        });
 
     }
+    public class QuoteTask extends AsyncTask<Void, Void, Boolean> {
+        QuoteTask(){
 
-    private boolean validate()
-    {
-        if(price_quote.getText().toString().isEmpty())
-        {
-            Toast.makeText(this,"Enter a price",Toast.LENGTH_SHORT).show();
-            return false;
         }
-        if(upimg==null)
-        {
-            Toast.makeText(this,"Upload an image",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            qprice = price_quote.getText().toString();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            ArrayList<PostParam> instiPostParams = new ArrayList<PostParam>();
+            instiPostParams.add(new PostParam("type",String.valueOf(type)));
+            instiPostParams.add(new PostParam("deltype",String.valueOf(deltype)));
+            instiPostParams.add(new PostParam("comment",comment));
+            instiPostParams.add(new PostParam("qprice",qprice));
+            instiPostParams.add(new PostParam("id",id));
+            instiPostParams.add(new PostParam("email", UserProfile.getEmail(QuoteActivity.this)));
+            instiPostParams.add(new PostParam("token",UserProfile.getToken(QuoteActivity.this)));
+            JSONObject ResponseJSON = PostRequest.execute(URLConstants.URLSignup, instiPostParams, null);
+            Log.d("RESPONSE", ResponseJSON.toString());
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+        }
     }
+
 
 }

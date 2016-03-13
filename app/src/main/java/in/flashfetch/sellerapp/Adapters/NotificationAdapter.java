@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -109,26 +110,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 .centerCrop()
                 .into(holder.imageview);
         //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
-        holder.notsfeed.setOnClickListener(new View.OnClickListener() {
+        holder.quote.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-               /* AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Price");
-                builder.setMessage("Enter price that you want to bargain");
-                final EditText price = new EditText(mContext);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                price.setLayoutParams(lp);
-                builder.setView(price);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-                    }
-                });
-                builder.show();*/
-
+                Intent i = new Intent(mContext, QuoteActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", mItems.get(position).id);
+                i.putExtras(bundle);
+                mContext.startActivity(i);
             }
         });
 

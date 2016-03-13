@@ -41,12 +41,11 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
     */
 
 
-    public NotificationAdapter1(Context context, int LayoutSelect) {
+    public NotificationAdapter1(Context context, int LayoutSelect, ArrayList<Notification> items) {
         mContext = context;
-        //mItems = items;
+        mItems = items;
         LayoutSelector = LayoutSelect;
     }
-
     public static class ViewHolder extends NotificationAdapter.ViewHolder{
 
         TextView name,time_left,price,price_quoted,quoted,price_amount,decline;
@@ -91,13 +90,13 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
         //TODO: Set typeface for text
 
         //th = new TimeHelper();
-        holder.name.setText("Name");
+        holder.name.setText(mItems.get(position).name);
         holder.name.setTypeface(font);
-        holder.price.setText("Price");
+        holder.price.setText(mItems.get(position).price);
         holder.price.setTypeface(font);
-        holder.price_quoted.setText("Price_Offered");
+        holder.price_quoted.setText(String.valueOf(mItems.get(position).qprice));
         holder.price_quoted.setTypeface(font);
-        holder.time_left.setText("Time_Left");
+        holder.time_left.setText(String.valueOf(System.currentTimeMillis()-mItems.get(position).time));
         holder.time_left.setTypeface(font);
         holder.quoted.setTypeface(font);
         holder.price_amount.setTypeface(font);
@@ -133,6 +132,6 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
 
     @Override
     public int getItemCount() {
-        return 5;//mItems.size();
+        return mItems.size();
     }
 }
