@@ -43,7 +43,7 @@
                 android:layout_height="500dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_menu_send"
+                android:src="@drawable/ic_media_route_on_mono_dark"
                 app:layout_collapseMode="parallax" />
 
                 <ImageView
