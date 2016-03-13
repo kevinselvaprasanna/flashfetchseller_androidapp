@@ -10,4 +10,6 @@ public class URLConstants {
     public static String URLLogin = SERVER + "login/";
     public static String URLCategory = SERVER + "category/";
     public static String URLGCM_Register = SERVER + "gcmid/";
+    public static String URL_Quote = SERVER + "s2c/";
+
 }

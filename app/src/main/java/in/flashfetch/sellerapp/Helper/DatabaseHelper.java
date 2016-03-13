@@ -64,14 +64,18 @@ public class DatabaseHelper {
     }
 
     public long addNot(ContentValues cv) {
-        open();
         if(getNotification(cv.getAsString("id")).size() > 0){
             updateNot(cv.getAsString("id"),cv);
+            close();
+            return cv.getAsLong("id");
         }
-        long id = ourDatabase.insert(Notification.TABLE_NAME, null, cv);
-        Log.d("dmydb","NOTIFICATION ADDED");
-        close();
-        return id;
+        else {
+            open();
+            long id = ourDatabase.insert(Notification.TABLE_NAME, null, cv);
+            Log.d("dmydb", "NOTIFICATION ADDED");
+            return id;
+        }
+
     }
 
     public void updateNot(String id,ContentValues cv){
