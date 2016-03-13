@@ -276,14 +276,14 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Upload image"
-            android:id="@+id/textView8"
+            android:id="@+id/uplimg"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView3" />
+            android:id="@+id/upimg" />
 
         <EditText
             android:layout_width="match_parent"

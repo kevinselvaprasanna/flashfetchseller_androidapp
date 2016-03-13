@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class QuoteActivity extends AppCompatActivity {
@@ -24,14 +25,15 @@ public class QuoteActivity extends AppCompatActivity {
     Button submit;
     EditText comnts,price_quote;
     ImageView upimg;
-    TextView uplimg,name,price,buyer_name,buyer_location,timer,ptype,same,similar,deltype,home_del,shop_vis,comments,tv8,more_deals,quote_now;
+    Boolean sameprod=true,homedel=true;
+    TextView uplimg,name,price,buyer_name,buyer_location,timer,same,similar,home_del,shop_vis,more_deals,quote_now;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quote);
 
-        name = (TextView)findViewById(R.id.name);   //Name of product
+        name = (TextView)findViewById(R.id.name);   //Retrieved Name of product
         name.setText("Product Name: Name Surname");
         price = (TextView)findViewById(R.id.price_product);  //Retrieved price of product
         price.setText("Price: Rs. XYZ");
@@ -57,21 +59,27 @@ public class QuoteActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Carry over data to provided page
+                if(validate())
+                {
+                    //Carry over data to provided page
+                }
             }
         });
 
         comnts = (EditText)findViewById(R.id.Comments);
 
-        upimg = (ImageView)findViewById(R.id.uploadimg);
-        uplimg = (TextView)findViewById(R.id.up_img_text);
+        upimg = (ImageView)findViewById(R.id.upimg);
+        uplimg = (TextView)findViewById(R.id.uplimg);
 
 
         home_del = (TextView)findViewById(R.id.home_del);
         shop_vis = (TextView)findViewById(R.id.shop_vis);
+        home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));//homedel is default
+        shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
         home_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                homedel = true;
                 home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
                 shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 //Home del selected
@@ -80,6 +88,7 @@ public class QuoteActivity extends AppCompatActivity {
         shop_vis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                homedel = false;
                 home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
                 //Shop vis selected
@@ -88,9 +97,12 @@ public class QuoteActivity extends AppCompatActivity {
 
         same = (TextView)findViewById(R.id.same);
         similar = (TextView)findViewById(R.id.similar);
+        same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));//same is default
+        similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
         same.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sameprod = true;
                 same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
                 similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 //same selected
@@ -99,6 +111,7 @@ public class QuoteActivity extends AppCompatActivity {
         similar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sameprod = false;
                 same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
                 similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
                 //similar selected
@@ -149,6 +162,22 @@ public class QuoteActivity extends AppCompatActivity {
                 imflipper.setOutAnimation(QuoteActivity.this, R.anim.left_out);
             }
         });
+
+    }
+
+    private boolean validate()
+    {
+        if(price_quote.getText().toString().isEmpty())
+        {
+            Toast.makeText(this,"Enter a price",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(upimg==null)
+        {
+            Toast.makeText(this,"Upload an image",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
 
     }
 

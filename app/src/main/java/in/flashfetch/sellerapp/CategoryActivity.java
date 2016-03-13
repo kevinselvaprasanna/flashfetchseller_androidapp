@@ -30,12 +30,21 @@ import java.util.StringTokenizer;
 
 public class CategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-    CheckBox cmobiles,claptops, ctablets;
     Boolean mobiles, laptops, tablets;
     Button submit;
     CategoryAdapter categoryAdapter;
     Typeface font;
     ProgressBar progressBar;
+    int product = 1;
+    int[] aud = {29,31,37,41,43};
+    int[] book = {47,53,59,61,67,71};
+    int[] compi = {73,79,83,89,97,101,103,107};
+    int[] cami = {109,113,127,131};
+    int[] gami = {137,139,149};
+    int[] mobi = {151,157,163,167,173,179,181,191,193,197,199,211,223,227};
+    int[] musi = {229,233,239,241,251,257,263,269,271,277,281,283};
+    int[] spo = {293,307,311,313,317,331,337,347,349,353};
+    int[] watc = {359,367,373};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +58,7 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         List<String> books = Arrays.asList("All books","Bestseller","Literature & Fiction","Children's & Young Adult","Textbooks","Exam Related books");
         List<String> comp = Arrays.asList("Laptops","Desktops & Monitors", "Pen Drives", "Hard Drives","Memory Cards",
                 "Printers & Ink","Networking & Internet Devices","Computer Accessories");
-        List<String> cam = Arrays.asList("Digital SLRs","Point & Shoot Cameras","Lenses","Camera Accessories");
+        final List<String> cam = Arrays.asList("Digital SLRs","Point & Shoot Cameras","Lenses","Camera Accessories");
         List<String> game = Arrays.asList("PC Games","Consoles","Accessories");
         List<String> mob = Arrays.asList("All Mobile Phones","Smartphones","Android Mobiles","Windows Mobiles"
                 ,"All Mobile Accessories","Cases & Covers","Screen Protectors","Power Banks","On the go Pendrives");
@@ -88,10 +97,10 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         compcheck = populate(comp,compcheck);
         camcheck = populate(cam,camcheck);
         gamecheck = populate(game,gamecheck);
-        mobcheck = populate(comp,mobcheck);
+        mobcheck = populate(mob,mobcheck);
         musicheck = populate(music,musicheck);
-        sportcheck = populate(comp,sportcheck);
-        watcheck = populate(comp,watcheck);
+        sportcheck = populate(sports,sportcheck);
+        watcheck = populate(watches,watcheck);
 
         subcheck.put(headers.get(0),avcheck);
         subcheck.put(headers.get(1),bookcheck);
@@ -113,6 +122,28 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 subcheck.get(headers.get(groupPosition)).set(childPosition,!subcheck.get(headers.get(groupPosition)).get(childPosition));
                 categoryAdapter.notifyDataSetChanged();
+                switch (groupPosition)
+                {
+                    case 0:
+                        product = product*aud[childPosition];
+                    case 1:
+                        product = product*book[childPosition];
+                    case 2:
+                        product = product*compi[childPosition];
+                    case 3:
+                        product = product*cami[childPosition];
+                    case 4:
+                        product = product*gami[childPosition];
+                    case 5:
+                        product = product*mobi[childPosition];
+                    case 6:
+                        product = product*musi[childPosition];
+                    case 7:
+                        product = product*spo[childPosition];
+                    case 8:
+                        product = product*watc[childPosition];
+                }
+                //use product
                 return true;
             }
         });
