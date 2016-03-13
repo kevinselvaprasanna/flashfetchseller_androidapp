@@ -94,6 +94,7 @@ public class IE_RegistrationIntentService extends IntentService {
         PostParam postgcmid = new PostParam("gcmid",freshtoken);
         PostParams.add(postemail);
         PostParams.add(postgcmid);
+        PostParams.add(new PostParam("token",UserProfile.getToken(IE_RegistrationIntentService.this)));
 
         JSONObject ResponseJSON = PostRequest.execute(URLConstants.URLGCM_Register, PostParams, null);
         Log.d("RESPONSE",ResponseJSON.toString());

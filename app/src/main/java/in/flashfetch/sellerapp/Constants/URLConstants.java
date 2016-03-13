@@ -4,8 +4,10 @@ package in.flashfetch.sellerapp.Constants;
  * Created by kevinselvaprasanna on 25/12/15.
  */
 public class URLConstants {
-    public static String SERVER = "http://192.168.43.66/";
-    public static String URLSignup = SERVER + "signup.php";
-    public static String URLCategory = SERVER + "category_preferences.php";
-    public static String URLGCM_Register = "http://www.flashfetch.in/temp/gcmid.php";
+    public static String SERVER = "http://ec2-54-169-112-228.ap-southeast-1.compute.amazonaws.com/";
+    //public static String SERVER = "http://10.42.0.1/";
+    public static String URLSignup = SERVER + "signup/";
+    public static String URLLogin = SERVER + "login/";
+    public static String URLCategory = SERVER + "category/";
+    public static String URLGCM_Register = SERVER + "gcmid/";
 }

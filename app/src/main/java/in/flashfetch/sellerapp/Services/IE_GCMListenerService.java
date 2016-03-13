@@ -59,6 +59,8 @@ public class IE_GCMListenerService extends GcmListenerService{
             cv.put("name", data.getString("name"));
             cv.put("imgurl", data.getString("imgurl"));
             cv.put("price", data.getString("price"));
+            cv.put("loc",data.getString("loc"));
+            cv.put("buyer_name",data.getString("buyer_name"));
             //cv.put("price", Integer.parseInt(data.getString("price")));
             cv.put("time", Long.parseLong(data.getString("time")));
             cv.put("id",data.getString("id"));

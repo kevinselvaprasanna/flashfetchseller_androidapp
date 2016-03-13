@@ -87,7 +87,7 @@ public class Provided extends Fragment {
 
         LinearLayoutManager layoutManager;
         RecyclerView rvNot;
-        ArrayList<Notification> nots;
+        //ArrayList<Notification> nots;
 
 
         rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);

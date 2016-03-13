@@ -38,11 +38,13 @@ public class SignUpActivity extends AppCompatActivity {
     Typeface font;
     int PLACE_PICKER_REQUEST = 1;
     ProgressBar signupprogress;
+    String toastMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -71,9 +73,6 @@ public class SignUpActivity extends AppCompatActivity {
         shop_telephone = (EditText)findViewById(R.id.telephone);
         address1 = (EditText)findViewById(R.id.add_1);
         address2 = (EditText)findViewById(R.id.add_2);
-
-
-
         /*
         city = (EditText)findViewById(R.id.city);
         postal_code = (EditText)findViewById(R.id.postal_code);
@@ -137,7 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
+                toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
             }
         }
@@ -221,6 +220,7 @@ public class SignUpActivity extends AppCompatActivity {
         JSONObject ResponseJSON;
         String tname = name.getText().toString();
         String temail = email.getText().toString();
+        String phone1 = phone.getText().toString();
         String tsname = shop_name.getText().toString();
         String tsid = shop_id.getText().toString();
         String tstelph = shop_telephone.getText().toString();
@@ -246,6 +246,15 @@ public class SignUpActivity extends AppCompatActivity {
                 instiPostParams.add(postUser);
                 instiPostParams.add(postEmail);
                 instiPostParams.add(postPass);
+                instiPostParams.add(new PostParam("mobile",phone1));
+                instiPostParams.add(new PostParam("pass",tpassword));
+            instiPostParams.add(new PostParam("shopname",tsname));
+            instiPostParams.add(new PostParam("address1",tshadd1));
+            instiPostParams.add(new PostParam("address2",tshadd2));
+            instiPostParams.add(new PostParam("sid",tsid));
+            instiPostParams.add(new PostParam("office",tstelph));
+            instiPostParams.add(new PostParam("sel_loc",toastMsg));
+
 
                 ResponseJSON = PostRequest.execute(URLConstants.URLSignup, instiPostParams, null);
                 Log.d("RESPONSE", ResponseJSON.toString());
@@ -256,19 +265,23 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             //tvv.setText(ResponseJSON.toString());
+            super.onPostExecute(aVoid);
             try {
-                if(ResponseJSON.getInt("status")/100==2){
+                if(ResponseJSON.getJSONObject("data").getInt("result")==1){
                     UserProfile.setName(tname,SignUpActivity.this);
-                    UserProfile.setEmail(temail,SignUpActivity.this);
+                    UserProfile.setEmail(temail, SignUpActivity.this);
+                    UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"),SignUpActivity.this);
+                    Intent i = new Intent(SignUpActivity.this, CategoryActivity.class);
+                    startActivity(i);
+                    finish();
+                }else{
+                    Toast.makeText(SignUpActivity.this,"Server is not working",Toast.LENGTH_LONG);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            UserProfile.setEmail(temail, SignUpActivity.this);
-            Intent i = new Intent(SignUpActivity.this, CategoryActivity.class);
-            startActivity(i);
-            finish();
-            super.onPostExecute(aVoid);
+
+
         }
 
     }

@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import in.flashfetch.sellerapp.Adapters.CategoryAdapter;
 import in.flashfetch.sellerapp.Constants.URLConstants;
@@ -19,6 +20,7 @@ import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -31,9 +33,11 @@ import java.util.StringTokenizer;
 public class CategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     CheckBox cmobiles,claptops, ctablets;
+    JSONObject ResponseJSON;
     Boolean mobiles, laptops, tablets;
     Button submit;
     CategoryAdapter categoryAdapter;
+    int category=30;
     Typeface font;
     ProgressBar progressBar;
     @Override
@@ -143,12 +147,14 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate(subcheck)) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    submit.setVisibility(View.GONE);
-                    Submit submittask = new Submit();
-                    submittask.execute();
-                }
+                //if(validate(subcheck)) {
+                if (true) {
+                progressBar.setVisibility(View.VISIBLE);
+                submit.setVisibility(View.GONE);
+                Submit submittask = new Submit();
+                submittask.execute();
+                    Log.d("hi","hi");
+            }
             }
         });
 
@@ -212,25 +218,37 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
 
             ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
             PostParam postemail = new PostParam("email", UserProfile.getEmail(CategoryActivity.this));
-            PostParam postmobiles = new PostParam("mobiles", mobiles.toString());
+          /*  PostParam postmobiles = new PostParam("mobiles", mobiles.toString());
             PostParam postlaptops = new PostParam("laptops", laptops.toString());
-            PostParam posttablets = new PostParam("tablets", tablets.toString());
+            PostParam posttablets = new PostParam("tablets", tablets.toString());*/
             PostParams.add(postemail);
-            PostParams.add(postmobiles);
+            PostParams.add(new PostParam("token", UserProfile.getToken(CategoryActivity.this)));
+            PostParams.add(new PostParam("category", String.valueOf(category)));
+           /* PostParams.add(postmobiles);
             PostParams.add(postlaptops);
-            PostParams.add(posttablets);
+            PostParams.add(posttablets);*/
 
-            JSONObject ResponseJSON = PostRequest.execute(URLConstants.URLCategory, PostParams, null);
+            ResponseJSON = PostRequest.execute(URLConstants.URLCategory, PostParams, null);
             Log.d("RESPONSE",ResponseJSON.toString());
+
 
             return null;
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            Intent i = new Intent(CategoryActivity.this, MainActivity.class);
-            startActivity(i);
-            finish();
             super.onPostExecute(aVoid);
+            try {
+                if(ResponseJSON.getJSONObject("data").getInt("result")==1){
+                    Intent i = new Intent(CategoryActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                }else{
+                    Toast.makeText(CategoryActivity.this, "Server is not working", Toast.LENGTH_LONG);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
