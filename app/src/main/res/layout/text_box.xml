@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Thank you for registering with us. Buyers coming soon"
-        android:id="@+id/textView6"
+        android:id="@+id/box"
         android:layout_gravity="center"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"

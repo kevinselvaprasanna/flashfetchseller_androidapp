@@ -22,7 +22,7 @@
             android:layout_height="0dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Update getting ready soon"
-            android:id="@+id/textView17"
+            android:id="@+id/finalbox"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical|center_horizontal"
             android:layout_weight="3" />
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="Update"
-            android:id="@+id/button2"
+            android:id="@+id/update"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical|center_horizontal"
             android:layout_weight="1"
