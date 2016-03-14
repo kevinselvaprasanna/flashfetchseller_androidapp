@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,6 +21,24 @@ public class Empty_2 extends AppCompatActivity {
         hour = (TextView)findViewById(R.id.hr);
         min = (TextView)findViewById(R.id.min);
         sec = (TextView)findViewById(R.id.sec);
+
+        final CountDownTimer countDownTimer = new CountDownTimer(186400000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                day.setText(millisUntilFinished/86400000+"");
+                millisUntilFinished = millisUntilFinished%86400000;
+                hour.setText(millisUntilFinished/3600000+"");
+                millisUntilFinished = millisUntilFinished%3600000;
+                hour.setText(millisUntilFinished/60000+"");
+                millisUntilFinished = millisUntilFinished%60000;
+                hour.setText(millisUntilFinished/1000+"");
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
     }
 
 
