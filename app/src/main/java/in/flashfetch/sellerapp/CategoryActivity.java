@@ -253,7 +253,7 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
             ArrayList<PostParam> instiPostParams = new ArrayList<PostParam>();
             instiPostParams.add(new PostParam("token",UserProfile.getToken(CategoryActivity.this)));
             instiPostParams.add(new PostParam("email",UserProfile.getEmail(CategoryActivity.this)));
-            instiPostParams.add(new PostParam("category",String.valueOf(category)));
+            instiPostParams.add(new PostParam("category",String.valueOf(product)));
 
 
             ResponseJSON = PostRequest.execute(URLConstants.URLCategory, instiPostParams, null);

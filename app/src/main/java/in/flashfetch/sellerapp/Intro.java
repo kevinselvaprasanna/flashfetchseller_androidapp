@@ -59,7 +59,6 @@ public class Intro extends Activity{
         setContentView(R.layout.introscreens);
         checkPlayServices();
 
-
         setContentView(R.layout.intro_screens);
         thumb1 = (ImageView)findViewById(R.id.view_screen_1);
         thumb2 = (ImageView)findViewById(R.id.view_screen_2);
