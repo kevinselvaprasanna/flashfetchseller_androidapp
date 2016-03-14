@@ -181,12 +181,13 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // if(validate(subcheck)) {
+               if(validate(categoryAdapter.getChecks())) {
                     progressBar.setVisibility(View.VISIBLE);
                     submit.setVisibility(View.GONE);
                     Submit submittask = new Submit();
                     submittask.execute();
-               // }
+                   Log.i("Product",product+"");
+               }
             }
         });
 

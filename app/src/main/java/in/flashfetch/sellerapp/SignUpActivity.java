@@ -124,10 +124,10 @@ public class SignUpActivity extends AppCompatActivity {
                 if(validate2()) {
                     signupprogress.setVisibility(View.VISIBLE);
                     viewFlipper.setVisibility(View.GONE);
-                    Signup signuptask = new Signup();
-                    signuptask.execute();
-                   /* Intent intent = new Intent(SignUpActivity.this, CategoryActivity.class);
-                    startActivity(intent);*/
+                    //Signup signuptask = new Signup();
+                    //signuptask.execute();
+                   Intent intent = new Intent(SignUpActivity.this, CategoryActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -153,6 +153,11 @@ public class SignUpActivity extends AppCompatActivity {
         if(isempty(email))
         {
             Toast.makeText(this,"Email cannot be empty",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(!(email.getText().toString().contains(".")&&email.getText().toString().contains(".")))
+        {
+            Toast.makeText(this,"Invalid Email",Toast.LENGTH_SHORT).show();
             return false;
         }
         if(isempty(phone))

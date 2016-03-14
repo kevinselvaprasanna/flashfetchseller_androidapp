@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Flashfetch_seller</string>
+    <string name="app_name">Flashfetch Seller</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -13,10 +13,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_sign_up">SignUpActivity</string>
-    <string name="title_activity_start">Start</string>
+    <string name="title_activity_sign_up">Flashfetch Seller</string>
+    <string name="title_activity_start">Flashfetch Seller</string>
 
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Flashfetch Seller</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -25,7 +25,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_quote">QuoteActivity</string>
+    <string name="title_activity_quote">Flashfetch Seller</string>
 
     <string name="action1">Contact Us</string>
     <string name="action2">Rate Us</string>
@@ -39,5 +39,6 @@
     <string name="notifalert">Notifications Alert</string>
     <string name="reqad">Request Ads</string>
     <string name="shopdet">Shop Details</string>
+    <string name="inven">Inventory</string>
 
 </resources>
