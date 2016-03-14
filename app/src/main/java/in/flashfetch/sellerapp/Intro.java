@@ -118,6 +118,7 @@ public class Intro extends Activity{
                     viewFlipper.setOutAnimation(Intro.this, R.anim.right_in);
                     viewFlipper.showNext();
                     flipcount++;
+                    flipcount = flipcount>3?3:flipcount;
                 } else {
                     if (viewFlipper.getDisplayedChild() == 0) {
 
@@ -126,7 +127,7 @@ public class Intro extends Activity{
                     viewFlipper.setOutAnimation(Intro.this, R.anim.left_in);
                     viewFlipper.showPrevious();
                     flipcount--;
-
+                    flipcount = flipcount<0?0:flipcount;
                 }
                 switch (flipcount)
                 {
