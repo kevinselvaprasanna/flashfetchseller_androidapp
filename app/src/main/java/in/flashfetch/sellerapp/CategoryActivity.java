@@ -19,6 +19,7 @@ import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -31,8 +32,10 @@ import java.util.StringTokenizer;
 public class CategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     Boolean mobiles, laptops, tablets;
+    JSONObject ResponseJSON;
     Button submit;
     CategoryAdapter categoryAdapter;
+    int category=30;
     Typeface font;
     ProgressBar progressBar;
     int product = 1;
@@ -174,12 +177,12 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate(subcheck)) {
+               // if(validate(subcheck)) {
                     progressBar.setVisibility(View.VISIBLE);
                     submit.setVisibility(View.GONE);
                     Submit submittask = new Submit();
                     submittask.execute();
-                }
+               // }
             }
         });
 
@@ -241,27 +244,30 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         @Override
         protected Void doInBackground(String... params) {
 
-            ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
-            PostParam postemail = new PostParam("email", UserProfile.getEmail(CategoryActivity.this));
-            PostParam postmobiles = new PostParam("mobiles", mobiles.toString());
-            PostParam postlaptops = new PostParam("laptops", laptops.toString());
-            PostParam posttablets = new PostParam("tablets", tablets.toString());
-            PostParams.add(postemail);
-            PostParams.add(postmobiles);
-            PostParams.add(postlaptops);
-            PostParams.add(posttablets);
+            ArrayList<PostParam> instiPostParams = new ArrayList<PostParam>();
+            instiPostParams.add(new PostParam("token",UserProfile.getToken(CategoryActivity.this)));
+            instiPostParams.add(new PostParam("email",UserProfile.getEmail(CategoryActivity.this)));
+            instiPostParams.add(new PostParam("category",String.valueOf(category)));
 
-            JSONObject ResponseJSON = PostRequest.execute(URLConstants.URLCategory, PostParams, null);
+
+            ResponseJSON = PostRequest.execute(URLConstants.URLCategory, instiPostParams, null);
             Log.d("RESPONSE",ResponseJSON.toString());
 
             return null;
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            Intent i = new Intent(CategoryActivity.this, MainActivity.class);
-            startActivity(i);
-            finish();
-            super.onPostExecute(aVoid);
+            try {
+                if(ResponseJSON.getJSONObject("data").getInt("result")==1) {
+                    super.onPostExecute(aVoid);
+                    UserProfile.setCategory(category,CategoryActivity.this);
+                    Intent i = new Intent(CategoryActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

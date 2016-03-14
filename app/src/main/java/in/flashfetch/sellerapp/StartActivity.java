@@ -17,6 +17,10 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            startActivity(new Intent(StartActivity.this,CategoryActivity.class));
+            finish();
+        }
         setContentView(R.layout.signup);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);

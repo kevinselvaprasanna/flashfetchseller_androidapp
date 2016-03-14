@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
 /**
@@ -23,6 +26,7 @@ import in.flashfetch.sellerapp.Objects.UserProfile;
 public class Intro extends Activity{
 
     ViewFlipper viewFlipper;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     Typeface font;
 
 
@@ -31,9 +35,17 @@ public class Intro extends Activity{
         super.onCreate(savedInstanceState);
         if(UserProfile.getEmail(Intro.this)!="")
         {
-            Intent i =new Intent(Intro.this,MainActivity.class);
-            startActivity(i);
-            finish();
+            checkPlayServices();
+            if(UserProfile.getCategory(Intro.this) ==1){
+                Intent i =new Intent(Intro.this,CategoryActivity.class);
+                startActivity(i);
+                finish();
+            }
+            else {
+                Intent i = new Intent(Intro.this, MainActivity.class);
+                startActivity(i);
+                finish();
+            }
             /*if (checkPlayServices()) {
                 // Start IntentService to register this application with GCM.
                 Intent intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
@@ -42,6 +54,8 @@ public class Intro extends Activity{
             finish();*/
         }
         setContentView(R.layout.introscreens);
+        checkPlayServices();
+
         viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper);
         Button button = (Button)findViewById(R.id.get_start);
         button.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +63,7 @@ public class Intro extends Activity{
             public void onClick(View v) {
                 Intent intent = new Intent(Intro.this,StartActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -61,7 +76,7 @@ public class Intro extends Activity{
             public boolean onTouch(View v, MotionEvent event) {
                 Point point = new Point();
                 getWindowManager().getDefaultDisplay().getSize(point);
-                float mid = (point.x)/2;
+                float mid = (point.x) / 2;
                 float current = event.getX();
                 Log.i("Pointer", Float.toString(current) + "-" + Float.toString(mid));
                 if (mid < current) {
@@ -83,6 +98,20 @@ public class Intro extends Activity{
                 return false;
             }
         });
+    }
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i("tag", "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }
 

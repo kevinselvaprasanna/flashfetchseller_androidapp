@@ -126,8 +126,8 @@ public class SignUpActivity extends AppCompatActivity {
                     viewFlipper.setVisibility(View.GONE);
                     Signup signuptask = new Signup();
                     signuptask.execute();
-                    Intent intent = new Intent(SignUpActivity.this, CategoryActivity.class);
-                    startActivity(intent);
+                   /* Intent intent = new Intent(SignUpActivity.this, CategoryActivity.class);
+                    startActivity(intent);*/
                 }
             }
         });
@@ -216,7 +216,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     class Signup extends AsyncTask<String, Void, Void> {
-        JSONObject data = new JSONObject();
+        //JSONObject data = new JSONObject();
         JSONObject ResponseJSON;
         String tname = name.getText().toString();
         String temail = email.getText().toString();
@@ -270,9 +270,11 @@ public class SignUpActivity extends AppCompatActivity {
                 if(ResponseJSON.getJSONObject("data").getInt("result")==1){
                     UserProfile.setName(tname,SignUpActivity.this);
                     UserProfile.setEmail(temail, SignUpActivity.this);
-                    UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"),SignUpActivity.this);
-                    Intent i = new Intent(SignUpActivity.this, CategoryActivity.class);
-                    startActivity(i);
+                    UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"), SignUpActivity.this);
+                    Intent intent = new Intent(SignUpActivity.this,StartActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("EXIT", true);
+                    startActivity(intent);
                     finish();
                 }else{
                     Toast.makeText(SignUpActivity.this,"Server is not working",Toast.LENGTH_LONG);
