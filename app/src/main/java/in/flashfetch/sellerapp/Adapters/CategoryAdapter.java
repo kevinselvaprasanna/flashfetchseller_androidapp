@@ -68,6 +68,15 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.subcat);
         CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
         checkBox.setChecked(checks.get(headcategory.get(groupPosition)).get(childPosition));
+        final int gp = groupPosition;
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Boolean> bools = checks.remove(headcategory.get(gp));
+                bools.set(childPosition,!bools.get(childPosition));
+                checks.put(headcategory.get(gp),bools);
+            }
+        });
 
         subcat.setText(childText);
         return convertView;
@@ -127,6 +136,10 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
+        return false;
+    }
+
+    public HashMap<String, List<Boolean>> getChecks() {
+        return checks;
     }
 }

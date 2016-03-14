@@ -174,10 +174,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-     /*   if (id == R.id.action_settings) {
+       if (id == R.id.contact) {
             return true;
-        }
-*/
+        }else if (id == R.id.rate) {
+
+       } else if (id == R.id.share) {
+
+       } else if (id == R.id.update) {
+
+       } else if (id == R.id.notifalert) {
+
+       }
         return super.onOptionsItemSelected(item);
     }
 
@@ -185,21 +192,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-      /*  int id = item.getItemId();
+        int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.account) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.helpimp) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.homepg) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.notif) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.reqad) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.shopdet) {
 
-        }*/
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -48,14 +48,17 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
     int[] musi = {229,233,239,241,251,257,263,269,271,277,281,283};
     int[] spo = {293,307,311,313,317,331,337,347,349,353};
     int[] watc = {359,367,373};
+
+    List<String> headers = Arrays.asList("Audio and Video","Books","Computers and Accessories","Cameras","Game and Accessories",
+            "Mobiles and Tablets","Musical Instruments","Sports, Fitness and Outdoors","Watches");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
-        final List<String> headers = Arrays.asList("Audio and Video","Books","Computers and Accessories","Cameras","Game and Accessories",
-                "Mobiles and Tablets","Musical Instruments","Sports, Fitness and Outdoors","Watches");
+
 
         List<String> av = Arrays.asList("Headphones","Speakers","Home Entertainment Systems","MP3 & Media Players","Audio & Video Accessories");
         List<String> books = Arrays.asList("All books","Bestseller","Literature & Fiction","Children's & Young Adult","Textbooks","Exam Related books");
@@ -120,11 +123,12 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
 
         ExpandableListView expandableListView = (ExpandableListView)findViewById(R.id.lvExp);
         expandableListView.setAdapter(categoryAdapter);
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        /*expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                subcheck.get(headers.get(groupPosition)).set(childPosition,!subcheck.get(headers.get(groupPosition)).get(childPosition));
-                categoryAdapter.notifyDataSetChanged();
+                Log.i("Click","Child");
+                Log.i("Product",product+"");
+
                 switch (groupPosition)
                 {
                     case 0:
@@ -199,17 +203,19 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
 
     private boolean validate(HashMap<String,List<Boolean>> check)
     {
-        boolean b = false;
-        Set<String> keys = check.keySet();
-        for(String key:keys)
-        {
-            List<Boolean> bools = check.get(key);
-            for(boolean b1:bools)
+        int product =1;
+        for(int i=0;i<headers.size();i++) {
+            List<Boolean> bools = check.get(headers.get(i));
+            for(int j=0;j<bools.size();j++)
             {
-                b = b||b1;
+                if(bools.get(j))
+                {
+                    product = product*product(i,j);
+                }
             }
         }
-        return b;
+        this.product = product;
+        return product>1;
     }
 
     @Override
@@ -268,6 +274,34 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public int product(int groupPosition,int childPosition)
+    {
+
+        switch (groupPosition)
+        {
+            case 0:
+                return aud[childPosition];
+            case 1:
+                return book[childPosition];
+            case 2:
+                return compi[childPosition];
+            case 3:
+                return cami[childPosition];
+            case 4:
+                return gami[childPosition];
+            case 5:
+                return mobi[childPosition];
+            case 6:
+                return musi[childPosition];
+            case 7:
+                return spo[childPosition];
+            case 8:
+                return watc[childPosition];
+            default:
+                return 1;
         }
     }
 
