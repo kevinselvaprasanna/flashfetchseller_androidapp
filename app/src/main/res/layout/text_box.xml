@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:drawable/sym_def_app_icon">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Thank you for registering with us. Buyers coming soon"
+        android:id="@+id/textView6"
+        android:layout_gravity="center"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginBottom="160dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:background="@color/ff_gray"
+        android:alpha="0.5" />
+</FrameLayout>
