@@ -29,9 +29,9 @@ public class Empty_2 extends AppCompatActivity {
                 millisUntilFinished = millisUntilFinished%86400000;
                 hour.setText(millisUntilFinished/3600000+"");
                 millisUntilFinished = millisUntilFinished%3600000;
-                hour.setText(millisUntilFinished/60000+"");
+                min.setText(millisUntilFinished/60000+"");
                 millisUntilFinished = millisUntilFinished%60000;
-                hour.setText(millisUntilFinished/1000+"");
+                sec.setText(millisUntilFinished/1000+"");
             }
 
             @Override
@@ -39,6 +39,8 @@ public class Empty_2 extends AppCompatActivity {
 
             }
         };
+
+        countDownTimer.start();
     }
 
 
