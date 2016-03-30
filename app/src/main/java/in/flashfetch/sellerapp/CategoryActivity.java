@@ -273,7 +273,7 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
                     super.onPostExecute(aVoid);
                     UserProfile.setCategory(category,CategoryActivity.this);
                     //Intent i = new Intent(CategoryActivity.this, MainActivity.class);
-                    Intent i = new Intent(CategoryActivity.this, Empty_1.class);
+                    Intent i = new Intent(CategoryActivity.this, MainActivity.class);
                     startActivity(i);
                     finish();
                 }else {
