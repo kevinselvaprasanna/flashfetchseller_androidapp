@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 
 public class UserProfile {
 
-    public static String name,email,token;
+    public static String name,email,token,text;
     public static int category;
 
     public static void setName(String name, Context context){
@@ -36,6 +36,26 @@ public class UserProfile {
         editor.commit();
     }
 
+    public static void setText(String text, Context context){
+        SharedPreferences preferences = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("text", text);
+        editor.commit();
+    }
+
+    public static void setCounter(int counter, Context context){
+        SharedPreferences preferences = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("counter", counter);
+        editor.commit();
+    }
+
+    public static void setUpdate(int update, Context context){
+        SharedPreferences preferences = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("update", update);
+        editor.commit();
+    }
 
 
     public static String getName(Context context) {
@@ -58,6 +78,20 @@ public class UserProfile {
         return pref.getInt("category", 1);
     }
 
+    public static String getText(Context context) {
+        SharedPreferences pref = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        return pref.getString("text", "Thank you for registering with us. Buyers coming soon");
+    }
+
+    public static int getCounter(Context context) {
+        SharedPreferences pref = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        return pref.getInt("counter", 0);
+    }
+
+    public static int getUpdate(Context context) {
+        SharedPreferences pref = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        return pref.getInt("update", 0);
+    }
 
 }
 

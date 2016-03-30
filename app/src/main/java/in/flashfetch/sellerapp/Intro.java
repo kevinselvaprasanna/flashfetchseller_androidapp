@@ -19,6 +19,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import in.flashfetch.sellerapp.Objects.UserProfile;
+import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 /**
  * Created by SAM10795 on 25-01-2016.
@@ -39,16 +40,32 @@ public class Intro extends Activity{
         if(UserProfile.getEmail(Intro.this)!="")
         {
             checkPlayServices();
+            Intent intent = new Intent(Intro.this, IE_RegistrationIntentService.class);
+            startService(intent);
             if(UserProfile.getCategory(Intro.this) ==1){
                 Intent i =new Intent(Intro.this,CategoryActivity.class);
                 startActivity(i);
                 finish();
             }
-            else {
+           else {
+                //    if(UserProfile.getCounter(Intro.this)==0 && UserProfile.getUpdate(Intro.this)==0) {
                 Intent i = new Intent(Intro.this, MainActivity.class);
                 startActivity(i);
                 finish();
             }
+          /*      }
+                else if(UserProfile.getUpdate(Intro.this)==1){
+                    Intent i = new Intent(Intro.this, Empty_3.class);
+                    startActivity(i);
+                    finish();
+                }
+                else if(UserProfile.getCounter(Intro.this)==1){
+                    Intent i = new Intent(Intro.this, Empty_2.class);
+                    startActivity(i);
+                    finish();
+                }
+
+            }*/
             /*if (checkPlayServices()) {
                 // Start IntentService to register this application with GCM.
                 Intent intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);

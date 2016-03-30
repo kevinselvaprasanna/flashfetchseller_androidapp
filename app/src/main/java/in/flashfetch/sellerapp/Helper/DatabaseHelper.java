@@ -91,9 +91,6 @@ public class DatabaseHelper {
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;
-        /*Notification not1 = new Notification("1232","dell laptop","",(long)1234,(long)32472367);
-        Notification not2 = new Notification("1232","dell laptop","",(long)1234,(long)32472367,true,(long)234,true,true,"sgsg",false,false);
-        ArrayList<Notification> arrayList = {not1,not2}*/
     }
 
     public ArrayList<Notification> getQNotifications () {

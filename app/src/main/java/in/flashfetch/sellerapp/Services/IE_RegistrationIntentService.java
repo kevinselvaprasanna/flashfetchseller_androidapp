@@ -56,7 +56,7 @@ public class IE_RegistrationIntentService extends IntentService {
                 // TODO: Implement this method to send any registration to your app's servers.
 
                 senttokentoserver = sharedPreferences.getBoolean("sentTokenToServer", false);
-                if((!token.equals(Old_ID))||(!senttokentoserver))
+//                if((!token.equals(Old_ID))||(!senttokentoserver))
                     sendRegistrationToServer(token);
 
                 // Subscribe to topic channels

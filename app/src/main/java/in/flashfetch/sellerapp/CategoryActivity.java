@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import in.flashfetch.sellerapp.Adapters.CategoryAdapter;
 import in.flashfetch.sellerapp.Constants.URLConstants;
@@ -38,7 +39,7 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
     int category=30;
     Typeface font;
     ProgressBar progressBar;
-    int product = 1;
+    long product = 1;
     int[] aud = {29,31,37,41,43};
     int[] book = {47,53,59,61,67,71};
     int[] compi = {73,79,83,89,97,101,103,107};
@@ -51,6 +52,7 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
 
     List<String> headers = Arrays.asList("Audio and Video","Books","Computers and Accessories","Cameras","Game and Accessories",
             "Mobiles and Tablets","Musical Instruments","Sports, Fitness and Outdoors","Watches");
+    int[] cat_head = {2319,23,29,31};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,11 +213,13 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
             {
                 if(bools.get(j))
                 {
-                    product = product*product(i,j);
+                    //product = product*product(i,j)*cat_head[i];
+                    product = product*cat_head[i];
                 }
             }
         }
         this.product = product;
+        Log.i("Product",product+"");
         return product>1;
     }
 
@@ -268,9 +272,14 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
                 if(ResponseJSON.getJSONObject("data").getInt("result")==1) {
                     super.onPostExecute(aVoid);
                     UserProfile.setCategory(category,CategoryActivity.this);
-                    Intent i = new Intent(CategoryActivity.this, MainActivity.class);
+                    //Intent i = new Intent(CategoryActivity.this, MainActivity.class);
+                    Intent i = new Intent(CategoryActivity.this, Empty_1.class);
                     startActivity(i);
                     finish();
+                }else {
+                    Toast.makeText(CategoryActivity.this, "Server is not working", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                    submit.setVisibility(View.VISIBLE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

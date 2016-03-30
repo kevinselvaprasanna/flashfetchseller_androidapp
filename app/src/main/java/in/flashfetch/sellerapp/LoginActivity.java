@@ -36,6 +36,7 @@ import android.widget.Toolbar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
@@ -386,11 +387,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             iPostParams.add(postemail);
             iPostParams.add(postpassword);
             //ResponseJSON = PostRequest.execute("http://192.168.43.66/login_buyer.php", iPostParams, null);
-            ResponseJSON = PostRequest.execute("http://www.flashfetch.in/temp/logint.php", iPostParams, null);
+            ResponseJSON = PostRequest.execute(URLConstants.URLLogin, iPostParams, null);
             Log.d("RESPONSE", ResponseJSON.toString());
             try {
                 if(ResponseJSON.getJSONObject("data").getInt("result")==1) {
                     UserProfile.setEmail(mEmail,LoginActivity.this);
+                    UserProfile.setCategory(30,LoginActivity.this);     //  TODO get category from server
+
                     return true;
                 }
                 else if (mEmail.equals("abc@def")&&mPassword.equals("123456"))
