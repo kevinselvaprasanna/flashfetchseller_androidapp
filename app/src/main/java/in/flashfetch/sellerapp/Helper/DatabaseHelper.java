@@ -73,6 +73,7 @@ public class DatabaseHelper {
             open();
             long id = ourDatabase.insert(Notification.TABLE_NAME, null, cv);
             Log.d("dmydb", "NOTIFICATION ADDED");
+            close();
             return id;
         }
 
@@ -112,7 +113,8 @@ public class DatabaseHelper {
     public ArrayList<Notification> getNotification (String id) {
         open();
         String[] columns = Notification.columns;
-        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "id = " + id , null, null, null, null);
+        //Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "id = " + id , null, null, null, null);
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "id = ?" ,new String[]{id}, null, null, null);
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;

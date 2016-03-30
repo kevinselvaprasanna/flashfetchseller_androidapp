@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
 import in.flashfetch.sellerapp.Objects.Notification;
+import it.gmariotti.recyclerview.adapter.AlphaAnimatorAdapter;
+import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 
 
 /**
@@ -89,6 +91,7 @@ public class Requested extends Fragment {
 
 
         rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
+        rvNot.setItemAnimator(new SlideInOutLeftItemAnimator(rvNot));
         layoutManager = new LinearLayoutManager(mContext);
 
         //set the recycler view to use the linear layout manager
@@ -100,9 +103,11 @@ public class Requested extends Fragment {
 
         //initialize events feed adapter
        NotificationAdapter notsAdapter = new NotificationAdapter(mContext,0,nots);
+       AlphaAnimatorAdapter animatorAdapter = new AlphaAnimatorAdapter(notsAdapter, rvNot);
 
         //Use the events feed adapter
-       rvNot.setAdapter(notsAdapter);
+       //rvNot.setAdapter(animatorAdapter);
+        rvNot.setAdapter(notsAdapter);
         return view;
 
     }/*

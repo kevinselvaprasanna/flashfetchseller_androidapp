@@ -33,11 +33,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
@@ -261,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 2;
+        return password.length() > 0;
     }
 
     /**
@@ -383,7 +385,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             JSONObject ResponseJSON;
             ArrayList<PostParam> iPostParams = new ArrayList<PostParam>();
             PostParam postemail = new PostParam("email", mEmail);
-            PostParam postpassword = new PostParam("password",mPassword);
+            PostParam postpassword = new PostParam("pass",mPassword);
             iPostParams.add(postemail);
             iPostParams.add(postpassword);
             //ResponseJSON = PostRequest.execute("http://192.168.43.66/login_buyer.php", iPostParams, null);
@@ -391,15 +393,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Log.d("RESPONSE", ResponseJSON.toString());
             try {
                 if(ResponseJSON.getJSONObject("data").getInt("result")==1) {
-                    UserProfile.setEmail(mEmail,LoginActivity.this);
-                    UserProfile.setCategory(30,LoginActivity.this);     //  TODO get category from server
-
+                    JSONObject trans = new JSONObject();
+                    JSONObject translist = ResponseJSON.getJSONObject("data").getJSONObject("Transactions");
+                    Notification not;
+                    for (int i=0; i<ResponseJSON.getJSONObject("data").getInt("length"); i++){
+                        trans = translist.getJSONObject(String.valueOf(i));
+                        not = new Notification(trans);
+//                        Log.d(LOG_TAG, "Category of event is " + event.getCate)
+                        not.saveNot(LoginActivity.this);
+                    }
+                    UserProfile.setEmail(mEmail, LoginActivity.this);
+                    UserProfile.setCategory(ResponseJSON.getJSONObject("data").getInt("cat"), LoginActivity.this);
                     return true;
                 }
-                else if (mEmail.equals("abc@def")&&mPassword.equals("123456"))
+              /*  else if (mEmail.equals("abc@def")&&mPassword.equals("123456"))
                 {
                     return true;
-                }
+                }*/
             } catch (JSONException e) {
                 e.printStackTrace();
             }

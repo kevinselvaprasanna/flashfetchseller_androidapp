@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.google.gson.Gson;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,26 +17,31 @@ import java.util.ArrayList;
  * Created by kevinselvaprasanna on 3/1/16.
  */
 public class Notification {
-    public String name,imgurl,price,buyer_name;
+    public String name,imgurl,price,buyer_name,url;
     public long time,qprice;
     public String  id,comment,loc;
     Boolean quoted=false,type,deltype,cuscon,selcon;
 
 
 
-   /* public Notification(JSONObject not) {
+   public Notification(JSONObject not) {
         try {
             //this.email = not.getString("email");
-            this.price = not.getString("price");
-            this.imgurl = not.getString("imgurl");
-            this.time = not.getLong("time");
-            this.id = not.getString("id");
+            this.price = not.getString("Ser_price");
+            this.imgurl = not.getString("Ser_image");
+            this.time = not.getLong("Cus_expiry");
+            this.id = not.getString("Cus_id");
+            this.loc = not.getString("cus_loc");
+            this.buyer_name = not.getString("Cus_name");
+            this.url = not.getString("Cus_link");
+            this.imgurl = not.getString("Ser_image");
+            this.name = not.getString("Ser_product");
             //this.email = not.getString("name");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-*/
+
     /*public Notification(JSONObject not, Boolean qouted) {
         try {
             //this.email = not.getString("email");
@@ -112,5 +118,29 @@ public class Notification {
     public static ArrayList<Notification> getNotification(Context context, String id){
         DatabaseHelper data = new DatabaseHelper(context);
         return data.getNotification(id);
+    }
+
+    public void saveNot(Context mContext) {
+        ContentValues cv = new ContentValues();
+        cv.put("name", name);
+        cv.put("imgurl", imgurl);
+        cv.put("price",price);
+        cv.put("loc",loc);
+        cv.put("buyer_name",buyer_name);
+        //cv.put("price", Integer.parseInt(data.getString("price")));
+        cv.put("time", time);
+        cv.put("id", id);
+        if (quoted.equals("1")) {
+            cv.put("quoted", 1);
+            cv.put("qprice", qprice);
+            cv.put("type", type);
+            cv.put("deltype", deltype);
+            cv.put("comment", comment);
+            cv.put("cuscon", cuscon);
+        } else {
+            cv.put("quoted", 0);
+        }
+        DatabaseHelper dh = new DatabaseHelper(mContext);
+        dh.addNot(cv);
     }
 }

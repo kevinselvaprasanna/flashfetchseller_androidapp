@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.QuoteActivity;
 import in.flashfetch.sellerapp.R;
@@ -96,7 +102,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         /*holder.name.setTypeface(font);
         holder.price.setTypeface(font);
         holder.time.setTypeface(font);*/
-        holder.price.setText("Rs. "+String.valueOf(mItems.get(position).price));
+        holder.price.setText("Rs. " + String.valueOf(mItems.get(position).price));
         CountDownTimer countDownTimer = new CountDownTimer(System.currentTimeMillis()-mItems.get(0).time,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -112,12 +118,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             }
         };
         countDownTimer.start();
-        holder.quote.setOnClickListener(new View.OnClickListener() {
+     /*   holder.quote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, QuoteActivity.class);
                 //TODO: Populate the intent with required data
                 mContext.startActivity(intent);
+            }
+        });*/
+        holder.decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItems.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mItems.size());
             }
         });
         Glide
@@ -145,4 +159,30 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public int getItemCount() {
         return mItems.size();
     }
-}
+
+    public class DeclineTask extends AsyncTask<Void, Void, Boolean> {
+        String id;
+        void DeclineTask(String id){
+            this.id = id;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
+        }
+
+
+
+    }

@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.R;
 
@@ -96,13 +98,26 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
         holder.price.setTypeface(font);
         holder.price_quoted.setText(String.valueOf(mItems.get(position).qprice));
         holder.price_quoted.setTypeface(font);
-        holder.time_left.setText(String.valueOf(System.currentTimeMillis()-mItems.get(position).time));
+        holder.time_left.setText(String.valueOf(System.currentTimeMillis() - mItems.get(position).time));
         holder.time_left.setTypeface(font);
         holder.quoted.setTypeface(font);
         holder.price_amount.setTypeface(font);
         holder.quoted.setText("Quoted");
         holder.price_amount.setText("Amount");
-        holder.imageview.setImageResource(R.drawable.ic_media_play);
+        //holder.imageview.setImageResource(R.drawable.ic_media_play);
+        Glide
+                .with(mContext)
+                .load(mItems.get(position).imgurl)
+                .centerCrop()
+                .into(holder.imageview);
+        holder.decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItems.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mItems.size());
+            }
+        });
         //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
         /*holder.notsfeed.setOnClickListener(new View.OnClickListener() {
 
