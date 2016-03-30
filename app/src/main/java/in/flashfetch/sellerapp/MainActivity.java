@@ -61,6 +61,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -75,6 +76,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
        private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     Typeface font;
+
+    ImageView nav_img;
+    LinearLayout nav_bg;
+    TextView shopname,sellername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +125,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        shopname = (TextView)navigationView.findViewById(R.id.shop_name);
+        sellername = (TextView)navigationView.findViewById(R.id.seller_name);
+
+        nav_img = (ImageView)navigationView.findViewById(R.id.nav_img);
+        nav_bg = (LinearLayout)navigationView.findViewById(R.id.head_layout);
 
         //TextView email = (TextView)findViewById(R.id.textView3);
         //email.setText(UserProfile.getEmail(MainActivity.this));
@@ -193,18 +204,25 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.account) {
-            // Handle the camera action
+            startActivity(new Intent(this,My_Acc.class));
         } else if (id == R.id.helpimp) {
-
+            startActivity(new Intent(this,feedback.class));
         } else if (id == R.id.homepg) {
 
         } else if (id == R.id.notif) {
+            startActivity(new Intent(this,notif.class));
 
         } else if (id == R.id.reqad) {
 
+            startActivity(new Intent(this,Req_Ads.class));
+
         } else if (id == R.id.shopdet) {
+            startActivity(new Intent(this,Shop_Det.class));
+
+        } else if (id == R.id.logout) {
+
+            //TODO: Logout
 
         }
 

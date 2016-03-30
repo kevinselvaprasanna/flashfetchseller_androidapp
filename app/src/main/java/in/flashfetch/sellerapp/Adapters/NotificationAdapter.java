@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -86,7 +88,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     @Override
-    public void onBindViewHolder(NotificationAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final NotificationAdapter.ViewHolder holder, final int position) {
 
 
         //th = new TimeHelper();
@@ -94,8 +96,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         /*holder.name.setTypeface(font);
         holder.price.setTypeface(font);
         holder.time.setTypeface(font);*/
-        holder.price.setText(String.valueOf(mItems.get(position).price));
-        holder.time.setText(String.valueOf(System.currentTimeMillis()-mItems.get(position).time)+ "s");
+        holder.price.setText("Rs. "+String.valueOf(mItems.get(position).price));
+        CountDownTimer countDownTimer = new CountDownTimer(System.currentTimeMillis()-mItems.get(0).time,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int hr = (int) (millisUntilFinished / 3600000);
+                int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
+                int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
+                holder.time.setText(hr + ":" + min + ":" + sec);
+            }
+
+            @Override
+            public void onFinish() {
+                holder.time.setText("Time Up");
+            }
+        };
+        countDownTimer.start();
         holder.quote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

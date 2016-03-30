@@ -37,6 +37,7 @@ public class Intro extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if(UserProfile.getEmail(Intro.this)!="")
         {
             checkPlayServices();

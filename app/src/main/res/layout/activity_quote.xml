@@ -3,10 +3,6 @@
     android:layout_height="fill_parent"
     android:layout_width="fill_parent">
 
-<ViewFlipper
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/mainflipper">
 <android.support.design.widget.CoordinatorLayout
 
     android:id="@+id/user_profile_coordinatorlayout"
@@ -78,8 +74,8 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <!--android:fillViewport="true"-->
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical" android:layout_width="match_parent"
@@ -95,7 +91,10 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                android:padding="3dp" />
+                android:padding="3dp"
+                android:lines="2"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -138,6 +137,122 @@
                 android:layout_marginLeft="5dp"
                 android:padding="3dp" />
 
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/price"
+                android:layout_marginTop="20dp"
+                android:hint="Price(in Rs.)" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Product Type"
+                android:id="@+id/ptype"
+                android:padding="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:layout_margin="0dp"
+                android:background="@color/ff_black">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Same"
+                    android:id="@+id/same"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:padding="5dp"
+                    android:background="#fff"
+                    android:layout_marginRight="1dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Similar"
+                    android:id="@+id/similar"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:padding="5dp"
+                    android:background="#fff" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Delivery Type"
+                android:id="@+id/deltype"
+                android:padding="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:layout_margin="0dp"
+                android:background="@color/ff_black">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Home Delivery"
+                    android:id="@+id/home_del"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:background="#fff"
+                    android:layout_marginRight="1dp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Visit Shop"
+                    android:id="@+id/shop_vis"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:background="#fff"
+                    android:padding="5dp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Upload image"
+                android:id="@+id/uplimg"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/upimg" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/Comments"
+                android:layout_marginTop="20dp"
+                android:hint="Enter Comments" />
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -173,135 +288,4 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/price"
-            android:layout_marginTop="20dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Product Type"
-            android:id="@+id/ptype"
-            android:padding="3dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="1dp"
-            android:layout_margin="0dp"
-            android:background="@color/ff_black">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Same"
-                android:id="@+id/same"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:padding="5dp"
-                android:background="#fff"
-                android:layout_marginRight="1dp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Similar"
-                android:id="@+id/similar"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:padding="5dp"
-                android:background="#fff" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Delivery Type"
-            android:id="@+id/deltype"
-            android:padding="3dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="1dp"
-            android:layout_margin="0dp"
-            android:background="@color/ff_black">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Home Delivery"
-                android:id="@+id/home_del"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:background="#fff"
-                android:layout_marginRight="1dp"
-                android:padding="5dp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Visit Shop"
-                android:id="@+id/shop_vis"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:background="#fff"
-                android:padding="5dp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Upload image"
-            android:id="@+id/uplimg"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/upimg" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/Comments"
-            android:layout_marginTop="20dp"
-            android:hint="Enter Comments" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:id="@+id/button"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp" />
-
-    </LinearLayout>
-</ViewFlipper>
 </LinearLayout>

@@ -219,9 +219,9 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this,"Phone cannot be empty",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(password))
+        if(isempty(password)||password.getText().length()<8)
         {
-            Toast.makeText(this,"Password cannot be empty",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Password cannot be empty or less than 8 letters",Toast.LENGTH_SHORT).show();
             return false;
         }
         if(isempty(confpassword))

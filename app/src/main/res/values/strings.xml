@@ -40,5 +40,7 @@
     <string name="reqad">Request Ads</string>
     <string name="shopdet">Shop Details</string>
     <string name="inven">Inventory</string>
+    <string name="feedback_title">Feedback</string>
+    <string name="logout">Log Out</string>
 
 </resources>

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import org.json.JSONException;
@@ -38,14 +39,13 @@ public class QuoteActivity extends AppCompatActivity {
     ViewFlipper flipper,imflipper;
     Typeface font;
     JSONObject ResponseJSON;
-    Button submit;
     EditText comnts,price_quote;
     ImageView upimg;
     QuoteTask qt;
     int deltype,type;
-    int price;
+    int distance=0;
     String comment,qprice,id;
-    TextView uplimg,name,tprice,buyer_name,buyer_location,timer,same,similar,home_del,shop_vis,tv8,more_deals,quote_now;
+    TextView uplimg,name,tprice,buyer_name,buyer_location,timer,same,similar,home_del,shop_vis,more_deals,quote_now;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class QuoteActivity extends AppCompatActivity {
         name = (TextView)findViewById(R.id.name);   //Name of product
         name.setText(mItem.get(0).name);
         tprice = (TextView)findViewById(R.id.price_product);  //Retrieved price of product
-        tprice.setText(mItem.get(0).price);
+        tprice.setText("Rs. "+mItem.get(0).price);
         buyer_name = (TextView)findViewById(R.id.buyer_name);
         buyer_name.setText(mItem.get(0).buyer_name);
         buyer_location = (TextView)findViewById(R.id.buyer_location);
@@ -76,7 +76,7 @@ public class QuoteActivity extends AppCompatActivity {
         };
         more_deals = (TextView)findViewById(R.id.deals_more); //Go Back
 
-        submit = (Button)findViewById(R.id.button);
+        buyer_location.setText("Distance:"+distance+"km");  //Enter distance in KM
 
         comnts = (EditText)findViewById(R.id.Comments);
 
@@ -130,18 +130,9 @@ public class QuoteActivity extends AppCompatActivity {
 
         price_quote = (EditText)findViewById(R.id.price);    //This is the price which the seller quotes
 
-        flipper = (ViewFlipper)findViewById(R.id.mainflipper);
         imflipper = (ViewFlipper)findViewById(R.id.flipperimg);
 
         quote_now = (TextView)findViewById(R.id.quote_now);
-        quote_now.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flipper.showNext();
-                flipper.setOutAnimation(QuoteActivity.this,R.anim.top_up);
-                flipper.setInAnimation(QuoteActivity.this,R.anim.bottom_up);
-            }
-        });
 
         uplimg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,16 +163,29 @@ public class QuoteActivity extends AppCompatActivity {
                 imflipper.setOutAnimation(QuoteActivity.this, R.anim.left_out);
             }
         });
-        submit.setOnClickListener(new View.OnClickListener() {
+        quote_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                qt = new QuoteTask();
-                qt.execute();
+                if(validate()) {
+                    qt = new QuoteTask();
+                    qt.execute();
+                }
 
             }
         });
 
     }
+
+    private boolean validate()
+    {
+        if(Integer.parseInt(price_quote.getText().toString())!=0)
+        {
+            return true;
+        }
+        Toast.makeText(this,"Enter a price",Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
     public class QuoteTask extends AsyncTask<Void, Void, Boolean> {
         QuoteTask(){
 

@@ -10,8 +10,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <permission
         android:name="in.flashfetch.sellerapp.permission.C2D_MESSAGE"
@@ -104,7 +104,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Empty_1" />
         <activity android:name=".Empty_2" />
-        <activity android:name=".Empty_3"></activity>
+        <activity android:name=".Empty_3" />
+        <activity
+            android:name=".feedback"
+            android:label="@string/feedback_title" />
+        <activity
+            android:name=".notif"
+            android:label="@string/notif" />
+        <activity android:name=".Req_Ads" />
+        <activity android:name=".My_Acc" />
+        <activity android:name=".Shop_Det"></activity>
     </application>
 
 </manifest>
