@@ -13,4 +13,5 @@ public class URLConstants {
     public static String URL_Quote = SERVER + "s2c/";
     public static String URLImage = SERVER + "";
 
+    public static String URLDecline = SERVER + "decline/";
 }

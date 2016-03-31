@@ -21,6 +21,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 import in.flashfetch.sellerapp.Empty_1;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.MainActivity;
+import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.R;
 
@@ -55,8 +56,13 @@ public class IE_GCMListenerService extends GcmListenerService{
          */
         //JSONObject notjs;
         Log.i("GCM-message",data.toString());
-        if(!(data.getString("app")==null)){
-            sendNotification(data.getString("title"),data.getString("message"));
+        if(!(data.getString("not")==null)){
+            ContentValues cv = new ContentValues();
+            cv.put("id", data.getString("id"));
+            cv.put("text", data.getString("text"));
+            cv.put("time",data.getString("time"));
+            DatabaseHelper dh = new DatabaseHelper(this);
+            dh.add(cv);
         }
         else {
           //try {
@@ -71,13 +77,20 @@ public class IE_GCMListenerService extends GcmListenerService{
             //cv.put("price", Integer.parseInt(data.getString("price")));
             cv.put("time", Long.parseLong(data.getString("time")));
             cv.put("id", data.getString("id"));
+            cv.put("timesent",Long.parseLong(data.getString("timenow")));
             if (data.getString("quoted").equals("1")) {
                 cv.put("quoted", 1);
                 cv.put("qprice", Long.parseLong(data.getString("type")));
                 cv.put("type", Integer.parseInt(data.getString("type")));
                 cv.put("deltype", Integer.parseInt(data.getString("deltype")));
+                if(data.getString("bargained").equals("1")){
+                    cv.put("bargained",1);
+                    cv.put("bgprice",data.getString("bgprice"));
+                    cv.put("bgexptime",Long.parseLong(data.getString("bgexptime")));
+                }
                 cv.put("comment", data.getString("comment"));
                 cv.put("cuscon", Integer.parseInt(data.getString("cuscon")));
+                cv.put("selcon", Integer.parseInt(data.getString("selcon")));
             } else {
                 cv.put("quoted", 0);
             }
@@ -90,8 +103,8 @@ public class IE_GCMListenerService extends GcmListenerService{
     }
     }
 
-    private void app(Bundle data) {
-        /*if(data.getString("text").equals("counter")){
+  /*  private void app(Bundle data) {
+        *//*if(data.getString("text").equals("counter")){
             UserProfile.setCounter(1,IE_GCMListenerService.this);
         }else if(data.getString("text").equals("update")){
             UserProfile.setUpdate(1, IE_GCMListenerService.this);
@@ -101,10 +114,10 @@ public class IE_GCMListenerService extends GcmListenerService{
             UserProfile.setCounter(0, IE_GCMListenerService.this);
         }else {
             UserProfile.setText(data.getString("text"), IE_GCMListenerService.this);
-        }*/
+        }*//*
        sendNotification(data.getString("title"),data.getString("message"));
 
-    }
+    }*/
     // [END receive_message]
 
    /* *//**
@@ -133,8 +146,9 @@ public class IE_GCMListenerService extends GcmListenerService{
 
         notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify((int) (Math.random() * 1000), notificationBuilder.build());
+        android.app.Notification not = notificationBuilder.build();
+        not.flags = android.app.Notification.DEFAULT_LIGHTS | android.app.Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify((int) (Math.random() * 1000), not);
 
 
     }

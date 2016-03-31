@@ -42,6 +42,7 @@ import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
+import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 
 import java.util.ArrayList;
@@ -404,6 +405,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
                     UserProfile.setEmail(mEmail, LoginActivity.this);
                     UserProfile.setCategory(ResponseJSON.getJSONObject("data").getInt("cat"), LoginActivity.this);
+                    UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"), LoginActivity.this);
                     return true;
                 }
               /*  else if (mEmail.equals("abc@def")&&mPassword.equals("123456"))
@@ -426,6 +428,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
+                Intent intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
+                startService(intent);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

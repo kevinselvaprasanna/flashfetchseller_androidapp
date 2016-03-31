@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.Objects.Nots;
 
 import java.util.ArrayList;
 
@@ -37,8 +38,10 @@ public class DatabaseHelper {
         public void onCreate(SQLiteDatabase db) {
             // TODO Auto-generated method stub _id INTEGER PRIMARY KEY
            /* db.execSQL(" DROP TABLE IF EXISTS " + Notification.TABLE_NAME);*/
-            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY,buyer_name VARCHAR, name VARCHAR, imgurl VARCHAR, price VARCHAR, time BIGINT,loc VARCHAR, quoted INT DEFAULT 0, qprice INT DEFAULT 0, type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',cuscon INT DEFAULT 0,selcon INT DEFAULT 0)");
+            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY,buyer_name VARCHAR, name VARCHAR, imgurl VARCHAR, price VARCHAR, timesent BIGINT, time BIGINT,loc VARCHAR, quoted INT DEFAULT 0, qprice INT DEFAULT 0, type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',bargained INT DEFAULT 0,bgprice VARCHAR DEFAULT ' ',bgexptime BIGINT DEFAULT 1459424183578,cuscon INT DEFAULT 0,selcon INT DEFAULT 0)");
                     Log.d("dmydb", "DATABSE CREATED");
+            db.execSQL("CREATE TABLE " + Nots.TABLE_NAME + "(id VARCHAR PRIMARY KEY,text VARCHAR,time BIGINT)");
+            Log.d("dmydb", "DATABSE CREATED");
         }
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -65,9 +68,9 @@ public class DatabaseHelper {
 
     public long addNot(ContentValues cv) {
         if(getNotification(cv.getAsString("id")).size() > 0){
-            updateNot(cv.getAsString("id"),cv);
+            updateNot(cv.getAsString("id"), cv);
             close();
-            return cv.getAsLong("id");
+            return 1;
         }
         else {
             open();
@@ -77,6 +80,20 @@ public class DatabaseHelper {
             return id;
         }
 
+    }
+    public long add(ContentValues cv) {
+            open();
+            long id = ourDatabase.insert(Nots.TABLE_NAME, null, cv);
+            Log.d("dmydb", "NOT ADDED");
+            close();
+            return id;
+
+    }
+    public boolean deleteNot(String id){
+        open();
+        Boolean d =  ourDatabase.delete(Notification.TABLE_NAME, "id = ?" ,new String[]{id}) > 0;
+        close();
+        return  d;
     }
 
     public void updateNot(String id,ContentValues cv){
@@ -88,7 +105,16 @@ public class DatabaseHelper {
     public ArrayList<Notification> getAllNotifications () {
         open();
         String[] columns = Notification.columns;
-        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "quoted = 0", null, null, null, null);
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "quoted = 0", null, null, null, "time DESC");
+        ArrayList<Notification> arrayList = Notification.getArrayList(c);
+        close();
+        return arrayList;
+    }
+
+    public ArrayList<Notification> getAllNots () {
+        open();
+        String[] columns = Nots.columns;
+        Cursor c = ourDatabase.query(Nots.TABLE_NAME, columns, null, null, null, null, "time  DESC");
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;
@@ -113,7 +139,6 @@ public class DatabaseHelper {
     public ArrayList<Notification> getNotification (String id) {
         open();
         String[] columns = Notification.columns;
-        //Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "id = " + id , null, null, null, null);
         Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "id = ?" ,new String[]{id}, null, null, null);
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();

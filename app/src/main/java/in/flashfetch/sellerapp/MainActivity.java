@@ -24,12 +24,16 @@ import android.view.View;
 import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
 import in.flashfetch.sellerapp.Adapters.PagerAdapter;
 import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
@@ -125,12 +129,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+       /* View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, null);
+        navigationView.addHeaderView(header);*/
+        View header = navigationView.getHeaderView(0);
 
-        shopname = (TextView)navigationView.findViewById(R.id.shop_name);
-        sellername = (TextView)navigationView.findViewById(R.id.seller_name);
+        shopname = (TextView)header.findViewById(R.id.shop_name);
+        sellername = (TextView)header.findViewById(R.id.seller_name);
+        shopname.setText(UserProfile.getShopName(MainActivity.this));
+        sellername.setText(UserProfile.getName(MainActivity.this));
 
-        nav_img = (ImageView)navigationView.findViewById(R.id.nav_img);
-        nav_bg = (LinearLayout)navigationView.findViewById(R.id.head_layout);
+        nav_img = (ImageView)header.findViewById(R.id.nav_img);
+        nav_bg = (LinearLayout)header.findViewById(R.id.head_layout);
 
         //TextView email = (TextView)findViewById(R.id.textView3);
         //email.setText(UserProfile.getEmail(MainActivity.this));
@@ -195,6 +204,8 @@ public class MainActivity extends AppCompatActivity
 
        } else if (id == R.id.notifalert) {
 
+       } else if (id==R.id.mlogout){
+           logout();
        }
         return super.onOptionsItemSelected(item);
     }
@@ -221,7 +232,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(this,Shop_Det.class));
 
         } else if (id == R.id.logout) {
-
+            logout();
             //TODO: Logout
 
         }
@@ -229,5 +240,68 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void logout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("FlashFetch");
+        builder.setMessage("Are you sure you want to logout?");
+        //Creating ok button with listener
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("Alert", " Ok");
+                clearApplicationData();
+//                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                SharedPreferences prefs = getSharedPreferences("sharedPreferences", 0);
+                prefs.edit().putString("delete", "hellothisisacheck").apply();
+                Log.d("delete", prefs.getString("delete", "nope"));
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.clear();
+                editor.commit();
+                UserProfile.clear(MainActivity.this);
+                Log.d("delete", prefs.getString("delete", "nope"));
+                GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getBaseContext());
+                try {
+                    gcm.unregister();
+                } catch (IOException e) {
+                    System.out.println("Error Message: " + e.getMessage());
+                }
+                Intent i = new Intent(MainActivity.this, StartActivity.class);
+                startActivity(i);
+                finish();
+
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
+    public void clearApplicationData() {
+        File cache = getCacheDir();
+        File appDir = new File(cache.getParent());
+        if (appDir.exists()) {
+            String[] children = appDir.list();
+            for (String s : children) {
+                if (!s.equals("lib")) {
+                    deleteDir(new File(appDir, s));
+                    Log.i("TAG", "File /data/data/APP_PACKAGE/" + s + " DELETED");
+                }
+            }
+        }
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        return dir.delete();
     }
 }

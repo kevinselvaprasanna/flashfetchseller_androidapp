@@ -52,7 +52,7 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
 
     List<String> headers = Arrays.asList("Audio and Video","Books","Computers and Accessories","Cameras","Game and Accessories",
             "Mobiles and Tablets","Musical Instruments","Sports, Fitness and Outdoors","Watches");
-    int[] cat_head = {2319,23,29,31};
+    int[] cat_head = {23,5,7,2,11,13,3,17,19};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

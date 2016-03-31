@@ -26,6 +26,11 @@
         android:icon="@drawable/notifalert"
         android:title="@string/notifalert"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/mlogout"
+        android:icon="@drawable/notifalert"
+        android:title="Log out"
+        app:showAsAction="never" />
     <!--
     <item
         android:id="@+id/action_action4"

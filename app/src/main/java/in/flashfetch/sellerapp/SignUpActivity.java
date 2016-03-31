@@ -338,6 +338,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if(ResponseJSON.getJSONObject("data").getInt("result")==1){
                     UserProfile.setName(tname, SignUpActivity.this);
                     UserProfile.setEmail(temail, SignUpActivity.this);
+                    UserProfile.setShopName(tsname,SignUpActivity.this);
                     UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"), SignUpActivity.this);
                     Intent intent = new Intent(SignUpActivity.this,StartActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

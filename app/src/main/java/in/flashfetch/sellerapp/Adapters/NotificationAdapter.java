@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -26,7 +27,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.Network.Connectivity;
+import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.QuoteActivity;
 import in.flashfetch.sellerapp.R;
 
@@ -129,6 +135,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!Connectivity.isNetworkAvailable(mContext)){
+                    Toast.makeText(mContext,"NETOWRK NOT AVAILABLE",Toast.LENGTH_SHORT);
+                }
+                DeclineTask dt = new DeclineTask(mItems.get(position).id);
+                dt.execute();
                 mItems.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, mItems.size());
@@ -162,9 +173,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class DeclineTask extends AsyncTask<Void, Void, Boolean> {
         String id;
-        void DeclineTask(String id){
+
+        public DeclineTask(String id) {
             this.id = id;
         }
+
+
 
         @Override
         protected void onPreExecute() {
@@ -174,6 +188,19 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         @Override
         protected Boolean doInBackground(Void... params) {
+
+            JSONObject ResponseJSON;
+            ArrayList<PostParam> iPostParams = new ArrayList<PostParam>();
+            PostParam postemail = new PostParam("email", UserProfile.getEmail(mContext));
+            PostParam posttoken = new PostParam("token",UserProfile.getToken(mContext));
+            iPostParams.add(postemail);
+            iPostParams.add(posttoken);
+            iPostParams.add(new PostParam("decid",id));
+            DatabaseHelper dh = new DatabaseHelper(mContext);
+            dh.deleteNot(id);
+            //ResponseJSON = PostRequest.execute("http://192.168.43.66/login_buyer.php", iPostParams, null);
+            ResponseJSON = PostRequest.execute(URLConstants.URLDecline, iPostParams, null);
+            Log.d("RESPONSE", ResponseJSON.toString());
             return true;
         }
 
