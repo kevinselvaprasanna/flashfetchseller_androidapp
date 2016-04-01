@@ -63,6 +63,7 @@ public class IE_GCMListenerService extends GcmListenerService{
             cv.put("time",data.getString("time"));
             DatabaseHelper dh = new DatabaseHelper(this);
             dh.add(cv);
+            sendNotification("FlashFetch",data.getString("text"));
         }
         else {
           //try {
@@ -83,12 +84,12 @@ public class IE_GCMListenerService extends GcmListenerService{
                 cv.put("qprice", Long.parseLong(data.getString("type")));
                 cv.put("type", Integer.parseInt(data.getString("type")));
                 cv.put("deltype", Integer.parseInt(data.getString("deltype")));
+                cv.put("comment", data.getString("comment"));
                 if(data.getString("bargained").equals("1")){
                     cv.put("bargained",1);
                     cv.put("bgprice",data.getString("bgprice"));
                     cv.put("bgexptime",Long.parseLong(data.getString("bgexptime")));
                 }
-                cv.put("comment", data.getString("comment"));
                 cv.put("cuscon", Integer.parseInt(data.getString("cuscon")));
                 cv.put("selcon", Integer.parseInt(data.getString("selcon")));
             } else {
@@ -147,7 +148,7 @@ public class IE_GCMListenerService extends GcmListenerService{
         notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         android.app.Notification not = notificationBuilder.build();
-        not.flags = android.app.Notification.DEFAULT_LIGHTS | android.app.Notification.FLAG_AUTO_CANCEL;
+        not.flags = android.app.Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify((int) (Math.random() * 1000), not);
 
 

@@ -38,7 +38,7 @@ public class DatabaseHelper {
         public void onCreate(SQLiteDatabase db) {
             // TODO Auto-generated method stub _id INTEGER PRIMARY KEY
            /* db.execSQL(" DROP TABLE IF EXISTS " + Notification.TABLE_NAME);*/
-            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY,buyer_name VARCHAR, name VARCHAR, imgurl VARCHAR, price VARCHAR, timesent BIGINT, time BIGINT,loc VARCHAR, quoted INT DEFAULT 0, qprice INT DEFAULT 0, type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',bargained INT DEFAULT 0,bgprice VARCHAR DEFAULT ' ',bgexptime BIGINT DEFAULT 1459424183578,cuscon INT DEFAULT 0,selcon INT DEFAULT 0)");
+            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY,buyer_name VARCHAR, name VARCHAR,url VARCHAR DEFAULT 'http://www.jfgbuofbgabwiewak.com/', imgurl VARCHAR, price VARCHAR, timesent BIGINT, time BIGINT,loc VARCHAR, quoted INT DEFAULT 0, qprice VARCHAR DEFAULT '0', type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',bargained INT DEFAULT 0,bgprice VARCHAR DEFAULT ' ',bgexptime BIGINT DEFAULT 1459424183578,cuscon INT DEFAULT 0,selcon INT DEFAULT 0)");
                     Log.d("dmydb", "DATABSE CREATED");
             db.execSQL("CREATE TABLE " + Nots.TABLE_NAME + "(id VARCHAR PRIMARY KEY,text VARCHAR,time BIGINT)");
             Log.d("dmydb", "DATABSE CREATED");
@@ -105,17 +105,17 @@ public class DatabaseHelper {
     public ArrayList<Notification> getAllNotifications () {
         open();
         String[] columns = Notification.columns;
-        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "quoted = 0", null, null, null, "time DESC");
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "quoted = 0", null, null, null, "timesent DESC");
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;
     }
 
-    public ArrayList<Notification> getAllNots () {
+    public ArrayList<Nots> getAllNots () {
         open();
         String[] columns = Nots.columns;
-        Cursor c = ourDatabase.query(Nots.TABLE_NAME, columns, null, null, null, null, "time  DESC");
-        ArrayList<Notification> arrayList = Notification.getArrayList(c);
+        Cursor c = ourDatabase.query(Nots.TABLE_NAME, columns, null, null, null, null, "time DESC");
+        ArrayList<Nots> arrayList = Nots.getArrayList(c);
         close();
         return arrayList;
     }
@@ -123,7 +123,7 @@ public class DatabaseHelper {
     public ArrayList<Notification> getQNotifications () {
         open();
         String[] columns = Notification.columns;
-        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "quoted = 1" , null, null, null, null);
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "quoted = 1" , null, null, null,"timesent DESC");
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;
@@ -131,7 +131,7 @@ public class DatabaseHelper {
     public ArrayList<Notification> getANotifications () {
         open();
         String[] columns = Notification.columns;
-        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "cuscon = 1" , null, null, null, null);
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, "cuscon = 1" , null, null, null,"timesent DESC");
         ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;

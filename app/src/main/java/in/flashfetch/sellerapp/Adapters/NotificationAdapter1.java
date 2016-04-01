@@ -9,8 +9,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +24,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONObject;
+
+import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.R;
 
 
@@ -50,28 +60,40 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
     }
     public static class ViewHolder extends NotificationAdapter.ViewHolder{
 
-        TextView name,time_left,price,price_quoted,quoted,price_amount,decline;
-        ImageView imageview;
+        TextView name,time_left,price,price_quoted,price_quoted1,price_bargained,quoted,price_amount,decline,name1,time_left1,accept;
+        ImageView imageview,imageview1;
         CardView cv;
 
         public ViewHolder(View itemView) {
             super(itemView);
             imageview = (ImageView)itemView.findViewById(R.id.image);
+            imageview1 = (ImageView)itemView.findViewById(R.id.image1);
             decline = (TextView)itemView.findViewById(R.id.decline);
             name =(TextView)itemView.findViewById(R.id.name);
             price = (TextView)itemView.findViewById(R.id.price);
             time_left = (TextView)itemView.findViewById(R.id.time_left);
+            name1 =(TextView)itemView.findViewById(R.id.name1);
+            time_left1 = (TextView)itemView.findViewById(R.id.time_left1);
             price_amount=(TextView)itemView.findViewById(R.id.price_amount);
             price_quoted=(TextView)itemView.findViewById(R.id.price_quoted);
+            price_quoted1=(TextView)itemView.findViewById(R.id.price_quoted1);
+            price_bargained=(TextView)itemView.findViewById(R.id.price_bargain);
             quoted = (TextView)itemView.findViewById(R.id.quoted);
             notsfeed = (LinearLayout)itemView.findViewById(R.id.notsfeed);
             cv = (CardView)itemView.findViewById(R.id.card_view);
+            accept = (TextView)itemView.findViewById(R.id.accept);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+
+        //return super.getItemViewType(position);
+        if(mItems.get(position).bargained){
+            return 1;
+        }else {
+            return 0;
+        }
     }
 
     public NotificationAdapter1.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -79,68 +101,123 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
 
       /*  font = Typeface.createFromAsset(mContext.getAssets(),
                 "fonts/Lato-Medium.ttf");*/
-               layout = R.layout.list_item_provided_1;
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(layout, parent, false);
-        return new ViewHolder(view);
+
+        if(viewType ==1) {
+            layout = R.layout.list_item_provided_2;
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(layout, parent, false);
+            return new ViewHolder(view);
+        }
+        else {
+            layout = R.layout.list_item_provided_1;
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(layout, parent, false);
+            return new ViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(NotificationAdapter1.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final NotificationAdapter1.ViewHolder holder, final int position) {
 
         //TODO: Populate items depending on the holder returned via LayoutSelect
         //TODO: Set typeface for text
 
         //th = new TimeHelper();
-        holder.name.setText(mItems.get(position).name);
-        holder.name.setTypeface(font);
-        holder.price.setText(mItems.get(position).price);
-        holder.price.setTypeface(font);
-        holder.price_quoted.setText(String.valueOf(mItems.get(position).qprice));
-        holder.price_quoted.setTypeface(font);
-        holder.time_left.setText(String.valueOf(System.currentTimeMillis() - mItems.get(position).time));
-        holder.time_left.setTypeface(font);
-        holder.quoted.setTypeface(font);
-        holder.price_amount.setTypeface(font);
-        holder.quoted.setText("Quoted");
-        holder.price_amount.setText("Amount");
-        //holder.imageview.setImageResource(R.drawable.ic_media_play);
-        Glide
-                .with(mContext)
-                .load(mItems.get(position).imgurl)
-                .centerCrop()
-                .into(holder.imageview);
-        holder.decline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mItems.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, mItems.size());
+        if(getItemViewType(position)==1) {
+            holder.name1.setText(mItems.get(position).name);
+            holder.name1.setTypeface(font);
+            holder.price_bargained.setText(mItems.get(position).bgprice);
+            holder.price_bargained.setTypeface(font);
+            holder.price_quoted1.setText(mItems.get(position).qprice);
+            holder.price_quoted1.setTypeface(font);
+            if(mItems.get(position).bgexptime - System.currentTimeMillis() > 0) {
+            CountDownTimer countDownTimer = new CountDownTimer(mItems.get(position).bgexptime - System.currentTimeMillis(),1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    int hr = (int) (millisUntilFinished / 3600000);
+                    int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
+                    int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
+                    holder.time_left1.setText(hr + ":" + min + ":" + sec);
+                }
+
+                @Override
+                public void onFinish() {
+                    holder.time_left1.setText("Time Up");
+                }
+            };
+            countDownTimer.start();
+            }else
+            {
+                holder.time_left1.setText("Time Up");
             }
-        });
-        //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
-        /*holder.notsfeed.setOnClickListener(new View.OnClickListener() {
+            //holder.quoted.setTypeface(font);
+            //holder.price_amount.setTypeface(font);
+            //holder.quoted.setText("Quoted");
+            //holder.price.setText("Amount");
+            //holder.imageview.setImageResource(R.drawable.ic_media_play);
+            Glide
+                    .with(mContext)
+                    .load(mItems.get(position).imgurl)
+                    .centerCrop()
+                    .into(holder.imageview1);
+            holder.decline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItems.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, mItems.size());
+                }
+            });
+            holder.accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO ACCEPT TASK TO BE DONE
+                    AcceptTask at = new AcceptTask(mItems.get(position).id);
+                    at.execute();
+                }
+            });
+        }
+            else {
+            holder.name.setText(mItems.get(position).name);
+            holder.name.setTypeface(font);
+            holder.price_amount.setText(mItems.get(position).price);
+            holder.price_amount.setTypeface(font);
+            holder.price_quoted.setText(String.valueOf(mItems.get(position).qprice));
+            holder.price_quoted.setTypeface(font);
+            CountDownTimer countDownTimer = new CountDownTimer(System.currentTimeMillis()-mItems.get(position).time,1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    int hr = (int) (millisUntilFinished / 3600000);
+                    int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
+                    int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
+                    holder.time_left.setText(hr + ":" + min + ":" + sec);
+                }
 
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Price");
-                builder.setMessage("Enter price that you want to bargain");
-                final EditText price = new EditText(mContext);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                price.setLayoutParams(lp);
-                builder.setView(price);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-                    }
-                });
-                builder.show();
-
-            }
-        });*/
+                @Override
+                public void onFinish() {
+                    holder.time_left.setText("Time Up");
+                }
+            };
+            countDownTimer.start();
+            holder.quoted.setTypeface(font);
+            holder.price_amount.setTypeface(font);
+            holder.quoted.setText("Quoted");
+            holder.price.setText("Amount");
+            //holder.imageview.setImageResource(R.drawable.ic_media_play);
+            Glide
+                    .with(mContext)
+                    .load(mItems.get(position).imgurl)
+                    .centerCrop()
+                    .into(holder.imageview);
+            holder.decline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItems.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, mItems.size());
+                }
+            });
+        }
 
 
     }
@@ -149,4 +226,44 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
     public int getItemCount() {
         return mItems.size();
     }
+
+    public class AcceptTask extends AsyncTask<Void, Void, Boolean> {
+        String id;
+
+        public AcceptTask(String id) {
+            this.id = id;
+        }
+
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            JSONObject ResponseJSON;
+            ArrayList<PostParam> iPostParams = new ArrayList<PostParam>();
+            PostParam postemail = new PostParam("email", UserProfile.getEmail(mContext));
+            PostParam posttoken = new PostParam("token",UserProfile.getToken(mContext));
+            iPostParams.add(postemail);
+            iPostParams.add(posttoken);
+            iPostParams.add(new PostParam("decid",id));
+            DatabaseHelper dh = new DatabaseHelper(mContext);
+            dh.deleteNot(id);
+            //ResponseJSON = PostRequest.execute("http://192.168.43.66/login_buyer.php", iPostParams, null);
+            ResponseJSON = PostRequest.execute(URLConstants.URLDecline, iPostParams, null);
+            Log.d("RESPONSE", ResponseJSON.toString());
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
+    }
+
 }

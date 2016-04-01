@@ -109,21 +109,26 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.price.setTypeface(font);
         holder.time.setTypeface(font);*/
         holder.price.setText("Rs. " + String.valueOf(mItems.get(position).price));
-        CountDownTimer countDownTimer = new CountDownTimer(System.currentTimeMillis()-mItems.get(0).time,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                int hr = (int) (millisUntilFinished / 3600000);
-                int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
-                int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
-                holder.time.setText(hr + ":" + min + ":" + sec);
-            }
+        if(mItems.get(position).time - System.currentTimeMillis() > 0) {
+            CountDownTimer countDownTimer = new CountDownTimer( mItems.get(position).time - System.currentTimeMillis(), 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    int hr = (int) (millisUntilFinished / 3600000);
+                    int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
+                    int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
+                    holder.time.setText(hr + ":" + min + ":" + sec);
+                }
 
-            @Override
-            public void onFinish() {
-                holder.time.setText("Time Up");
-            }
-        };
-        countDownTimer.start();
+                @Override
+                public void onFinish() {
+                    holder.time.setText("Time Up");
+                }
+            };
+            countDownTimer.start();
+        }else
+        {
+            holder.time.setText("Time Up");
+        }
      /*   holder.quote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

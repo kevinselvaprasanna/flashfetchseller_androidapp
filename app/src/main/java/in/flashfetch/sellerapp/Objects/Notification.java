@@ -17,10 +17,10 @@ import java.util.ArrayList;
  * Created by kevinselvaprasanna on 3/1/16.
  */
 public class Notification {
-    public String name,imgurl,price,buyer_name,url,bgprice;
-    public long time,qprice,timesent,bgexptime;
+    public String name,imgurl,price,buyer_name,url,bgprice,qprice;
+    public long time,timesent,bgexptime;
     public String  id,comment,loc;
-    Boolean quoted=false,type,deltype,bargained=false,cuscon,selcon;
+    public Boolean quoted=false,type,deltype,bargained=false,cuscon,selcon;
 
 
 
@@ -37,6 +37,22 @@ public class Notification {
             this.url = not.getString("Cus_link");
             this.imgurl = not.getString("Ser_image");
             this.name = not.getString("Ser_product");
+
+            if(not.getInt("qouted") > 0 ){
+                this.quoted = true;
+                this.qprice = not.getString("qprice");
+                this.type = not.getInt("type") > 0;
+                this.deltype = not.getInt("deltype") > 0;
+                this.comment = not.getString("Sel_comments");
+                if(not.getInt("bargained") >0 ){
+                    this.bargained = true;
+                    this.bgprice = not.getString("bgprice");
+                    this.bgexptime = not.getLong("bgexptime");
+                }
+                this.cuscon = not.getInt("cuscon")>0;
+                this.selcon = not.getInt("selcon")>0;
+
+            }
             //this.email = not.getString("name");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -68,7 +84,7 @@ public class Notification {
         this.time = time;
         this.qouted =false;
     }*/
-    public Notification(String id, String buyer_name, String name, String imgurl, String price ,Long timesent,Long time,String loc, Boolean quoted, Long qprice, Boolean type,Boolean deltype,String comment,Boolean bargained, String bgprice,long bgexptime, Boolean cuscon, Boolean selcon) {
+    public Notification(String id, String buyer_name, String name, String imgurl, String price ,Long timesent,Long time,String loc, Boolean quoted, String qprice, Boolean type,Boolean deltype,String comment,Boolean bargained, String bgprice,long bgexptime, Boolean cuscon, Boolean selcon) {
         this.id = id;
         this.buyer_name = buyer_name;
         this.name = name;
@@ -99,7 +115,7 @@ public class Notification {
     }
 
     public static Notification parseNot(Cursor c) {
-        Notification not = new Notification(c.getString(0),c.getString(1), c.getString(2), c.getString(3), c.getString(4),c.getLong(5),c.getLong(6),c.getString(7),c.getInt(8)==1, c.getLong(9),c.getInt(10)== 1, c.getInt(11)==1,c.getString(12),c.getInt(13)==1,c.getString(14),c.getLong(15), c.getInt(16)==1,c.getInt(17)==1);
+        Notification not = new Notification(c.getString(0),c.getString(1), c.getString(2), c.getString(3), c.getString(4),c.getLong(5),c.getLong(6),c.getString(7),c.getInt(8)==1, c.getString(9),c.getInt(10)== 1, c.getInt(11)==1,c.getString(12),c.getInt(13)==1,c.getString(14),c.getLong(15), c.getInt(16)==1,c.getInt(17)==1);
         return not;
     }
 

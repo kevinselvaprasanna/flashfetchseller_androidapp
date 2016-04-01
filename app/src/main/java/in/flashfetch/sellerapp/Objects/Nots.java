@@ -34,6 +34,10 @@ public class Nots {
         Nots not = new Nots(c.getString(0),c.getString(1),c.getLong(2));
         return not;
     }
+    public static ArrayList<Nots> getAllNots(Context context){
+        DatabaseHelper data = new DatabaseHelper(context);
+        return data.getAllNots();
+    }
 
 
 }
