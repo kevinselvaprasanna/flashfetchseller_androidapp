@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.R;
 
@@ -93,11 +95,11 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         holder.name.setText(mItems.get(position).name);
         holder.name.setTypeface(font);
         holder.price_final.setTypeface(font);
-        holder.price_final.setText("Final price");
+        holder.price_final.setText("Final price" + mItems.get(position).qprice);
         holder.call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"Call",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Call", Toast.LENGTH_SHORT).show();
             }
         });
         holder.location.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +108,11 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
                 Toast.makeText(mContext,"Locate",Toast.LENGTH_SHORT).show();
             }
         });
+        Glide
+                .with(mContext)
+                .load(mItems.get(position).imgurl)
+                .centerCrop()
+                .into(holder.imageview);
 
         //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
         /*holder.notsfeed.setOnClickListener(new View.OnClickListener() {

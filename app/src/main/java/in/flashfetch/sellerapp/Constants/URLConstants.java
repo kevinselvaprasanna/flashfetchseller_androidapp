@@ -18,4 +18,5 @@ public class URLConstants {
     public static String URLFeedback = SERVER + "feed/";
     public static String URLAd = SERVER + "adv/";
     public static String URLUpdate = SERVER + "updateuser/";
+    public static String URLAccept = SERVER + "selconf/";
 }

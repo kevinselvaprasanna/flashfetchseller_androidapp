@@ -85,7 +85,7 @@ public class IE_GCMListenerService extends GcmListenerService{
             cv.put("timesent",Long.parseLong(data.getString("timenow")));
             if (data.getString("quoted").equals("1")) {
                 cv.put("quoted", 1);
-                cv.put("qprice", Long.parseLong(data.getString("type")));
+                cv.put("qprice", Long.parseLong(data.getString("qprice")));
                 cv.put("type", Integer.parseInt(data.getString("type")));
                 cv.put("deltype", Integer.parseInt(data.getString("deltype")));
                 cv.put("comment", data.getString("comment"));
@@ -96,12 +96,15 @@ public class IE_GCMListenerService extends GcmListenerService{
                     long yourmilliseconds =  Long.parseLong(data.getString("bgexptime"));
                     SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
                     Date resultdate = new Date(yourmilliseconds);
-                    sendNotification("Bargain Request", "You have a bargain request for the deal provided on " + data.getString("name") + ". You have to respond by" + resultdate);
+                    if(data.getString("cuscon").equals("0")){
+                        sendNotification("Bargain Request", "You have a bargain request for the deal provided on " + data.getString("name") + ". You have to respond by" + resultdate);
+                    }
+
                 }else ;
                 cv.put("selcon", Integer.parseInt(data.getString("selcon")));
                 if(data.getString("cuscon").equals("1")){
                     cv.put("cuscon", 1);
-                    sendNotification("Deal Accepted", "Congradulations! Your deal on product " + data.getString("name") );
+                    sendNotification("Deal Accepted", "Congratulations! Your deal on product " + data.getString("name") + "is accepted by the buyer.");
                 }
             } else {
                 cv.put("quoted", 0);
@@ -154,7 +157,7 @@ public class IE_GCMListenerService extends GcmListenerService{
 
         defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.not)
                 .setContentTitle("FlashFetch")
                 .setContentText(email + " at price" +  price)
                 .setSound(defaultSoundUri)
@@ -181,7 +184,7 @@ public class IE_GCMListenerService extends GcmListenerService{
 
         defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.not)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSound(defaultSoundUri)

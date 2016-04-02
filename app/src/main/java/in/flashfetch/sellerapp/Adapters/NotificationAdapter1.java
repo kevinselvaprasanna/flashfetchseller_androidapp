@@ -21,13 +21,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.Network.Connectivity;
 import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.PostParam;
@@ -37,11 +40,14 @@ import in.flashfetch.sellerapp.R;
 
 import java.util.ArrayList;
 
+import static java.lang.Thread.sleep;
+
 public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapter1.ViewHolder> {
 
     Context mContext;
     Typeface font;
     ArrayList<Notification> mItems;
+    Boolean check = false;
     //TimeHelper th;
     private static String LOG_TAG = "EventDetails";
     int LayoutSelector;
@@ -171,8 +177,19 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
                 @Override
                 public void onClick(View v) {
                     //TODO ACCEPT TASK TO BE DONE
-                    AcceptTask at = new AcceptTask(mItems.get(position).id);
-                    at.execute();
+                        AcceptTask at = new AcceptTask(mItems.get(position).id);
+                        at.execute();
+                    try {
+                        sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if(check){
+                        holder.decline.setVisibility(View.INVISIBLE);
+                        holder.accept.setText("Accepted");
+                    }else {
+                        Toast.makeText(mContext, "Network not available",Toast.LENGTH_LONG);
+                    }
                 }
             });
         }
@@ -255,18 +272,25 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
             PostParam posttoken = new PostParam("token",UserProfile.getToken(mContext));
             iPostParams.add(postemail);
             iPostParams.add(posttoken);
-            iPostParams.add(new PostParam("decid",id));
+            iPostParams.add(new PostParam("Cus_id",id));
             DatabaseHelper dh = new DatabaseHelper(mContext);
-            dh.deleteNot(id);
             //ResponseJSON = PostRequest.execute("http://192.168.43.66/login_buyer.php", iPostParams, null);
-            ResponseJSON = PostRequest.execute(URLConstants.URLDecline, iPostParams, null);
+            ResponseJSON = PostRequest.execute(URLConstants.URLAccept, iPostParams, null);
             Log.d("RESPONSE", ResponseJSON.toString());
+            try {
+                if(ResponseJSON.getInt("status")==200){
+                    check =true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             return true;
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+
         }
     }
 
