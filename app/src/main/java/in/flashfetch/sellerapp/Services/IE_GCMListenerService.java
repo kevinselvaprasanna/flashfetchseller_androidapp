@@ -27,6 +27,9 @@ import in.flashfetch.sellerapp.R;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class IE_GCMListenerService extends GcmListenerService{
 
@@ -90,18 +93,29 @@ public class IE_GCMListenerService extends GcmListenerService{
                     cv.put("bargained",1);
                     cv.put("bgprice",data.getString("bgprice"));
                     cv.put("bgexptime",Long.parseLong(data.getString("bgexptime")));
-                }
-                cv.put("cuscon", Integer.parseInt(data.getString("cuscon")));
+                    long yourmilliseconds =  Long.parseLong(data.getString("bgexptime"));
+                    SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+                    Date resultdate = new Date(yourmilliseconds);
+                    sendNotification("Bargain Request", "You have a bargain request for the deal provided on " + data.getString("name") + ". You have to respond by" + resultdate);
+                }else ;
                 cv.put("selcon", Integer.parseInt(data.getString("selcon")));
+                if(data.getString("cuscon").equals("1")){
+                    cv.put("cuscon", 1);
+                    sendNotification("Deal Accepted", "Congradulations! Your deal on product " + data.getString("name") );
+                }
             } else {
                 cv.put("quoted", 0);
+                long yourmilliseconds =  Long.parseLong(data.getString("time"));
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+                Date resultdate = new Date(yourmilliseconds);
+                sendNotification("Product Request", "You have a new Flashfech request on " + data.getString("name") + ", You have to respond before" + resultdate);
             }
             DatabaseHelper dh = new DatabaseHelper(this);
             dh.addNot(cv);
 
 
 
-            sendNotification(data.getString("name"), data.getString("imgurl"), data.getString("price"), data.getString("id"), data.getString("time"));
+            //sendNotification(data.getString("name"), data.getString("imgurl"), data.getString("price"), data.getString("id"), data.getString("time"));
     }
     }
 
@@ -158,7 +172,7 @@ public class IE_GCMListenerService extends GcmListenerService{
         PendingIntent pendingIntent;
         Uri defaultSoundUri;
         NotificationCompat.Builder notificationBuilder;
-        Intent i = new Intent(IE_GCMListenerService.this,Empty_1.class);
+        Intent i = new Intent(IE_GCMListenerService.this,MainActivity.class);
         NotificationManager notificationManager;
         pendingIntent = PendingIntent.getActivity(this, 0, i,
                 PendingIntent.FLAG_ONE_SHOT);

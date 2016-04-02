@@ -38,7 +38,7 @@ public class Notification {
             this.imgurl = not.getString("Ser_image");
             this.name = not.getString("Ser_product");
 
-            if(not.getInt("qouted") > 0 ){
+            if(not.getInt("quoted") > 0 ){
                 this.quoted = true;
                 this.qprice = not.getString("qprice");
                 this.type = not.getInt("type") > 0;
