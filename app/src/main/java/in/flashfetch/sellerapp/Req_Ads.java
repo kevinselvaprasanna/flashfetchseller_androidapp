@@ -20,8 +20,10 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.Objects.UserProfile;
 
 public class Req_Ads extends AppCompatActivity {
 
@@ -42,14 +44,6 @@ public class Req_Ads extends AppCompatActivity {
         date_start = (TextView)findViewById(R.id.date_start);
         date_end = (TextView)findViewById(R.id.date_end);
         submit = (Button)findViewById(R.id.submit);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                text = ad.getText().toString();
-                SubmitTask st = new SubmitTask();
-                st.execute();
-            }
-        });
 
         myCalendar = Calendar.getInstance();
 
@@ -84,6 +78,10 @@ public class Req_Ads extends AppCompatActivity {
             public void onClick(View v) {
                 //TODO:
                 //Do something
+
+                text = ad.getText().toString();
+                SubmitTask st = new SubmitTask();
+                st.execute();
                 Toast.makeText(Req_Ads.this,"We will get back to you soon",Toast.LENGTH_SHORT).show();
             }
         });
@@ -128,10 +126,12 @@ public class Req_Ads extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
-            PostParams.add(new PostParam("type",text));
-            PostParams.add(new PostParam("type",startdate));
-            PostParams.add(new PostParam("type",enddate));
-            JSONObject ResponseJSON = PostRequest.execute("", PostParams, null);
+            PostParams.add(new PostParam("email", UserProfile.getEmail(Req_Ads.this)));
+            PostParams.add(new PostParam("token", UserProfile.getToken(Req_Ads.this)));
+            PostParams.add(new PostParam("adv",text));
+            PostParams.add(new PostParam("sdate",startdate));
+            PostParams.add(new PostParam("edate",enddate));
+            JSONObject ResponseJSON = PostRequest.execute(URLConstants.URLAd, PostParams, null);
             Log.d("RESPONSE", ResponseJSON.toString());
 
 

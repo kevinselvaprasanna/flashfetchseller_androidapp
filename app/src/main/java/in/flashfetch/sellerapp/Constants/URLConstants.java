@@ -14,4 +14,8 @@ public class URLConstants {
     public static String URLImage = SERVER + "";
 
     public static String URLDecline = SERVER + "decline/";
+
+    public static String URLFeedback = SERVER + "feed/";
+    public static String URLAd = SERVER + "adv/";
+    public static String URLUpdate = SERVER + "updateuser/";
 }

@@ -302,9 +302,6 @@ public class SignUpActivity extends AppCompatActivity {
         protected Void doInBackground(String... params) {
                 ArrayList<PostParam> instiPostParams = new ArrayList<PostParam>();
                 PostParam postUser = new PostParam("name", tname);
-               /* if(tname.equals("ksp")){
-                    startActivity(new Intent(SignUpActivity.this, MainActivity.class));
-                }*/
                 PostParam postEmail = new PostParam("email", temail);
                 PostParam postPass = new PostParam("password", tpassword);
                 instiPostParams.add(postUser);
@@ -338,7 +335,14 @@ public class SignUpActivity extends AppCompatActivity {
                 if(ResponseJSON.getJSONObject("data").getInt("result")==1){
                     UserProfile.setName(tname, SignUpActivity.this);
                     UserProfile.setEmail(temail, SignUpActivity.this);
-                    UserProfile.setShopName(tsname,SignUpActivity.this);
+                    UserProfile.setPhone(phone1, SignUpActivity.this);
+                    UserProfile.setPassword(tpassword,SignUpActivity.this);
+                    UserProfile.setShopId(tsid, SignUpActivity.this);
+                    UserProfile.setShopPhone(tstelph, SignUpActivity.this);
+                    UserProfile.setAddress1(tshadd1, SignUpActivity.this);
+                    UserProfile.setAddress2(tshadd2, SignUpActivity.this);
+                    UserProfile.setShopName(tsname, SignUpActivity.this);
+                    UserProfile.setLocation(toastMsg,SignUpActivity.this);
                     UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"), SignUpActivity.this);
                     Intent intent = new Intent(SignUpActivity.this,StartActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -350,6 +354,8 @@ public class SignUpActivity extends AppCompatActivity {
                 }else if(ResponseJSON.getJSONObject("data").getInt("result")==0)
                 {
                     Toast.makeText(SignUpActivity.this,"Email is already registered",Toast.LENGTH_LONG).show();
+                    signupprogress.setVisibility(View.GONE);
+                    viewFlipper.setVisibility(View.VISIBLE);
                 }
                 else{
                     Toast.makeText(SignUpActivity.this,"Server is not working",Toast.LENGTH_LONG).show();

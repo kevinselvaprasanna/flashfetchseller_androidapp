@@ -406,6 +406,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     UserProfile.setEmail(mEmail, LoginActivity.this);
                     UserProfile.setCategory(ResponseJSON.getJSONObject("data").getInt("cat"), LoginActivity.this);
                     UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"), LoginActivity.this);
+                    UserProfile.setName(ResponseJSON.getJSONObject("data").getString("user"), LoginActivity.this);
+                    UserProfile.setPhone(ResponseJSON.getJSONObject("data").getString("mobile"), LoginActivity.this);
+                    UserProfile.setPassword(ResponseJSON.getJSONObject("data").getString("password"), LoginActivity.this);
+                    UserProfile.setShopId(ResponseJSON.getJSONObject("data").getString("shopid"), LoginActivity.this);
+                    UserProfile.setShopPhone(ResponseJSON.getJSONObject("data").getString("office_no"), LoginActivity.this);
+                    UserProfile.setAddress1(ResponseJSON.getJSONObject("data").getString("Address1"), LoginActivity.this);
+                    UserProfile.setAddress2(ResponseJSON.getJSONObject("data").getString("Address2"), LoginActivity.this);
+                    UserProfile.setShopName(ResponseJSON.getJSONObject("data").getString("shopname"), LoginActivity.this);
+                    UserProfile.setLocation(ResponseJSON.getJSONObject("data").getString("sel_loc"), LoginActivity.this);
                     return true;
                 }
               /*  else if (mEmail.equals("abc@def")&&mPassword.equals("123456"))
@@ -426,9 +435,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-                Intent intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
+               /* Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(i);*/
+                Intent intent = new Intent(LoginActivity.this,StartActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("LOGIN", true);
+                startActivity(intent);
+                intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
                 startService(intent);
                 finish();
             } else {

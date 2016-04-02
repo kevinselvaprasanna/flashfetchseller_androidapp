@@ -56,8 +56,10 @@ public class feedback extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
-            PostParams.add(new PostParam("type",text));
-            JSONObject ResponseJSON = PostRequest.execute("", PostParams, null);
+            PostParams.add(new PostParam("email",UserProfile.getEmail(feedback.this)));
+            PostParams.add(new PostParam("token",UserProfile.getToken(feedback.this)));
+            PostParams.add(new PostParam("feed",text));
+            JSONObject ResponseJSON = PostRequest.execute(URLConstants.URLFeedback, PostParams, null);
             Log.d("RESPONSE", ResponseJSON.toString());
 
 

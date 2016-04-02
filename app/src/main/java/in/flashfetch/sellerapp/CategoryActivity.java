@@ -209,12 +209,13 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         int product =1;
         for(int i=0;i<headers.size();i++) {
             List<Boolean> bools = check.get(headers.get(i));
+            product = product*cat_head[i];
             for(int j=0;j<bools.size();j++)
             {
                 if(bools.get(j))
                 {
-                    //product = product*product(i,j)*cat_head[i];
-                    product = product*cat_head[i];
+                    //product = product*product(i,j)
+
                 }
             }
         }

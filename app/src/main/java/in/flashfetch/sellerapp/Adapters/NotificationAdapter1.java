@@ -122,7 +122,6 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
         //TODO: Populate items depending on the holder returned via LayoutSelect
         //TODO: Set typeface for text
 
-        //th = new TimeHelper();
         if(getItemViewType(position)==1) {
             holder.name1.setText(mItems.get(position).name);
             holder.name1.setTypeface(font);
@@ -184,21 +183,26 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
             holder.price_amount.setTypeface(font);
             holder.price_quoted.setText(String.valueOf(mItems.get(position).qprice));
             holder.price_quoted.setTypeface(font);
-            CountDownTimer countDownTimer = new CountDownTimer(System.currentTimeMillis()-mItems.get(position).time,1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    int hr = (int) (millisUntilFinished / 3600000);
-                    int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
-                    int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
-                    holder.time_left.setText(hr + ":" + min + ":" + sec);
-                }
+            if(mItems.get(position).time - System.currentTimeMillis() > 0) {
+                CountDownTimer countDownTimer = new CountDownTimer( mItems.get(position).time - System.currentTimeMillis(), 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        int hr = (int) (millisUntilFinished / 3600000);
+                        int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
+                        int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
+                        holder.time_left.setText(hr + ":" + min + ":" + sec);
+                    }
 
-                @Override
-                public void onFinish() {
-                    holder.time_left.setText("Time Up");
-                }
-            };
-            countDownTimer.start();
+                    @Override
+                    public void onFinish() {
+                        holder.time_left.setText("Time Up");
+                    }
+                };
+                countDownTimer.start();
+            }else
+            {
+                holder.time_left.setText("Time Up");
+            }
             holder.quoted.setTypeface(font);
             holder.price_amount.setTypeface(font);
             holder.quoted.setText("Quoted");

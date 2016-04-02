@@ -21,6 +21,10 @@ public class StartActivity extends AppCompatActivity {
             startActivity(new Intent(StartActivity.this,CategoryActivity.class));
             finish();
         }
+        if (getIntent().getBooleanExtra("LOGIN", false)) {
+            startActivity(new Intent(StartActivity.this,MainActivity.class));
+            finish();
+        }
         setContentView(R.layout.signup);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);

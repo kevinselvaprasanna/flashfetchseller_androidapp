@@ -3,6 +3,7 @@ package in.flashfetch.sellerapp;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +46,7 @@ public class QuoteActivity extends AppCompatActivity {
     ImageView upimg;
     QuoteTask qt;
     int deltype,type;
-    int distance=0;
+    String distance;
     String comment,qprice,id;
     TextView uplimg,name,tprice,buyer_name,buyer_location,timer,same,similar,home_del,shop_vis,more_deals,quote_now;
 
@@ -53,7 +56,7 @@ public class QuoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quote);
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
-        ArrayList<Notification> mItem =  Notification.getNotification(this, id);
+        final ArrayList<Notification> mItem =  Notification.getNotification(this, id);
         name = (TextView)findViewById(R.id.name);   //Name of product
         name.setText(mItem.get(0).name);
         tprice = (TextView)findViewById(R.id.price_product);  //Retrieved price of product
@@ -61,23 +64,45 @@ public class QuoteActivity extends AppCompatActivity {
         buyer_name = (TextView)findViewById(R.id.buyer_name);
         buyer_name.setText(mItem.get(0).buyer_name);
         buyer_location = (TextView)findViewById(R.id.buyer_location);
-        buyer_location.setText(mItem.get(0).loc);
+        distance = mItem.get(0).loc;
         timer = (TextView)findViewById(R.id.timer);
-        CountDownTimer countDownTimer = new CountDownTimer(mItem.get(0).time - System.currentTimeMillis(),1000) {    //30000->30s, time of timer 1000->1s, time of update
-            @Override
-            public void onTick(long millisUntilFinished) {
-                timer.setText(String.valueOf(millisUntilFinished/1000));
-            }
+        upimg = (ImageView)findViewById(R.id.picture1);
+        Glide
+                .with(QuoteActivity.this)
+                .load(mItem.get(0).imgurl)
+                .centerCrop()
+                .into(upimg);
+        if(mItem.get(0).time - System.currentTimeMillis() > 0) {
+            CountDownTimer countDownTimer = new CountDownTimer( mItem.get(0).time - System.currentTimeMillis(), 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    int hr = (int) (millisUntilFinished / 3600000);
+                    int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
+                    int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
+                    timer.setText(hr + ":" + min + ":" + sec);
+                }
 
-            @Override
-            public void onFinish() {
-                timer.setText("Expired");
-            }
-        };
+                @Override
+                public void onFinish() {
+                    timer.setText("Time Up");
+                }
+            };
+            countDownTimer.start();
+        }else
+        {
+            timer.setText("Time Up");
+        }
         more_deals = (TextView)findViewById(R.id.deals_more); //Go Back
+        more_deals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mItem.get(0).url));
+                startActivity(browserIntent);
+            }
+        });
 
-        buyer_location.setText("Distance:"+distance+"km");  //Enter distance in KM
-
+        //buyer_location.setText("Distance:"+distance+"km");  //Enter distance in KM
+        buyer_location.setText(distance);
         comnts = (EditText)findViewById(R.id.Comments);
 
        //upimg = (ImageView)findViewById(R.id.uploadimg);
@@ -178,7 +203,7 @@ public class QuoteActivity extends AppCompatActivity {
 
     private boolean validate()
     {
-        if(Integer.parseInt(price_quote.getText().toString())!=0)
+        if(price_quote.getText().length()!=0)
         {
             return true;
         }

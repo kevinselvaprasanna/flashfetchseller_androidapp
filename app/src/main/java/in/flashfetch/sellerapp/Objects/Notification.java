@@ -73,7 +73,7 @@ public class Notification {
         }
     }*/
 
-    public static String[] columns = {"id","buyer_name", "name", "imgurl", "price","timesent", "time","loc","quoted","qprice","type","deltype","comment","bargained","bgprice","bgexptime","cuscon","selcon"};
+    public static String[] columns = {"id","buyer_name", "name", "url", "imgurl", "price","timesent", "time","loc","quoted","qprice","type","deltype","comment","bargained","bgprice","bgexptime","cuscon","selcon"};
     public static String TABLE_NAME = "Notifications";
 
     /*public Notification(String id, String name, String imgurl, String price ,Long time) {
@@ -84,7 +84,7 @@ public class Notification {
         this.time = time;
         this.qouted =false;
     }*/
-    public Notification(String id, String buyer_name, String name, String imgurl, String price ,Long timesent,Long time,String loc, Boolean quoted, String qprice, Boolean type,Boolean deltype,String comment,Boolean bargained, String bgprice,long bgexptime, Boolean cuscon, Boolean selcon) {
+    public Notification(String id, String buyer_name, String name, String url, String imgurl, String price ,Long timesent,Long time,String loc, Boolean quoted, String qprice, Boolean type,Boolean deltype,String comment,Boolean bargained, String bgprice,long bgexptime, Boolean cuscon, Boolean selcon) {
         this.id = id;
         this.buyer_name = buyer_name;
         this.name = name;
@@ -93,6 +93,7 @@ public class Notification {
         this.time = time;
         this.timesent = timesent;
         this.loc = loc;
+        this.url = url;
         this.quoted = quoted;
         this.qprice = qprice;
         this.type = type;
@@ -115,7 +116,7 @@ public class Notification {
     }
 
     public static Notification parseNot(Cursor c) {
-        Notification not = new Notification(c.getString(0),c.getString(1), c.getString(2), c.getString(3), c.getString(4),c.getLong(5),c.getLong(6),c.getString(7),c.getInt(8)==1, c.getString(9),c.getInt(10)== 1, c.getInt(11)==1,c.getString(12),c.getInt(13)==1,c.getString(14),c.getLong(15), c.getInt(16)==1,c.getInt(17)==1);
+        Notification not = new Notification(c.getString(0),c.getString(1), c.getString(2),c.getString(3), c.getString(4), c.getString(5),c.getLong(6),c.getLong(7),c.getString(8),c.getInt(9)==1, c.getString(10),c.getInt(11)== 1, c.getInt(12)==1,c.getString(13),c.getInt(14)==1,c.getString(15),c.getLong(16), c.getInt(17)==1,c.getInt(18)==1);
         return not;
     }
 
@@ -147,6 +148,7 @@ public class Notification {
         cv.put("imgurl", imgurl);
         cv.put("price",price);
         cv.put("loc",loc);
+        cv.put("url",url);
         cv.put("buyer_name",buyer_name);
         cv.put("timesent",timesent);
         //cv.put("price", Integer.parseInt(data.getString("price")));
