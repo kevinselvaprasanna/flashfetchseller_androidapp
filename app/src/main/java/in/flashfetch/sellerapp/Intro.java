@@ -32,6 +32,7 @@ public class Intro extends Activity{
     Typeface font;
     int flipcount=1;
     ImageView thumb1,thumb2,thumb3,thumb4;
+    ImageView page1,page2,page3,page4;
 
 
     @Override
@@ -82,6 +83,10 @@ public class Intro extends Activity{
         thumb2 = (ImageView)findViewById(R.id.view_screen_2);
         thumb3 = (ImageView)findViewById(R.id.view_screen_3);
         thumb4 = (ImageView)findViewById(R.id.view_screen_4);
+        page1 = (ImageView)findViewById(R.id.main_screen_1);
+        page2 = (ImageView)findViewById(R.id.main_screen_2);
+        page3 = (ImageView)findViewById(R.id.main_screen_3);
+        page4 = (ImageView)findViewById(R.id.main_screen_4);
 
         thumb1.setScaleX(2);
         thumb1.setScaleY(2);
@@ -132,8 +137,8 @@ public class Intro extends Activity{
                     if (viewFlipper.getDisplayedChild() == 3) {
 
                     }
-                    viewFlipper.setInAnimation(Intro.this, R.anim.left_out);
-                    viewFlipper.setOutAnimation(Intro.this, R.anim.right_in);
+                    //viewFlipper.setInAnimation(Intro.this, R.anim.left_out);
+                    //viewFlipper.setOutAnimation(Intro.this, R.anim.right_in);
                     viewFlipper.showNext();
                     flipcount++;
                     flipcount = flipcount>4?4:flipcount;
@@ -141,8 +146,8 @@ public class Intro extends Activity{
                     if (viewFlipper.getDisplayedChild() == 0) {
 
                     }
-                    viewFlipper.setInAnimation(Intro.this, R.anim.right_out);
-                    viewFlipper.setOutAnimation(Intro.this, R.anim.left_in);
+                    //viewFlipper.setInAnimation(Intro.this, R.anim.right_out);
+                    //viewFlipper.setOutAnimation(Intro.this, R.anim.left_in);
                     viewFlipper.showPrevious();
                     flipcount--;
                     flipcount = flipcount<0?0:flipcount;
@@ -152,18 +157,34 @@ public class Intro extends Activity{
                     case 1:
                         thumb1.setScaleY(2);
                         thumb1.setScaleX(2);
+                        /*page1.setVisibility(View.VISIBLE);
+                        page2.setVisibility(View.INVISIBLE);
+                        page3.setVisibility(View.INVISIBLE);
+                        page4.setVisibility(View.INVISIBLE);*/
                         break;
                     case 2:
                         thumb2.setScaleY(2);
                         thumb2.setScaleX(2);
+                        /*page1.setVisibility(View.INVISIBLE);
+                        page2.setVisibility(View.VISIBLE);
+                        page3.setVisibility(View.INVISIBLE);
+                        page4.setVisibility(View.INVISIBLE);*/
                         break;
                     case 3:
                         thumb3.setScaleY(2);
                         thumb3.setScaleX(2);
+                        /*page1.setVisibility(View.INVISIBLE);
+                        page2.setVisibility(View.INVISIBLE);
+                        page3.setVisibility(View.VISIBLE);
+                        page4.setVisibility(View.INVISIBLE);*/
                         break;
                     case 4:
                         thumb4.setScaleY(2);
                         thumb4.setScaleX(2);
+                        /*page1.setVisibility(View.INVISIBLE);
+                        page2.setVisibility(View.INVISIBLE);
+                        page3.setVisibility(View.INVISIBLE);
+                        page4.setVisibility(View.VISIBLE);*/
                         button.setVisibility(View.VISIBLE);
                         break;
                 }

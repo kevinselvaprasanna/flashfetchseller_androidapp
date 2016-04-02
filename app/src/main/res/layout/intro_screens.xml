@@ -16,7 +16,7 @@
                     android:layout_height="fill_parent"
                     android:id="@+id/main_screen_1"
                     android:layout_gravity="center"
-                    android:src="@mipmap/page1"
+                    android:src="@drawable/new_1"
                     android:scaleType="fitXY" />
                 </LinearLayout>
 
@@ -52,7 +52,7 @@
                     android:layout_height="fill_parent"
                     android:id="@+id/main_screen_4"
                     android:layout_gravity="center"
-                    android:src="@mipmap/page4"
+                    android:src="@drawable/get_started"
                     android:scaleType="fitXY" />
             </LinearLayout>
 

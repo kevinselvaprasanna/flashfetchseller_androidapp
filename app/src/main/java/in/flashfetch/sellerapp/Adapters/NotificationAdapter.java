@@ -128,6 +128,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }else
         {
             holder.time.setText("Time Up");
+            holder.quote.setVisibility(View.GONE);
         }
      /*   holder.quote.setOnClickListener(new View.OnClickListener() {
             @Override

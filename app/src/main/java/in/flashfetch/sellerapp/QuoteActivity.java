@@ -107,18 +107,20 @@ public class QuoteActivity extends AppCompatActivity {
 
        //upimg = (ImageView)findViewById(R.id.uploadimg);
         uplimg = (TextView)findViewById(R.id.uplimg);
+        uplimg.setVisibility(View.GONE);
 
 
         home_del = (TextView)findViewById(R.id.home_del);
         shop_vis = (TextView)findViewById(R.id.shop_vis);
+        home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
+        shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+        deltype =1;
         home_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-                shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
-                deltype =0;
-
                 shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
+                deltype =0;
                 //Home del selected
             }
         });
@@ -134,6 +136,9 @@ public class QuoteActivity extends AppCompatActivity {
 
         same = (TextView)findViewById(R.id.same);
         similar = (TextView)findViewById(R.id.similar);
+        same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+        similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+        type =0;
         same.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
