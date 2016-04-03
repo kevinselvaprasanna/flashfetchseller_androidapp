@@ -51,8 +51,8 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
 
 
     public static class ViewHolder extends NotificationAdapter.ViewHolder{
-        TextView name,price_final;
-        LinearLayout notsfeed,call,location;
+        TextView name,price_final,caller,pickup,buyer_name;
+        LinearLayout notsfeed,pickup_accept;
         ImageView imageview;
         CardView cv;
 
@@ -60,10 +60,12 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
             super(itemView);
             imageview = (ImageView)itemView.findViewById(R.id.imageView);
             name =(TextView)itemView.findViewById(R.id.name);
+            buyer_name = (TextView) itemView.findViewById(R.id.buyer_name);
             price_final = (TextView)itemView.findViewById(R.id.price_final);
             notsfeed = (LinearLayout)itemView.findViewById(R.id.notsfeed);
-            call = (LinearLayout)itemView.findViewById(R.id.call);
-            location = (LinearLayout)itemView.findViewById(R.id.location);
+            caller = (TextView) itemView.findViewById(R.id.caller);
+            pickup = (TextView) itemView.findViewById(R.id.pickup);
+            pickup_accept = (LinearLayout) itemView.findViewById(R.id.pickup_accept);
             cv = (CardView)itemView.findViewById(R.id.card_view);
         }
     }
@@ -96,23 +98,38 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         holder.name.setTypeface(font);
         holder.price_final.setTypeface(font);
         holder.price_final.setText("Final price" + mItems.get(position).qprice);
-        holder.call.setOnClickListener(new View.OnClickListener() {
+        holder.caller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "Call", Toast.LENGTH_SHORT).show();
             }
         });
-        holder.location.setOnClickListener(new View.OnClickListener() {
+
+
+        //NOTE:
+        /*
+        To switch between the three views, you can change the visibility of pickup_accept layout and
+        To display both call and pick up option, leave everything as is
+        For the layout of pre-delivery, change visibility of call to GONE and change the text of PickUp to 'Delivery Executive Picked Up
+        For the layout after pickup, change visibility of pickup_accept to INVISIBLE'
+        * */
+
+        holder.caller.setVisibility(View.VISIBLE);
+        holder.pickup.setText("Picked Up");
+        holder.pickup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"Locate",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"Picked Up",Toast.LENGTH_SHORT).show();
             }
         });
+        holder.pickup_accept.setVisibility(View.VISIBLE);
+        holder.buyer_name.setText("Buyer Name: "+mItems.get(position).buyer_name);
         Glide
                 .with(mContext)
                 .load(mItems.get(position).imgurl)
                 .centerCrop()
                 .into(holder.imageview);
+
 
         //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
         /*holder.notsfeed.setOnClickListener(new View.OnClickListener() {

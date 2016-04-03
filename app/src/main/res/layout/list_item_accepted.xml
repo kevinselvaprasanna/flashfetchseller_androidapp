@@ -43,13 +43,15 @@
                 android:layout_marginLeft="5dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Name"
                     android:id="@+id/name"
                     android:padding="2dp"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:ellipsize="end"
+                    android:maxLines="2" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -57,66 +59,47 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Rs. X"
                     android:id="@+id/price_final"
-                    android:padding="2dp"
-                    android:layout_gravity="center_horizontal" />
+                    android:padding="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Buyer Name"
+                    android:id="@+id/buyer_name"
+                    android:padding="2dp" />
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:id="@+id/pickup_accept">
 
-                    <LinearLayout
-                        android:orientation="horizontal"
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Call"
+                        android:id="@+id/caller"
                         android:layout_weight="1"
-                        android:id="@+id/call"
-                        android:background="@color/ff_green">
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textColor="#fff"
+                        android:background="@color/ff_black"
+                        android:padding="2dp"
+                        android:visibility="visible" />
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/imageView"
-                            android:src="@android:drawable/sym_action_call"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="Call"
-                            android:id="@+id/caller"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal"
-                            android:textColor="#fff" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
+                    <TextView
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Picked Up"
+                        android:id="@+id/pickup"
                         android:layout_weight="1"
-                        android:id="@+id/location"
-                        android:background="#0BC6A0"
-                        android:visibility="gone">
+                        android:gravity="center_vertical|center_horizontal"
+                        android:background="@color/ff_green"
+                        android:textColor="#fff"
+                        android:padding="2dp" />
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/imageView6"
-                            android:src="@android:drawable/sym_action_chat" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="Chat"
-                            android:id="@+id/chat"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical|center_horizontal" />
-
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
