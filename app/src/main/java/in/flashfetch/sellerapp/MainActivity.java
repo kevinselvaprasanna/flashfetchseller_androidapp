@@ -3,6 +3,7 @@ package in.flashfetch.sellerapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -195,13 +196,22 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
        if (id == R.id.contact) {
-            return true;
-        }else if (id == R.id.rate) {
+           String phone = "";//Insert number here
+           Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",phone, null));
+           startActivity(intent);
+        }//else if (id == R.id.rate) {
 
-       } else if (id == R.id.share) {
-
+       //}
+        else if (id == R.id.share) {
+           String s = "";   //Playstore link start with http://
+           Intent intent = new Intent(Intent.ACTION_SEND);
+           intent.setType("text/plain");
+           intent.putExtra(Intent.EXTRA_TEXT,s);
+           startActivity(intent);
        } else if (id == R.id.update) {
-
+           String s = "";   //Playstore link, start with http://
+           Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
+           startActivity(browserIntent);
        } else if (id == R.id.notifalert) {
 
        } else if (id==R.id.mlogout){
