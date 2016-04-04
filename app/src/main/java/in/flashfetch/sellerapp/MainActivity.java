@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -210,19 +211,26 @@ public class MainActivity extends AppCompatActivity
            fb.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   //connect to fb
+                   Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""));//Insert FB page link
+                   startActivity(browserIntent);
                }
            });
            twitter.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   //connect to twitter
+                   Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""));//Insert twitter link
+                   startActivity(browserIntent);
                }
            });
            whatsapp.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   //connect to whatsapp
+                   Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
+                   intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+                   intent.putExtra(ContactsContract.Intents.Insert.PHONE, "+919940126973")
+                           .putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
+                           .putExtra(ContactsContract.Intents.Insert.NAME, "FlashFetch");
+                   startActivity(intent);
                }
            });
            dialog.show();
