@@ -211,14 +211,14 @@ public class MainActivity extends AppCompatActivity
            fb.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""));//Insert FB page link
+                   Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/Flashfetch-140606842997095/"));//Insert FB page link
                    startActivity(browserIntent);
                }
            });
            twitter.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""));//Insert twitter link
+                   Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/flashfetch"));//Insert twitter link
                    startActivity(browserIntent);
                }
            });
