@@ -196,21 +196,19 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
        if (id == R.id.contact) {
-           String phone = "";//Insert number here
+           String phone = "+919940126973";//Insert number here
            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",phone, null));
            startActivity(intent);
         }//else if (id == R.id.rate) {
 
        //}
         else if (id == R.id.share) {
-           String s = "";   //Playstore link start with http://
            Intent intent = new Intent(Intent.ACTION_SEND);
            intent.setType("text/plain");
-           intent.putExtra(Intent.EXTRA_TEXT,s);
+           intent.putExtra(Intent.EXTRA_TEXT,"https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp&hl=en");
            startActivity(intent);
        } else if (id == R.id.update) {
-           String s = "";   //Playstore link, start with http://
-           Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
+           Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp&hl=en"));
            startActivity(browserIntent);
        } else if (id == R.id.notifalert) {
 
