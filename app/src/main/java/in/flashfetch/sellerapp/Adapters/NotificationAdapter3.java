@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
 
     Context mContext;
     Typeface font;
+    int condition = 0;
     ArrayList<Notification> mItems;
     //TimeHelper th;
     private static String LOG_TAG = "EventDetails";
@@ -51,15 +53,16 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
 
 
     public static class ViewHolder extends NotificationAdapter.ViewHolder{
-        TextView name,price_final,caller,pickup,buyer_name;
+        TextView name,price_final,caller,pickup,buyer_name,header;
         LinearLayout notsfeed,pickup_accept;
         ImageView imageview;
         CardView cv;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageview = (ImageView)itemView.findViewById(R.id.imageView);
+            imageview = (ImageView)itemView.findViewById(R.id.image);
             name =(TextView)itemView.findViewById(R.id.name);
+            header = (TextView)itemView.findViewById(R.id.header);
             buyer_name = (TextView) itemView.findViewById(R.id.buyer_name);
             price_final = (TextView)itemView.findViewById(R.id.price_final);
             notsfeed = (LinearLayout)itemView.findViewById(R.id.notsfeed);
@@ -104,7 +107,13 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
                 Toast.makeText(mContext, "Call", Toast.LENGTH_SHORT).show();
             }
         });
-
+        holder.pickup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext,"Picked Up",Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.buyer_name.setText("Buyer Name: "+mItems.get(position).buyer_name);
 
         //NOTE:
         /*
@@ -112,23 +121,54 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         To display both call and pick up option, leave everything as is
         For the layout of pre-delivery, change visibility of call to GONE and change the text of PickUp to 'Delivery Executive Picked Up
         For the layout after pickup, change visibility of pickup_accept to INVISIBLE'
+        code with coniditon as the variable to be modified has been added accordingly
         * */
 
-        holder.caller.setVisibility(View.VISIBLE);
-        holder.pickup.setText("Picked Up");
-        holder.pickup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext,"Picked Up",Toast.LENGTH_SHORT).show();
+
+        /*
+        Condition values, and behaviour
+        0 -> call and picked up visible
+        1 -> only picked up visible
+        2 -> call and delivered visible
+        */
+
+
+        switch(condition)
+        {
+            case 0:
+            {
+                holder.caller.setVisibility(View.VISIBLE);
+                holder.pickup_accept.setVisibility(View.VISIBLE);
+                holder.pickup.setText("Picked Up");
+                holder.header.setText("Buyer Pickup:");
+                holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_black));
             }
-        });
-        holder.pickup_accept.setVisibility(View.VISIBLE);
-        holder.buyer_name.setText("Buyer Name: "+mItems.get(position).buyer_name);
+            case 1:
+            {
+                holder.caller.setVisibility(View.GONE);
+                holder.pickup_accept.setVisibility(View.VISIBLE);
+                holder.header.setText("Flashfetch Delivery:");
+                holder.pickup.setText("Picked Up");
+                holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_green));
+
+            }
+            case 2:
+            {
+                holder.caller.setVisibility(View.VISIBLE);
+                holder.pickup.setText("Delivered");
+                holder.pickup_accept.setVisibility(View.VISIBLE);
+                holder.header.setText("Deliver to buyer: "+mItems.get(position).buyer_name);
+                holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_red));
+            }
+        }
+
         Glide
                 .with(mContext)
                 .load(mItems.get(position).imgurl)
                 .centerCrop()
                 .into(holder.imageview);
+
+
 
 
         //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);

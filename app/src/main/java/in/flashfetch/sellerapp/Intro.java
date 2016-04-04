@@ -134,23 +134,21 @@ public class Intro extends Activity{
                         break;
                 }
                 if (mid < current) {
-                    if (viewFlipper.getDisplayedChild() == 3) {
-
+                    if (viewFlipper.getDisplayedChild() != 3) {
+                        //viewFlipper.setInAnimation(Intro.this, R.anim.left_out);
+                        //viewFlipper.setOutAnimation(Intro.this, R.anim.right_in);
+                        viewFlipper.showNext();
+                        flipcount++;
+                        flipcount = flipcount > 4 ? 4 : flipcount;
                     }
-                    //viewFlipper.setInAnimation(Intro.this, R.anim.left_out);
-                    //viewFlipper.setOutAnimation(Intro.this, R.anim.right_in);
-                    viewFlipper.showNext();
-                    flipcount++;
-                    flipcount = flipcount>4?4:flipcount;
                 } else {
-                    if (viewFlipper.getDisplayedChild() == 0) {
-
+                    if (viewFlipper.getDisplayedChild() != 0){
+                        //viewFlipper.setInAnimation(Intro.this, R.anim.right_out);
+                        //viewFlipper.setOutAnimation(Intro.this, R.anim.left_in);
+                        viewFlipper.showPrevious();
+                        flipcount--;
+                        flipcount = flipcount < 0 ? 0 : flipcount;
                     }
-                    //viewFlipper.setInAnimation(Intro.this, R.anim.right_out);
-                    //viewFlipper.setOutAnimation(Intro.this, R.anim.left_in);
-                    viewFlipper.showPrevious();
-                    flipcount--;
-                    flipcount = flipcount<0?0:flipcount;
                 }
                 switch (flipcount)
                 {
