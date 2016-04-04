@@ -97,6 +97,8 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         //TODO: Set typeface for text
         //th = new TimeHelper();
 
+        final NotificationAdapter3.ViewHolder holder1 = holder;
+
         holder.name.setText(mItems.get(position).name);
         holder.name.setTypeface(font);
         holder.price_final.setTypeface(font);
@@ -110,7 +112,8 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         holder.pickup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"Picked Up",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext,"Picked Up",Toast.LENGTH_SHORT).show();
+                holder1.pickup_accept.setVisibility(View.INVISIBLE);
             }
         });
         holder.buyer_name.setText("Buyer Name: "+mItems.get(position).buyer_name);

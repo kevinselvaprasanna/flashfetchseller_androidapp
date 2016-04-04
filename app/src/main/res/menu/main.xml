@@ -6,11 +6,11 @@
         android:icon="@drawable/contact"
         android:title="@string/action1"
         app:showAsAction="never" />
-    <!--<item
-        android:id="@+id/rate"
+    <item
+        android:id="@+id/connect"
         android:icon="@drawable/rate"
         android:title="@string/action2"
-        app:showAsAction="never" />-->
+        app:showAsAction="never" />
     <item
         android:id="@+id/share"
         android:icon="@drawable/share"

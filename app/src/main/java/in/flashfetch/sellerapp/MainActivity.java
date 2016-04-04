@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -199,13 +200,37 @@ public class MainActivity extends AppCompatActivity
            String phone = "+919940126973";//Insert number here
            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",phone, null));
            startActivity(intent);
-        }//else if (id == R.id.rate) {
-
-       //}
+        }else if (id == R.id.connect) {
+           Dialog dialog = new Dialog(this);
+           dialog.setTitle("Connect with Us");
+           dialog.setContentView(R.layout.dialog_connect);
+           LinearLayout fb = (LinearLayout)dialog.findViewById(R.id.fb);
+           LinearLayout twitter = (LinearLayout)dialog.findViewById(R.id.twitter);
+           LinearLayout whatsapp = (LinearLayout)dialog.findViewById(R.id.whatsapp);
+           fb.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   //connect to fb
+               }
+           });
+           twitter.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   //connect to twitter
+               }
+           });
+           whatsapp.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   //connect to whatsapp
+               }
+           });
+           dialog.show();
+       }
         else if (id == R.id.share) {
            Intent intent = new Intent(Intent.ACTION_SEND);
            intent.setType("text/plain");
-           intent.putExtra(Intent.EXTRA_TEXT,"https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp&hl=en");
+           intent.putExtra(Intent.EXTRA_TEXT,"I\'m using the app FlashFetch which connected me to online shoppers and increased my sales. You can get it here: https://goo.gl/1EnBro");//https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp&hl=en
            startActivity(intent);
        } else if (id == R.id.update) {
            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp&hl=en"));
