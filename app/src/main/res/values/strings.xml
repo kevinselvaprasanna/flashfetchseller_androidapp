@@ -42,5 +42,6 @@
     <string name="inven">Inventory</string>
     <string name="feedback_title">Feedback</string>
     <string name="logout">Log Out</string>
+    <string name="ret_pol">Returns Policy</string>
 
 </resources>

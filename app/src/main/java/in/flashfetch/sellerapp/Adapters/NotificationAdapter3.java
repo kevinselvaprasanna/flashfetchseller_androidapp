@@ -5,6 +5,7 @@ package in.flashfetch.sellerapp.Adapters;
  */
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
@@ -14,9 +15,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -163,6 +166,48 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
                 holder.header.setText("Deliver to buyer: "+mItems.get(position).buyer_name);
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_red));
             }
+            case 3:
+            {
+                holder.caller.setVisibility(View.VISIBLE);
+                holder.pickup.setText("Returned");
+                holder.pickup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Dialog dialog = new Dialog(mContext);
+                        dialog.setContentView(R.layout.dialog_returns);
+                        final RadioButton ret = (RadioButton)dialog.findViewById(R.id.ret);
+                        final RadioButton exc = (RadioButton)dialog.findViewById(R.id.exc);
+                        Button button = (Button)dialog.findViewById(R.id.button);
+                        ret.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                exc.setChecked(false);
+                            }
+                        });
+                        exc.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ret.setChecked(false);
+                            }
+                        });
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(ret.isChecked()||exc.isChecked())
+                                {
+                                    //TODO: Add methods
+                                    dialog.cancel();
+                                }
+                            }
+                        });
+                        dialog.show();
+                    }
+                });
+                holder.pickup_accept.setVisibility(View.VISIBLE);
+                holder.header.setText("Return Requested:");
+                holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_red));
+            }
+
         }
 
         Glide

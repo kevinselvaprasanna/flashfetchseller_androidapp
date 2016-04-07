@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|bottom">
+
+<LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Returns Policy number 1\nDescription"
+        android:id="@+id/policy1"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="8dp" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Returns Policy number 2\nDescription"
+        android:id="@+id/policy2"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Returns Policy number 3\nDescription"
+        android:id="@+id/policy3"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Returns Policy number 4\nDescription"
+        android:id="@+id/policy4"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="8dp">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Other"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:id="@+id/check_other"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/edit_other"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical|center_horizontal"
+            android:hint="(Please Specify)" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:layout_marginTop="32dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/button"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/ff_black"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+</LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Returned"
+        android:id="@+id/ret"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exchanged"
+        android:id="@+id/exc"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:id="@+id/button"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#fff"
+        android:background="@color/ff_black" />
+</LinearLayout>

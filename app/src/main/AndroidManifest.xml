@@ -113,7 +113,9 @@
             android:label="@string/notif" />
         <activity android:name=".Req_Ads" />
         <activity android:name=".My_Acc" />
-        <activity android:name=".Shop_Det"></activity>
+        <activity android:name=".Shop_Det" />
+        <activity android:name=".Returns"
+            android:label="@string/ret_pol"></activity>
     </application>
 
 </manifest>
