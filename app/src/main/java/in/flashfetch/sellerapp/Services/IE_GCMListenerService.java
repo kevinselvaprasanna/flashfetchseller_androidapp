@@ -10,10 +10,13 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
@@ -157,7 +160,7 @@ public class IE_GCMListenerService extends GcmListenerService{
 
         defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.not)
+                .setSmallIcon(R.mipmap.nav)
                 .setContentTitle("FlashFetch")
                 .setContentText(email + " at price" +  price)
                 .setSound(defaultSoundUri)
@@ -182,13 +185,19 @@ public class IE_GCMListenerService extends GcmListenerService{
 
 
 
+
         defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.not)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            notificationBuilder.setSmallIcon(R.mipmap.nav_transparent)
+            .setColor(getColor(R.color.ff_red));
+        } else {
+            notificationBuilder.setSmallIcon(R.mipmap.nav);
+        }
 
         notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

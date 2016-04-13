@@ -47,7 +47,7 @@ public class QuoteActivity extends AppCompatActivity {
     QuoteTask qt;
     int deltype,type;
     String distance;
-    String comment,qprice,id;
+    String comment,qprice,id,pname;
     TextView uplimg,name,tprice,buyer_name,buyer_location,timer,same,similar,home_del,shop_vis,more_deals,quote_now;
 
     @Override
@@ -59,6 +59,7 @@ public class QuoteActivity extends AppCompatActivity {
         final ArrayList<Notification> mItem =  Notification.getNotification(this, id);
         name = (TextView)findViewById(R.id.name);   //Name of product
         name.setText(mItem.get(0).name);
+        pname = mItem.get(0).name;
         tprice = (TextView)findViewById(R.id.price_product);  //Retrieved price of product
         tprice.setText("Rs. "+mItem.get(0).price);
         buyer_name = (TextView)findViewById(R.id.buyer_name);
@@ -251,6 +252,7 @@ public class QuoteActivity extends AppCompatActivity {
             try {
                 if(ResponseJSON.getJSONObject("data").getInt("result")==1){
                     ContentValues cv = new ContentValues();
+                    cv.put("pname",pname);
                     cv.put("qprice",qprice);
                     cv.put("type",type);
                     cv.put("deltype",deltype);

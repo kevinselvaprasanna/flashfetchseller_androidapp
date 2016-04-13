@@ -166,7 +166,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             case PLACE_PICKER_REQUEST:
                 if (resultCode == RESULT_OK) {
-                    Place place = PlacePicker.getPlace(data, this);
+                    Place place = PlacePicker.getPlace(this, data);
                     toastMsg = String.format("%s", place.getName());
                     Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                     break;
@@ -265,10 +265,10 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this,"Address 2 cannot be empty",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(toastMsg =="")
+        if(toastMsg.isEmpty())
         {
             Toast.makeText(this,"Select your location",Toast.LENGTH_SHORT).show();
-            return false;
+            //return false;
         }
         return true;
     }
