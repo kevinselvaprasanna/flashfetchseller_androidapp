@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -18,6 +19,7 @@ import android.widget.ViewFlipper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import in.flashfetch.sellerapp.Adapters.IntroPagerAdapter;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
@@ -31,8 +33,8 @@ public class Intro extends Activity{
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     Typeface font;
     int flipcount=1;
-    ImageView thumb1,thumb2,thumb3,thumb4;
-    ImageView page1,page2,page3,page4;
+    //ImageView thumb1,thumb2,thumb3,thumb4;
+    //ImageView page1,page2,page3,page4;
 
 
     @Override
@@ -79,35 +81,21 @@ public class Intro extends Activity{
         setContentView(R.layout.introscreens);
         checkPlayServices();
 
-        setContentView(R.layout.intro_screens);
-        thumb1 = (ImageView)findViewById(R.id.view_screen_1);
-        thumb2 = (ImageView)findViewById(R.id.view_screen_2);
-        thumb3 = (ImageView)findViewById(R.id.view_screen_3);
-        thumb4 = (ImageView)findViewById(R.id.view_screen_4);
-        page1 = (ImageView)findViewById(R.id.main_screen_1);
-        page2 = (ImageView)findViewById(R.id.main_screen_2);
-        page3 = (ImageView)findViewById(R.id.main_screen_3);
-        page4 = (ImageView)findViewById(R.id.main_screen_4);
-
-        thumb1.setScaleX(2);
-        thumb1.setScaleY(2);
-        viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper);
-        final Button button = (Button)findViewById(R.id.get_start);
-        button.setVisibility(View.GONE);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intro.this,StartActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        //setContentView(R.layout.intro_screens);
+        setContentView(R.layout.intro_pager);
+        //page1 = (ImageView)findViewById(R.id.main_screen_1);
+        //page2 = (ImageView)findViewById(R.id.main_screen_2);
+        //page3 = (ImageView)findViewById(R.id.main_screen_3);
+        //page4 = (ImageView)findViewById(R.id.main_screen_4);
+        //viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper);
 
 
-       /* font = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Medium.ttf");*/
+        ViewPager viewPager = (ViewPager)findViewById(R.id.pager);
+        viewPager.setAdapter(new IntroPagerAdapter(this));
+        viewPager.setOffscreenPageLimit(4);
 
-        viewFlipper.setOnTouchListener(new View.OnTouchListener() {
+
+        /*viewFlipper.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Point point = new Point();
@@ -136,16 +124,12 @@ public class Intro extends Activity{
                 }
                 if (mid < current) {
                     if (viewFlipper.getDisplayedChild() != 3) {
-                        //viewFlipper.setInAnimation(Intro.this, R.anim.left_out);
-                        //viewFlipper.setOutAnimation(Intro.this, R.anim.right_in);
                         viewFlipper.showNext();
                         flipcount++;
                         flipcount = flipcount > 4 ? 4 : flipcount;
                     }
                 } else {
                     if (viewFlipper.getDisplayedChild() != 0){
-                        //viewFlipper.setInAnimation(Intro.this, R.anim.right_out);
-                        //viewFlipper.setOutAnimation(Intro.this, R.anim.left_in);
                         viewFlipper.showPrevious();
                         flipcount--;
                         flipcount = flipcount < 0 ? 0 : flipcount;
@@ -156,40 +140,24 @@ public class Intro extends Activity{
                     case 1:
                         thumb1.setScaleY(2);
                         thumb1.setScaleX(2);
-                        /*page1.setVisibility(View.VISIBLE);
-                        page2.setVisibility(View.INVISIBLE);
-                        page3.setVisibility(View.INVISIBLE);
-                        page4.setVisibility(View.INVISIBLE);*/
                         break;
                     case 2:
                         thumb2.setScaleY(2);
                         thumb2.setScaleX(2);
-                        /*page1.setVisibility(View.INVISIBLE);
-                        page2.setVisibility(View.VISIBLE);
-                        page3.setVisibility(View.INVISIBLE);
-                        page4.setVisibility(View.INVISIBLE);*/
                         break;
                     case 3:
                         thumb3.setScaleY(2);
                         thumb3.setScaleX(2);
-                        /*page1.setVisibility(View.INVISIBLE);
-                        page2.setVisibility(View.INVISIBLE);
-                        page3.setVisibility(View.VISIBLE);
-                        page4.setVisibility(View.INVISIBLE);*/
                         break;
                     case 4:
                         thumb4.setScaleY(2);
                         thumb4.setScaleX(2);
-                        /*page1.setVisibility(View.INVISIBLE);
-                        page2.setVisibility(View.INVISIBLE);
-                        page3.setVisibility(View.INVISIBLE);
-                        page4.setVisibility(View.VISIBLE);*/
                         button.setVisibility(View.VISIBLE);
                         break;
                 }
                 return false;
             }
-        });
+        });*/
     }
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
