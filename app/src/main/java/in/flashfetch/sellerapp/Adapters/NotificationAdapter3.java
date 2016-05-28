@@ -94,13 +94,11 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
     }
 
     @Override
-    public void onBindViewHolder(NotificationAdapter3.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final NotificationAdapter3.ViewHolder holder, final int position) {
 
         //TODO: Populate items depending on the holder returned via LayoutSelect
         //TODO: Set typeface for text
         //th = new TimeHelper();
-
-        final NotificationAdapter3.ViewHolder holder1 = holder;
 
         holder.name.setText(mItems.get(position).name);
         holder.name.setTypeface(font);
@@ -115,8 +113,9 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         holder.pickup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(mContext, "Picked Up", Toast.LENGTH_SHORT).show();
                 //Toast.makeText(mContext,"Picked Up",Toast.LENGTH_SHORT).show();
-                holder1.pickup_accept.setVisibility(View.INVISIBLE);
+                holder.pickup_accept.setVisibility(View.INVISIBLE);
             }
         });
         holder.buyer_name.setText("Buyer Name: "+mItems.get(position).buyer_name);
@@ -139,9 +138,11 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         */
 
 
-        switch(condition)
+
+
+        switch(mItems.get(position).del)
         {
-            case 0:
+            case 1:         //When no delivery
             {
                 holder.caller.setVisibility(View.VISIBLE);
                 holder.pickup_accept.setVisibility(View.VISIBLE);
@@ -149,7 +150,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
                 holder.header.setText("Buyer Pickup:");
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_black));
             }
-            case 1:
+            case 2:         //flashfetch delivery
             {
                 holder.caller.setVisibility(View.GONE);
                 holder.pickup_accept.setVisibility(View.VISIBLE);
@@ -158,7 +159,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_green));
 
             }
-            case 2:
+            case 3:         //seller has to delivered
             {
                 holder.caller.setVisibility(View.VISIBLE);
                 holder.pickup.setText("Delivered");
@@ -166,7 +167,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
                 holder.header.setText("Deliver to buyer: "+mItems.get(position).buyer_name);
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_red));
             }
-            case 3:
+            case 4:
             {
                 holder.caller.setVisibility(View.VISIBLE);
                 holder.pickup.setText("Returned");

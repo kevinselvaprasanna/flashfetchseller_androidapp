@@ -18,15 +18,14 @@ import java.util.ArrayList;
  */
 public class Notification {
     public String name,imgurl,price,buyer_name,url,bgprice,qprice;
-    public long time,timesent,bgexptime;
+    public long time,timesent,bgexptime,buyno;
     public String  id,comment,loc;
     public Boolean quoted=false,type,deltype,bargained=false,cuscon,selcon;
-
+    public int del;
 
 
    public Notification(JSONObject not) {
         try {
-            //this.email = not.getString("email");
             this.price = not.getString("Ser_price");
             this.imgurl = not.getString("Ser_image");
             this.time = not.getLong("Cus_expiry");
@@ -51,6 +50,10 @@ public class Notification {
                 }
                 this.cuscon = not.getInt("cuscon")>0;
                 this.selcon = not.getInt("selcon")>0;
+                if(not.getInt("cuscon")>0){
+                    this.del = del;
+                    this.buyno = not.getInt("buyno");
+                }
 
             }
             //this.email = not.getString("name");
@@ -73,7 +76,7 @@ public class Notification {
         }
     }*/
 
-    public static String[] columns = {"id","buyer_name", "name", "url", "imgurl", "price","timesent", "time","loc","quoted","qprice","type","deltype","comment","bargained","bgprice","bgexptime","cuscon","selcon"};
+    public static String[] columns = {"id","buyer_name", "name", "url", "imgurl", "price","timesent", "time","loc","quoted","qprice","type","deltype","comment","bargained","bgprice","bgexptime","cuscon","selcon","del","buyno"};
     public static String TABLE_NAME = "Notifications";
 
     /*public Notification(String id, String name, String imgurl, String price ,Long time) {
@@ -84,7 +87,7 @@ public class Notification {
         this.time = time;
         this.qouted =false;
     }*/
-    public Notification(String id, String buyer_name, String name, String url, String imgurl, String price ,Long timesent,Long time,String loc, Boolean quoted, String qprice, Boolean type,Boolean deltype,String comment,Boolean bargained, String bgprice,long bgexptime, Boolean cuscon, Boolean selcon) {
+    public Notification(String id, String buyer_name, String name, String url, String imgurl, String price ,Long timesent,Long time,String loc, Boolean quoted, String qprice, Boolean type,Boolean deltype,String comment,Boolean bargained, String bgprice,long bgexptime, Boolean cuscon, Boolean selcon,int del, long buyno) {
         this.id = id;
         this.buyer_name = buyer_name;
         this.name = name;
@@ -104,6 +107,8 @@ public class Notification {
         this.bgexptime = bgexptime;
         this.cuscon = cuscon;
         this.selcon = selcon;
+        this.del = del;
+        this.buyno = buyno;
 
     }
 
@@ -116,7 +121,7 @@ public class Notification {
     }
 
     public static Notification parseNot(Cursor c) {
-        Notification not = new Notification(c.getString(0),c.getString(1), c.getString(2),c.getString(3), c.getString(4), c.getString(5),c.getLong(6),c.getLong(7),c.getString(8),c.getInt(9)==1, c.getString(10),c.getInt(11)== 1, c.getInt(12)==1,c.getString(13),c.getInt(14)==1,c.getString(15),c.getLong(16), c.getInt(17)==1,c.getInt(18)==1);
+        Notification not = new Notification(c.getString(0),c.getString(1), c.getString(2),c.getString(3), c.getString(4), c.getString(5),c.getLong(6),c.getLong(7),c.getString(8),c.getInt(9)==1, c.getString(10),c.getInt(11)== 1, c.getInt(12)==1,c.getString(13),c.getInt(14)==1,c.getString(15),c.getLong(16), c.getInt(17)==1,c.getInt(18)==1,c.getInt(19),c.getLong(20));
         return not;
     }
 
@@ -151,7 +156,6 @@ public class Notification {
         cv.put("url",url);
         cv.put("buyer_name",buyer_name);
         cv.put("timesent",timesent);
-        //cv.put("price", Integer.parseInt(data.getString("price")));
         cv.put("time", time);
         cv.put("id", id);
         if (quoted.equals("1")) {
@@ -166,6 +170,7 @@ public class Notification {
             }
             cv.put("comment", comment);
             cv.put("cuscon", cuscon);
+            cv.put("del",del);
         } else {
             cv.put("quoted", 0);
         }

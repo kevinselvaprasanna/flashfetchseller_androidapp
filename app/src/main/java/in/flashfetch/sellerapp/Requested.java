@@ -37,16 +37,13 @@ public class Requested extends Fragment {
     //private String mParam1;
     //private String mParam2;
 
-    private Context mContext;
+    private Context mContext= getActivity();
     Typeface font;
 
-   // private OnFragmentInteractionListener mListener;
 
-    public Requested(Context context) {
-        mContext = context;
-        // Required empty public constructor
-    }
 
+    // private OnFragmentInteractionListener mListener;
+    
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -88,6 +85,7 @@ public class Requested extends Fragment {
         LinearLayoutManager layoutManager;
         RecyclerView rvNot;
         ArrayList<Notification> nots;
+        mContext= getActivity();
 
 
         rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
@@ -99,7 +97,7 @@ public class Requested extends Fragment {
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
-        nots = Notification.getAllNotifications(mContext);
+        nots = Notification.getAllNotifications(getActivity());
 
         //initialize events feed adapter
        NotificationAdapter notsAdapter = new NotificationAdapter(mContext,0,nots);

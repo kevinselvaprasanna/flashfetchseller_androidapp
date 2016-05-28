@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -101,6 +102,8 @@ public class IE_GCMListenerService extends GcmListenerService{
                     Date resultdate = new Date(yourmilliseconds);
                     if(data.getString("cuscon").equals("0")){
                         sendNotification("Bargain Request", "You have a bargain request for the deal provided on " + data.getString("name") + ". You have to respond by" + resultdate);
+                        cv.put("del",data.getInt("del"));
+                        cv.put("buyno",data.getLong("buyno"));
                     }
 
                 }else ;
@@ -194,7 +197,7 @@ public class IE_GCMListenerService extends GcmListenerService{
                 .setContentIntent(pendingIntent);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationBuilder.setSmallIcon(R.mipmap.nav_transparent)
-            .setColor(getColor(R.color.ff_notif));
+            .setColor(Color.RED);
         } else {
             notificationBuilder.setSmallIcon(R.mipmap.nav);
         }

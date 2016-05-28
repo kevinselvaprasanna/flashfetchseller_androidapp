@@ -364,6 +364,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
+        JSONObject ResponseJSON;
         private final String mPassword;
 
         UserLoginTask(String email, String password) {
@@ -376,14 +377,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
 
-            for (String credential : DUMMY_CREDENTIALS) {
+          /*  for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split("check@check.com:hello");
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
                     return pieces[1].equals(mPassword);
                 }
-            }
-            JSONObject ResponseJSON;
+            }*/
+
             ArrayList<PostParam> iPostParams = new ArrayList<PostParam>();
             PostParam postemail = new PostParam("email", mEmail);
             PostParam postpassword = new PostParam("pass",mPassword);
@@ -417,6 +418,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     UserProfile.setLocation(ResponseJSON.getJSONObject("data").getString("sel_loc"), LoginActivity.this);
                     return true;
                 }
+                else if(ResponseJSON.getJSONObject("data").getInt("result")==0) {
+                    return false;
+                }
               /*  else if (mEmail.equals("abc@def")&&mPassword.equals("123456"))
                 {
                     return true;
@@ -434,19 +438,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-               /* Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);*/
-                Intent intent = new Intent(LoginActivity.this,StartActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("LOGIN", true);
-                startActivity(intent);
-                intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
-                startService(intent);
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+            try {
+                if (ResponseJSON.getJSONObject("data").getInt("result")==1) {
+                   /* Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(i);*/
+                    Intent intent = new Intent(LoginActivity.this,StartActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("LOGIN", true);
+                    startActivity(intent);
+                    intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
+                    startService(intent);
+                    finish();
+                } else if(ResponseJSON.getJSONObject("data").getInt("result")==0){
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                }else {
+                    Snackbar.make(mLoginFormView,"Network not available",Snackbar.LENGTH_LONG);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 

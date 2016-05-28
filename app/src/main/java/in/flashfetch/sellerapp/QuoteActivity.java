@@ -263,9 +263,12 @@ public class QuoteActivity extends AppCompatActivity {
                     dh.addNot(cv);
                     startActivity(new Intent(QuoteActivity.this,MainActivity.class));
                     finish();
+                }else {
+                    Toast.makeText(QuoteActivity.this,R.string.SERVER_ERROR,Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                Toast.makeText(QuoteActivity.this,R.string.SERVER_ERROR,Toast.LENGTH_LONG).show();
             }
 
         }

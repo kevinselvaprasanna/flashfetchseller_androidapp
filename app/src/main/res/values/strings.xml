@@ -43,5 +43,6 @@
     <string name="feedback_title">Feedback</string>
     <string name="logout">Log Out</string>
     <string name="ret_pol">Returns Policy</string>
+    <string name="SERVER_ERROR">server error</string>
 
 </resources>

@@ -28,7 +28,8 @@ public class IntroPagerAdapter extends android.support.v4.view.PagerAdapter{
 
     private Context mcontext;
     LayoutInflater layoutInflater;
-    int[] res = {R.drawable.new_res,R.mipmap.page2,R.mipmap.page3,R.drawable.get_started_res};
+    //int[] res = {R.drawable.new_res,R.mipmap.page2,R.mipmap.page3,R.drawable.get_started_res};
+    int[] res = {R.mipmap.page1,R.mipmap.page2,R.mipmap.page3,R.mipmap.page4};
 
     public IntroPagerAdapter(Context context)
     {

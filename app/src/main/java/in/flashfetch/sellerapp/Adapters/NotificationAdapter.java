@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,11 +49,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private static String LOG_TAG = "EventDetails";
     int LayoutSelector;
 
-    /*0 -> item_notification
-     1 -> list_item_provided_2
-     2 -> list_item_provided_2
-     3-> list_item_accepted
-    */
 
 
     public NotificationAdapter(Context context, int LayoutSelect, ArrayList<Notification> items) {
@@ -113,6 +109,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             CountDownTimer countDownTimer = new CountDownTimer( mItems.get(position).time - System.currentTimeMillis(), 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
+                    holder.quote.setVisibility(View.VISIBLE);
+                    holder.time.setBackgroundColor(Color.parseColor("#0BC6A0"));
                     int hr = (int) (millisUntilFinished / 3600000);
                     int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
                     int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
@@ -142,7 +140,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             @Override
             public void onClick(View v) {
                 if(!Connectivity.isNetworkAvailable(mContext)){
-                    Toast.makeText(mContext,"NETOWRK NOT AVAILABLE",Toast.LENGTH_SHORT);
+                    Toast.makeText(mContext,"NETWORK NOT AVAILABLE",Toast.LENGTH_SHORT);
                 }
                 DeclineTask dt = new DeclineTask(mItems.get(position).id);
                 dt.execute();

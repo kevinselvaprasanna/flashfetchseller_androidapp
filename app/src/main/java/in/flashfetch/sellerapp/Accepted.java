@@ -40,12 +40,11 @@ public class Accepted extends Fragment {
 
     Typeface font;
 
+
+
     // private OnFragmentInteractionListener mListener;
 
-    public Accepted(Context context) {
-        mContext = context;
-        // Required empty public constructor
-    }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -92,6 +91,7 @@ public class Accepted extends Fragment {
         RecyclerView rvNot;
         ArrayList<Notification> nots;
 
+        mContext=getActivity();
 
         rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
         layoutManager = new LinearLayoutManager(mContext);

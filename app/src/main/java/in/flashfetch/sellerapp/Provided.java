@@ -36,22 +36,19 @@ public class Provided extends Fragment {
     //private String mParam1;
     //private String mParam2;
 
-    private Context mContext;
+    private Context mContext = getActivity();
     Typeface font;
+
+
 
     // private OnFragmentInteractionListener mListener;
 
-    public Provided(Context context) {
-        mContext = context;
-        // Required empty public constructor
-    }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment Requested.
      */
     // TODO: Rename and change types and number of parameters
@@ -95,6 +92,7 @@ public class Provided extends Fragment {
 
         //set the recycler view to use the linear layout manager
         rvNot.setLayoutManager(layoutManager);
+        mContext= getActivity();
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
@@ -103,7 +101,7 @@ public class Provided extends Fragment {
         //initialize events feed adapter
 
         //put conidition to switch layout
-        NotificationAdapter1 notsAdapter = new NotificationAdapter1(mContext, 2,Notification.getQNotifications(mContext));
+        NotificationAdapter1 notsAdapter = new NotificationAdapter1(mContext, 2,Notification.getQNotifications(getActivity()));
 
         //Use the events feed adapter
         rvNot.setAdapter(notsAdapter);

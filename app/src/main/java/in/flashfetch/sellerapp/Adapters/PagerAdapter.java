@@ -25,11 +25,11 @@ import in.flashfetch.sellerapp.Requested;
     public Fragment getItem(int i) {
         switch(i){
             case 0:
-                return new Requested(mContext);
+                return new Requested();
             case 1:
-                return new Provided(mContext);
+                return new Provided();
             case 2:
-                return new Accepted(mContext);
+                return new Accepted();
         }
         return null;
     }

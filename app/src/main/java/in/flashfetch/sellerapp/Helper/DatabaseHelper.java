@@ -38,7 +38,7 @@ public class DatabaseHelper {
         public void onCreate(SQLiteDatabase db) {
             // TODO Auto-generated method stub _id INTEGER PRIMARY KEY
            /* db.execSQL(" DROP TABLE IF EXISTS " + Notification.TABLE_NAME);*/
-            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY,buyer_name VARCHAR, name VARCHAR,url VARCHAR DEFAULT 'http://www.jfgbuofbgabwiewak.com/', imgurl VARCHAR, price VARCHAR, timesent BIGINT, time BIGINT,loc VARCHAR, quoted INT DEFAULT 0, qprice VARCHAR DEFAULT '0', type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',bargained INT DEFAULT 0,bgprice VARCHAR DEFAULT ' ',bgexptime BIGINT DEFAULT 1459424183578,cuscon INT DEFAULT 0,selcon INT DEFAULT 0)");
+            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY,buyer_name VARCHAR, name VARCHAR,url VARCHAR DEFAULT 'http://www.jfgbuofbgabwiewak.com/', imgurl VARCHAR, price VARCHAR, timesent BIGINT, time BIGINT,loc VARCHAR, quoted INT DEFAULT 0, qprice VARCHAR DEFAULT '0', type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',bargained INT DEFAULT 0,bgprice VARCHAR DEFAULT ' ',bgexptime BIGINT DEFAULT 1459424183578,cuscon INT DEFAULT 0,selcon INT DEFAULT 0,del INT DEFAULT 0,buyno BIGINT DEFAULT 0)");
                     Log.d("dmydb", "DATABSE CREATED");
             db.execSQL("CREATE TABLE " + Nots.TABLE_NAME + "(id VARCHAR PRIMARY KEY,text VARCHAR,time BIGINT)");
             Log.d("dmydb", "DATABSE CREATED");
