@@ -252,7 +252,7 @@ public class QuoteActivity extends AppCompatActivity {
             try {
                 if(ResponseJSON.getJSONObject("data").getInt("result")==1){
                     ContentValues cv = new ContentValues();
-                    cv.put("pname",pname);
+                    cv.put("name",pname);
                     cv.put("qprice",qprice);
                     cv.put("type",type);
                     cv.put("deltype",deltype);
