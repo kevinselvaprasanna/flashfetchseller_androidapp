@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import in.flashfetch.sellerapp.Accepted;
+import in.flashfetch.sellerapp.DialogFragment;
+import in.flashfetch.sellerapp.MainActivity;
 import in.flashfetch.sellerapp.Provided;
 import in.flashfetch.sellerapp.Requested;
 
@@ -15,22 +17,27 @@ import in.flashfetch.sellerapp.Requested;
 
     private String[] titles = {"Requested", "Provided", "Accepted" };
     private Context mContext;
+    private boolean isAccessAllowed;
 
-    public PagerAdapter(FragmentManager fm, Context context) {
+    public PagerAdapter(FragmentManager fm, Context context,boolean isaccess) {
         super(fm);
         mContext = context;
+        this.isAccessAllowed=isaccess;
     }
 
     @Override
     public Fragment getItem(int i) {
-        switch(i){
-            case 0:
-                return new Requested();
-            case 1:
-                return new Provided();
-            case 2:
-                return new Accepted();
-        }
+        if(isAccessAllowed) {
+            switch (i) {
+                case 0:
+                    return new Requested();
+                case 1:
+                    return new Provided();
+                case 2:
+                    return new Accepted();
+            }
+        } else
+        return new DialogFragment();
         return null;
     }
 

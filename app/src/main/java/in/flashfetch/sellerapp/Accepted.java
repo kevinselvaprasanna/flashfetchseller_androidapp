@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,8 @@ public class Accepted extends Fragment {
         rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
         layoutManager = new LinearLayoutManager(mContext);
 
+        TextView acctext=(TextView)view.findViewById(R.id.acceptedtext);
+        acctext.setVisibility(View.GONE);
         //set the recycler view to use the linear layout manager
         rvNot.setLayoutManager(layoutManager);
 
@@ -108,9 +111,12 @@ public class Accepted extends Fragment {
 
         //Use the events feed adapter
         rvNot.setAdapter(notsAdapter);
+
+        if(Requested.requestnumber==0||Requested.requestnumber==1) acctext.setVisibility(View.VISIBLE);
         return view;
 
-    }/*
+    }
+    /*
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

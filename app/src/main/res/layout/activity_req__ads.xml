@@ -23,23 +23,29 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:padding="4dp">
+        android:padding="4dp"
+        android:id="@+id/start_layout">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Starting From"
+            android:text="Select starting date"
             android:id="@+id/datestart"
             android:layout_weight="1"
+            android:textSize="18sp"
             android:gravity="center_vertical" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="date"
+            android:id="@+id/date_start_text"
+            android:text="fadsf"
+            android:layout_marginRight="5dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/date_start"
-            android:layout_gravity="right"
-            android:gravity="center_vertical" />
+            android:src="@drawable/ic_event_black"/>
     </LinearLayout>
 
     <LinearLayout
@@ -48,23 +54,29 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:padding="4dp">
+        android:padding="4dp"
+        android:id="@+id/end_layout">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ending On"
+            android:text="Select ending date"
             android:id="@+id/dateend"
             android:layout_weight="1"
+            android:textSize="18sp"
             android:gravity="center_vertical" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="date"
+            android:id="@+id/date_end_text"
+            android:text="fadsf"
+            android:layout_marginRight="5dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/date_end"
-            android:layout_gravity="right"
-            android:gravity="center_vertical" />
+            android:src="@drawable/ic_event_black"/>
     </LinearLayout>
 
     <Button

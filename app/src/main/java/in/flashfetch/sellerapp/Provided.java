@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -7,14 +8,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter1;
+import in.flashfetch.sellerapp.Adapters.PagerAdapter;
 import in.flashfetch.sellerapp.Objects.Notification;
 /*
 *//*
@@ -89,7 +93,8 @@ public class Provided extends Fragment {
 
         rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
         layoutManager = new LinearLayoutManager(mContext);
-
+        TextView provtext=(TextView)view.findViewById(R.id.providedtext);
+        provtext.setVisibility(View.GONE);
         //set the recycler view to use the linear layout manager
         rvNot.setLayoutManager(layoutManager);
         mContext= getActivity();
@@ -105,9 +110,16 @@ public class Provided extends Fragment {
 
         //Use the events feed adapter
         rvNot.setAdapter(notsAdapter);
+        Log.i("abc", String.valueOf(Requested.requestnumber)+"prov");
+        if(Requested.requestnumber==0) provtext.setVisibility(View.VISIBLE);
+        if(Requested.requestnumber==1) {
+            provtext.setText("Respond to the request in time to make a deal.");
+            provtext.setVisibility(View.VISIBLE);
+        }
         return view;
 
-    }/*
+    }
+    /*
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

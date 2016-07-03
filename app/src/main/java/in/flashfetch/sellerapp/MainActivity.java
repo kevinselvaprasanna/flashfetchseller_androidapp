@@ -80,14 +80,17 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,DialogFragment.dialogInterface{
        private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    public static int reqnumber=-1;
     Typeface font;
-
     ImageView nav_img;
     LinearLayout nav_bg;
     TextView shopname,sellername;
-
+    ViewPager pager;
+    PagerSlidingTabStrip pagerSlidingTabStrip;
+    DialogFragment fragment;
+    EditText accesscodetext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,12 +102,12 @@ public class MainActivity extends AppCompatActivity
                 "fonts/Lato-Medium.ttf");*/
 
         //TODO: Set typeface for text
-
-        ViewPager pager = (ViewPager)findViewById(R.id.pager);
-        PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip)findViewById(R.id.tabs);
-        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(),this));
+        fragment=new DialogFragment();
+        accesscodetext=(EditText)findViewById(R.id.access_text);
+        pager = (ViewPager)findViewById(R.id.pager);
+        pagerSlidingTabStrip = (PagerSlidingTabStrip)findViewById(R.id.tabs);
+        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(),this,false));
         pagerSlidingTabStrip.setViewPager(pager);
-
 
       if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
@@ -147,9 +150,50 @@ public class MainActivity extends AppCompatActivity
         //TextView email = (TextView)findViewById(R.id.textView3);
         //email.setText(UserProfile.getEmail(MainActivity.this));
 
+        /*final Dialog dialog_access = new Dialog(this);
+        dialog_access.setTitle("Enter the Access Code to \nreceive product requests");
+        *//*LayoutInflater inflater = this.getLayoutInflater();
+        inflater.inflate(R.layout.dialog_access, null);*//*
+        dialog_access.setContentView(R.layout.dialog_access);
+
+        final EditText accesscode_text=(EditText)dialog_access.findViewById(R.id.access_text);
+        Button accesscode_submit=(Button) dialog_access.findViewById(R.id.access_submit);
+        accesscode_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (accesscode_text.getText().toString().equals("<get access code from server>")) {
+                    accesscode_text.setError("");
+                    dialog_access.dismiss();
+                } else {
+                    accesscode_text.setError("Incorrect access code");
+                }
+            }
+        });
+        dialog_access.setCanceledOnTouchOutside(false);
+        dialog_access.show();*/
+        /*AlertDialog.Builder dialogAccess = new AlertDialog.Builder(this);
+
+        dialogAccess.setTitle("Enter the Access Code to \nreceive product requests");
+
+        // set dialog message
+        dialogAccess
+                .setCancelable(false)
+                .setPositiveButton("Submit",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        MainActivity.this.finish();
+                    }
+                })
+        .set;*/
+
 
     }
-
+    public void accessAllowed(){
+        pager.setOffscreenPageLimit(2);
+        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(),this,true));
+        pagerSlidingTabStrip.setViewPager(pager);
+    }
     @Override
     protected void onResume() {
         super.onResume();

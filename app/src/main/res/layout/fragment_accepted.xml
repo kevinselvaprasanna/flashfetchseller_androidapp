@@ -1,11 +1,19 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="in.flashfetch.sellerapp.Accepted"
+    android:orientation="vertical"
     android:background="#d5d6d9">
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/acceptedtext"
+        android:padding="16dp"
+        android:textSize="20sp"
+        android:text="It’s so empty in here!!\nHint: Provide the best prices or deals to stay in the game."
+        />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvNotifications"
         android:layout_width="match_parent"
@@ -14,4 +22,4 @@
         android:fastScrollEnabled="true"
         android:overScrollMode="always" />
 
-</FrameLayout>
+</LinearLayout>

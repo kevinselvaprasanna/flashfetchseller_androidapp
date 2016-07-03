@@ -13,8 +13,8 @@ import in.flashfetch.sellerapp.Adapters.NotAdapter;
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.Nots;
-import it.gmariotti.recyclerview.adapter.AlphaAnimatorAdapter;
-import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
+//import it.gmariotti.recyclerview.adapter.AlphaAnimatorAdapter;
+//import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 
 public class notif extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class notif extends AppCompatActivity {
 
 
         rvNot = (RecyclerView)findViewById(R.id.rvNots);
-        rvNot.setItemAnimator(new SlideInOutLeftItemAnimator(rvNot));
+        //rvNot.setItemAnimator(new SlideInOutLeftItemAnimator(rvNot));
         layoutManager = new LinearLayoutManager(notif.this);
 
         //set the recycler view to use the linear layout manager

@@ -7,16 +7,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
 import in.flashfetch.sellerapp.Objects.Notification;
-import it.gmariotti.recyclerview.adapter.AlphaAnimatorAdapter;
-import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
+//import it.gmariotti.recyclerview.adapter.AlphaAnimatorAdapter;
+//import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 
 
 /**
@@ -38,6 +40,7 @@ public class Requested extends Fragment {
     //private String mParam2;
 
     private Context mContext= getActivity();
+    public static int requestnumber=-1;
     Typeface font;
 
 
@@ -86,10 +89,11 @@ public class Requested extends Fragment {
         RecyclerView rvNot;
         ArrayList<Notification> nots;
         mContext= getActivity();
-
+        TextView reqtext=(TextView)view.findViewById(R.id.requestedtext);
+        reqtext.setVisibility(View.GONE);
 
         rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
-        rvNot.setItemAnimator(new SlideInOutLeftItemAnimator(rvNot));
+        //rvNot.setItemAnimator(new SlideInOutLeftItemAnimator(rvNot));
         layoutManager = new LinearLayoutManager(mContext);
 
         //set the recycler view to use the linear layout manager
@@ -101,14 +105,27 @@ public class Requested extends Fragment {
 
         //initialize events feed adapter
        NotificationAdapter notsAdapter = new NotificationAdapter(mContext,0,nots);
-       AlphaAnimatorAdapter animatorAdapter = new AlphaAnimatorAdapter(notsAdapter, rvNot);
+      // AlphaAnimatorAdapter animatorAdapter = new AlphaAnimatorAdapter(notsAdapter, rvNot);
 
         //Use the events feed adapter
        //rvNot.setAdapter(animatorAdapter);
         rvNot.setAdapter(notsAdapter);
+        if(notsAdapter.getItemCount()==0) {
+            reqtext.setVisibility(View.VISIBLE);
+            requestnumber=0;
+        }
+        if(notsAdapter.getItemCount()==1) {
+            reqtext.setText("No request yet!! They are on its way!");
+            reqtext.setVisibility(View.VISIBLE);
+            requestnumber=1;
+        }
+
+        Log.i("abc", String.valueOf(requestnumber));
         return view;
 
-    }/*
+    }
+    /*
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

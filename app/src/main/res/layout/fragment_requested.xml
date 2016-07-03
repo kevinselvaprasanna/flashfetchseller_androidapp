@@ -1,17 +1,24 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="in.flashfetch.sellerapp.Requested"
+    android:orientation="vertical"
     android:background="#d5d6d9">
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/requestedtext"
+        android:padding="16dp"
+        android:textSize="20sp"
+        android:text="No requests yet!! They are on the way!\nMeanwhile, check out the demo to get familiar with the app features."/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvNotifications"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fastScrollAlwaysVisible="true"
         android:fastScrollEnabled="true"
         android:overScrollMode="always" />
 
-</FrameLayout>
+</LinearLayout>
