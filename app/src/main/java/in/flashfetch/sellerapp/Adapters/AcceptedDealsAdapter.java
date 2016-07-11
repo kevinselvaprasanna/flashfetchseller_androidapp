@@ -4,10 +4,8 @@ package in.flashfetch.sellerapp.Adapters;
  * Created by SAM10795 on 02-03-2016.
  */
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -16,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -25,13 +22,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.R;
 
 
 import java.util.ArrayList;
 
-public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapter3.ViewHolder> {
+public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdapter.ViewHolder> {
 
     Context mContext;
     Typeface font;
@@ -48,14 +46,14 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
     */
 
 
-    public NotificationAdapter3(Context context, int LayoutSelect, ArrayList<Notification> items) {
+    public AcceptedDealsAdapter(Context context, int LayoutSelect, ArrayList<Notification> items) {
         mContext = context;
         mItems = items;
         LayoutSelector = LayoutSelect;
     }
 
 
-    public static class ViewHolder extends NotificationAdapter.ViewHolder{
+    public static class ViewHolder extends RequestedDealsAdapter.ViewHolder{
         TextView name,price_final,caller,pickup,buyer_name,header;
         LinearLayout notsfeed,pickup_accept;
         ImageView imageview;
@@ -81,7 +79,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
         return super.getItemViewType(position);
     }
 
-    public NotificationAdapter3.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AcceptedDealsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout;
 
 
@@ -94,7 +92,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
     }
 
     @Override
-    public void onBindViewHolder(final NotificationAdapter3.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final AcceptedDealsAdapter.ViewHolder holder, final int position) {
 
         //TODO: Populate items depending on the holder returned via LayoutSelect
         //TODO: Set typeface for text
@@ -150,7 +148,7 @@ public class NotificationAdapter3 extends RecyclerView.Adapter<NotificationAdapt
                 holder.header.setText("Buyer Pickup:");
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_black));
             }
-            case 2:         //flashfetch delivery
+            case 2:         //flashfetch deliveryj
             {
                 holder.caller.setVisibility(View.GONE);
                 holder.pickup_accept.setVisibility(View.VISIBLE);

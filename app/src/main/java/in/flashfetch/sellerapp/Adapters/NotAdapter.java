@@ -1,37 +1,16 @@
 package in.flashfetch.sellerapp.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import in.flashfetch.sellerapp.Constants.URLConstants;
-import in.flashfetch.sellerapp.Helper.DatabaseHelper;
-import in.flashfetch.sellerapp.Network.Connectivity;
-import in.flashfetch.sellerapp.Network.PostRequest;
-import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.Nots;
-import in.flashfetch.sellerapp.Objects.PostParam;
-import in.flashfetch.sellerapp.Objects.UserProfile;
-import in.flashfetch.sellerapp.QuoteActivity;
 import in.flashfetch.sellerapp.R;
 
 /**

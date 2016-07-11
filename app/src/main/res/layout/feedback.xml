@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:weightSum="1">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <EditText
+    <include layout="@layout/app_bar"/>
+
+    <include layout="@layout/progress_bar"/>
+
+    <LinearLayout
+        android:id="@+id/feedBackLayout"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/feedback"
-        android:layout_gravity="top"
-        android:layout_weight="0.35"
-        android:layout_margin="16dp"
-        android:hint="Enter Feedback here"
-        android:gravity="top"
-        android:background="#fff" />
+        android:paddingTop="32dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/feedback"
+            android:hint="Enter Feedback Here"
+            android:gravity="top"
+            android:background="@drawable/edit_text_border" />
+
+    </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="SUBMIT"
         android:id="@+id/submit"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
         android:background="@color/ff_green"
-        android:textColor="#fff"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        android:padding="10dp" />
+        android:textColor="@color/icons"
+        android:textAppearance="@android:style/TextAppearance.Medium"/>
+
 </LinearLayout>

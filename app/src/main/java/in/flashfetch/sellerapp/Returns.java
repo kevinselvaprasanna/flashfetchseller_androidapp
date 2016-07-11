@@ -1,11 +1,14 @@
 package in.flashfetch.sellerapp;
 
-import android.annotation.TargetApi;
-import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,183 +18,175 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import in.flashfetch.sellerapp.CommonUtils.Utils;
+import in.flashfetch.sellerapp.Constants.Constants;
+import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
+import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Network.ServiceManager;
+import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.Objects.UserProfile;
+
 public class Returns extends AppCompatActivity {
 
     //CheckBox pol1,pol2,pol3,pol4,pol_other;
-    CheckBox[] check;
-    EditText other;
-    Button submit;
+    private CheckBox[] check;
+    private EditText other;
+    private Button submit;
+    private CheckBox acceptReturns;
+    private int[] primeNumbersList;
+    private int product = 1;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_returns);
-        check=new CheckBox[13];
-        LinearLayout ll=(LinearLayout)findViewById(R.id.checklayout);
-        ViewGroup.LayoutParams lp=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        for(int i=0;i<13;++i){
-            check[i]=new CheckBox(this);
-            switch(i){
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setTitle("Returns Policy");
+
+//        toolbar.setBackgroundColor(ContextCompat.getColor(Returns.this,R.color.primary_text));
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Returns.this,CategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        primeNumbersList = Utils.generatePrimeNumbers(11);
+        submit = (Button) findViewById(R.id.return_submit_button);
+        acceptReturns = (CheckBox)findViewById(R.id.accept_return_checkbox);
+
+        check = new CheckBox[11];
+        LinearLayout ll = (LinearLayout) findViewById(R.id.checklayout);
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        for (int i = 0; i < 11; ++i) {
+            check[i] = new CheckBox(this);
+            switch (i) {
                 case 0:
                     check[i].setText("Delivered package has anything missing from the package");
                     check[i].setChecked(true);
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 1:
                     check[i].setText("Defective/damaged products delivered");
                     check[i].setChecked(true);
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 2:
                     check[i].setText("Products with tampered or missing serial numbers");
                     check[i].setChecked(true);
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 3:
                     check[i].setText("Wrong item was sent by the Seller");
                     check[i].setChecked(true);
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 4:
                     check[i].setText("'Damaged' or 'Defective' condition, or it is 'Not as Described' by the Seller");
                     check[i].setChecked(true);
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 5:
                     check[i].setText("Size/colour are not as described");
                     check[i].setChecked(true);
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 6:
                     check[i].setText("The seller has to refund entire amount to FlashFetch delivery executive, if the product is returned as it is picked up within 3 working days from the point of purchase or pickup\n");
                     check[i].setChecked(true);
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 7:
-                    check[i].setText("Product is damaged due to misuse or Incidental damage due to malfunctioning of product\n");
+                    check[i].setText("Product is damaged due to misuse or Incidental damage due to malfunctioning of product");
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 8:
-                    check[i].setText("Any consumable item that has been used or installed\n");
+                    check[i].setText("Any consumable item that has been used or installed");
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 9:
-                    check[i].setText("Product is damaged due to misuse or Incidental damage due to malfunctioning of product");
+                    check[i].setText("Fragile items, hygiene related items.");
+                    check[i].setId(primeNumbersList[i]);
                     break;
                 case 10:
-                    check[i].setText("Any consumable item that has been used or installed");
-                    break;
-                case 11:
-                    check[i].setText("Fragile items, hygiene related items.");
-                    break;
-                case 12:
                     check[i].setText("Any product that is returned without all original packaging and accessories, including the box, manufacturer's packaging if any, and all other items originally included with the product/s delivered");
+                    check[i].setId(primeNumbersList[i]);
                     break;
-                default:break;
+                default:
+                    break;
             }
             check[i].setLayoutParams(lp);
-            check[i].setTextSize(17);
+            check[i].setTextSize(14);
             check[i].setButtonTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
-            if(i<7) check[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    buttonView.setChecked(true);
-                }
-            });
-            ll.addView(check[i],i+2);
+            if (i < 7)
+                check[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        buttonView.setChecked(true);
+                    }
+                });
+            ll.addView(check[i], i + 2);
 
         }
-        /*
-        <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Returns Policy number 1\nDescription"
-        android:id="@+id/policy1"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:padding="8dp"
-        android:gravity="center_vertical"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="8dp"
-        android:checked="true"
-        android:buttonTint="@color/colorPrimaryDark"/>
 
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Returns Policy number 2\nDescription"
-        android:id="@+id/policy2"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        android:gravity="center_vertical"
-        android:layout_gravity="center_vertical"
-        android:checked="true"
-        android:buttonTint="@color/colorPrimaryDark"/>
-
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Returns Policy number 3\nDescription"
-        android:id="@+id/policy3"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        android:gravity="center_vertical"
-        android:layout_gravity="center_vertical"
-        android:buttonTint="@color/colorPrimaryDark" />
-
-    <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Returns Policy number 4\nDescription"
-        android:id="@+id/policy4"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        android:gravity="center_vertical"
-        android:layout_gravity="center_vertical"
-        android:buttonTint="@color/colorPrimaryDark" />
-
-        pol1 = (CheckBox)findViewById(R.id.policy1);
-        pol2 = (CheckBox)findViewById(R.id.policy2);
-        pol3 = (CheckBox)findViewById(R.id.policy3);
-        pol4 = (CheckBox)findViewById(R.id.policy4);
-        pol_other = (CheckBox)findViewById(R.id.check_other);
-        other = (EditText)findViewById(R.id.edit_other);
-        submit = (Button)findViewById(R.id.button);
-        CompoundButton.OnCheckedChangeListener checkedchange=new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                switch(buttonView.getId()){
-                    case R.id.policy1: pol1.setChecked(true);
-                        break;
-                    case R.id.policy2: pol2.setChecked(true);
-                        break;
-                    default:break;
-                }
-            }
-        };
-        pol1.setOnCheckedChangeListener(checkedchange);
-        pol2.setOnCheckedChangeListener(checkedchange);
-        pol3.setOnCheckedChangeListener(checkedchange);
-        pol4.setOnCheckedChangeListener(checkedchange);*/
-        /*submit.setOnClickListener(new View.OnClickListener() {
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               *//* if(validate())
-                {
-                    //TODO:Post validation code
+                if(acceptReturns.isChecked()){
+                    for (int i = 0; i < 11; i++) {
+                        if (check[i].isChecked()) {
+                            product = product * (check[i].getId());
+                        }
+
+                        ServiceManager.callReturnPolicyService(Returns.this, product, new UIListener() {
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(Returns.this, "Yours returns policy has been saved", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(Returns.this, MainActivity.class);
+                                intent.putExtra("FROM_REGISTRATION", Constants.IS_FROM_REGISTRATION_FLOW);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Toast.makeText(Returns.this, "Server is currently busy", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onConnectionError() {
+                                Toast.makeText(Returns.this, "Server is currently busy", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onCancelled() {
+
+                            }
+                        });
+                    }
+                }else{
+                    Toast.makeText(Returns.this,"Please accept the terms and conditions",Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
-                    Toast.makeText(Returns.this,"Please fill in at least one checkbox",Toast.LENGTH_SHORT).show();
-                }*//*
-                if(!other()) Toast.makeText(Returns.this,"Please specify the other return condition",Toast.LENGTH_SHORT).show();
             }
         });
-    }*/
+    }
 
-    /*private boolean validate()
-    {
-        return (pol1.isChecked()||pol2.isChecked()||pol3.isChecked()||pol4.isChecked()||(other()));
-    }
-    private boolean other()
-    {
-        return pol_other.isChecked()&&other.getText().length()!=0;
-    }*/
-    }
+
 }
 
 

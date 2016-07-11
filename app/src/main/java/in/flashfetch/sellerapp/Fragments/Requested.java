@@ -1,12 +1,12 @@
-package in.flashfetch.sellerapp;
+package in.flashfetch.sellerapp.Fragments;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +14,23 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
-import in.flashfetch.sellerapp.Adapters.NotificationAdapter3;
+import in.flashfetch.sellerapp.Adapters.RequestedDealsAdapter;
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.R;
+//import it.gmariotti.recyclerview.adapter.AlphaAnimatorAdapter;
+//import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Accepted.OnFragmentInteractionListener} interface
+ * {@link Requested.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Accepted#newInstance} factory method to
+ * Use the {@link Requested#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Accepted extends Fragment {
+public class Requested extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     //private static final String ARG_PARAM1 = "param1";
@@ -37,22 +40,19 @@ public class Accepted extends Fragment {
     //private String mParam1;
     //private String mParam2;
 
-    private Context mContext;
-
+    private Context mContext= getActivity();
+    public static int requestnumber = -1;
     Typeface font;
 
 
 
     // private OnFragmentInteractionListener mListener;
-
-
-
+    
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment Requested.
      */
     // TODO: Rename and change types and number of parameters
@@ -77,46 +77,56 @@ public class Accepted extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
 
        /* font = Typeface.createFromAsset(mContext.getAssets(),
                 "fonts/Lato-Medium.ttf");*/
-        // Inflate the layout for this fragment
 
         //TODO: Set typeface for text
 
-
-        View view = inflater.inflate(R.layout.fragment_accepted, container, false);
+        View view = inflater.inflate(R.layout.fragment_requested, container, false);
 
         LinearLayoutManager layoutManager;
         RecyclerView rvNot;
         ArrayList<Notification> nots;
-
-        mContext=getActivity();
+        mContext= getActivity();
+        TextView reqtext=(TextView)view.findViewById(R.id.requestedtext);
+        reqtext.setVisibility(View.GONE);
 
         rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
+        //rvNot.setItemAnimator(new SlideInOutLeftItemAnimator(rvNot));
         layoutManager = new LinearLayoutManager(mContext);
 
-        TextView acctext=(TextView)view.findViewById(R.id.acceptedtext);
-        acctext.setVisibility(View.GONE);
         //set the recycler view to use the linear layout manager
         rvNot.setLayoutManager(layoutManager);
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
-        //nots = Notification.getAllNotifications(mContext);
+        nots = Notification.getAllNotifications(getActivity());
 
         //initialize events feed adapter
-        NotificationAdapter3 notsAdapter = new NotificationAdapter3(mContext,3,Notification.getANotifications(mContext));
+       RequestedDealsAdapter notsAdapter = new RequestedDealsAdapter(mContext,0,nots);
+      // AlphaAnimatorAdapter animatorAdapter = new AlphaAnimatorAdapter(notsAdapter, rvNot);
 
         //Use the events feed adapter
+       //rvNot.setAdapter(animatorAdapter);
         rvNot.setAdapter(notsAdapter);
+        if(notsAdapter.getItemCount()==0) {
+            reqtext.setVisibility(View.VISIBLE);
+            requestnumber=0;
+        }
+        if(notsAdapter.getItemCount()==1) {
+            reqtext.setText("No request yet!! They are on its way!");
+            reqtext.setVisibility(View.VISIBLE);
+            requestnumber=1;
+        }
 
-        if(Requested.requestnumber==0||Requested.requestnumber==1) acctext.setVisibility(View.VISIBLE);
+        Log.i("abc", String.valueOf(requestnumber));
         return view;
 
     }
     /*
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

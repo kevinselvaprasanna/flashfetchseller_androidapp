@@ -4,19 +4,18 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.google.gson.Gson;
-import in.flashfetch.sellerapp.Helper.DatabaseHelper;
-import in.flashfetch.sellerapp.LoginActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+
 /**
  * Created by kevinselvaprasanna on 3/1/16.
  */
 public class Notification {
+
     public String name,imgurl,price,buyer_name,url,bgprice,qprice;
     public long time,timesent,bgexptime,buyno;
     public String  id,comment,loc;

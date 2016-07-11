@@ -9,14 +9,10 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,7 +49,9 @@ public class QuoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_quote);
+
         Bundle bundle = getIntent().getExtras();
         id = bundle.getString("id");
         final ArrayList<Notification> mItem =  Notification.getNotification(this, id);
@@ -80,7 +78,7 @@ public class QuoteActivity extends AppCompatActivity {
                     int hr = (int) (millisUntilFinished / 3600000);
                     int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
                     int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
-                    timer.setText(hr + ":" + min + ":" + sec);
+                    timer.setText(hr + " h : " + min + " m");
                 }
 
                 @Override

@@ -1,32 +1,24 @@
 package in.flashfetch.sellerapp.Adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.SystemClock;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.Network.Connectivity;
@@ -40,7 +32,7 @@ import in.flashfetch.sellerapp.R;
 
 import java.util.ArrayList;
 
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
+public class RequestedDealsAdapter extends RecyclerView.Adapter<RequestedDealsAdapter.ViewHolder> {
 
     Context mContext;
     Typeface font;
@@ -49,9 +41,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private static String LOG_TAG = "EventDetails";
     int LayoutSelector;
 
-
-
-    public NotificationAdapter(Context context, int LayoutSelect, ArrayList<Notification> items) {
+    public RequestedDealsAdapter(Context context, int LayoutSelect, ArrayList<Notification> items) {
         mContext = context;
         mItems = items;
         LayoutSelector = LayoutSelect;
@@ -81,7 +71,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return super.getItemViewType(position);
     }
 
-    public NotificationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RequestedDealsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout;
 
 
@@ -96,7 +86,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     @Override
-    public void onBindViewHolder(final NotificationAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RequestedDealsAdapter.ViewHolder holder, final int position) {
 
 
         //th = new TimeHelper();
@@ -104,17 +94,21 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         /*holder.name.setTypeface(font);
         holder.price.setTypeface(font);
         holder.time.setTypeface(font);*/
+
         holder.price.setText("Rs. " + String.valueOf(mItems.get(position).price));
+
         if(mItems.get(position).time - System.currentTimeMillis() > 0) {
             CountDownTimer countDownTimer = new CountDownTimer( mItems.get(position).time - System.currentTimeMillis(), 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
+
                     holder.quote.setVisibility(View.VISIBLE);
                     holder.time.setBackgroundColor(Color.parseColor("#0BC6A0"));
                     int hr = (int) (millisUntilFinished / 3600000);
                     int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
                     int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
-                    holder.time.setText(hr + ":" + min + ":" + sec);
+                    holder.time.setText(hr + " h : " + min + " m");
+
                 }
 
                 @Override
@@ -213,7 +207,4 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             super.onPostExecute(aBoolean);
         }
         }
-
-
-
     }

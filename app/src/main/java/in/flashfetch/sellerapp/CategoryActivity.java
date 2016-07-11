@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import in.flashfetch.sellerapp.Adapters.CategoryAdapter;
+import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
@@ -40,6 +42,7 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
     Typeface font;
     ProgressBar progressBar;
     long product = 1;
+
     int[] aud = {29,31,37,41,43};
     int[] book = {47,53,59,61,67,71};
     int[] compi = {73,79,83,89,97,101,103,107};
@@ -60,7 +63,31 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         setContentView(R.layout.category_list);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        getSupportActionBar().setTitle("Categories");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CategoryActivity.this,SignUpActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+        getSupportActionBar().setTitle("Categories");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CategoryActivity.this,SignUpActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
 
         List<String> av = Arrays.asList("Headphones","Speakers","Home Entertainment Systems","MP3 & Media Players","Audio & Video Accessories");
         List<String> books = Arrays.asList("All books","Bestseller","Literature & Fiction","Children's & Young Adult","Textbooks","Exam Related books");
@@ -88,6 +115,8 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         subhead.put(headers.get(7),sports);
         subhead.put(headers.get(8),watches);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         final HashMap<String,List<Boolean>> subcheck = new HashMap<>();
         List<Boolean> avcheck = new ArrayList<>();
@@ -274,11 +303,12 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
                     super.onPostExecute(aVoid);
                     UserProfile.setCategory(category,CategoryActivity.this);
                     //Intent i = new Intent(CategoryActivity.this, MainActivity.class);
-                    Intent i = new Intent(CategoryActivity.this, MainActivity.class);
+                    Intent i = new Intent(CategoryActivity.this, Returns.class);
                     startActivity(i);
                     finish();
                 }else {
-                    Toast.makeText(CategoryActivity.this, "Server is not working", Toast.LENGTH_LONG).show();
+                    Toasts.serverBusyToast(CategoryActivity.this);
+
                     progressBar.setVisibility(View.GONE);
                     submit.setVisibility(View.VISIBLE);
                 }

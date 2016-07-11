@@ -5,9 +5,7 @@ package in.flashfetch.sellerapp.Adapters;
  */
 
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
@@ -17,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,7 +27,6 @@ import org.json.JSONObject;
 
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
-import in.flashfetch.sellerapp.Network.Connectivity;
 import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.PostParam;
@@ -42,7 +38,7 @@ import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;
 
-public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapter1.ViewHolder> {
+public class ProvidedDealsAdapter extends RecyclerView.Adapter<ProvidedDealsAdapter.ViewHolder> {
 
     Context mContext;
     Typeface font;
@@ -59,12 +55,12 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
     */
 
 
-    public NotificationAdapter1(Context context, int LayoutSelect, ArrayList<Notification> items) {
+    public ProvidedDealsAdapter(Context context, int LayoutSelect, ArrayList<Notification> items) {
         mContext = context;
         mItems = items;
         LayoutSelector = LayoutSelect;
     }
-    public static class ViewHolder extends NotificationAdapter.ViewHolder{
+    public static class ViewHolder extends RequestedDealsAdapter.ViewHolder{
 
         TextView name,time_left,price,price_quoted,price_quoted1,price_bargained,quoted,price_amount,decline,name1,time_left1,accept;
         ImageView imageview,imageview1;
@@ -102,7 +98,7 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
         }
     }
 
-    public NotificationAdapter1.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProvidedDealsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout;
 
       /*  font = Typeface.createFromAsset(mContext.getAssets(),
@@ -123,7 +119,7 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
     }
 
     @Override
-    public void onBindViewHolder(final NotificationAdapter1.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ProvidedDealsAdapter.ViewHolder holder, final int position) {
 
         //TODO: Populate items depending on the holder returned via LayoutSelect
         //TODO: Set typeface for text
@@ -142,7 +138,7 @@ public class NotificationAdapter1 extends RecyclerView.Adapter<NotificationAdapt
                     int hr = (int) (millisUntilFinished / 3600000);
                     int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
                     int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
-                    holder.time_left1.setText(hr + ":" + min + ":" + sec);
+                    holder.time_left1.setText(hr + " h : " + min + " m");
                 }
 
                 @Override

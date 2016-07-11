@@ -1,14 +1,11 @@
-package in.flashfetch.sellerapp;
+package in.flashfetch.sellerapp.Fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +13,21 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import in.flashfetch.sellerapp.Adapters.NotificationAdapter;
-import in.flashfetch.sellerapp.Adapters.NotificationAdapter1;
-import in.flashfetch.sellerapp.Adapters.PagerAdapter;
+import in.flashfetch.sellerapp.Adapters.AcceptedDealsAdapter;
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.Objects.Notification;
-/*
-*//*
-*//**//**
+import in.flashfetch.sellerapp.R;
+
+
+/**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Provided.OnFragmentInteractionListener} interface
+ * {@link Accepted.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Provided#newInstance} factory method to
+ * Use the {@link Accepted#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Provided extends Fragment {
+public class Accepted extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     //private static final String ARG_PARAM1 = "param1";
@@ -40,19 +37,22 @@ public class Provided extends Fragment {
     //private String mParam1;
     //private String mParam2;
 
-    private Context mContext = getActivity();
+    private Context mContext;
+
     Typeface font;
 
-
+    public static TextView noAccessText;
 
     // private OnFragmentInteractionListener mListener;
+
 
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
      * @return A new instance of fragment Requested.
      */
     // TODO: Rename and change types and number of parameters
@@ -77,45 +77,44 @@ public class Provided extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+       /* font = Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/Lato-Medium.ttf");*/
         // Inflate the layout for this fragment
 
-
-      /*  font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");*/
-
         //TODO: Set typeface for text
-        View view = inflater.inflate(R.layout.fragment_provided, container, false);
+
+
+        View view = inflater.inflate(R.layout.fragment_accepted, container, false);
 
         LinearLayoutManager layoutManager;
         RecyclerView rvNot;
-        //ArrayList<Notification> nots;
+        ArrayList<Notification> nots;
 
+        mContext=getActivity();
 
         rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
         layoutManager = new LinearLayoutManager(mContext);
-        TextView provtext=(TextView)view.findViewById(R.id.providedtext);
-        provtext.setVisibility(View.GONE);
+
+        TextView acctext=(TextView)view.findViewById(R.id.acceptedtext);
+        acctext.setVisibility(View.GONE);
         //set the recycler view to use the linear layout manager
         rvNot.setLayoutManager(layoutManager);
-        mContext= getActivity();
+
+        noAccessText = (TextView)view.findViewById(R.id.no_access_text);
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
-        //nots = Notification.getAllNotifications(mContext);
+        //nots = NotificationsActivity.getAllNotifications(mContext);
 
         //initialize events feed adapter
-
-        //put conidition to switch layout
-        NotificationAdapter1 notsAdapter = new NotificationAdapter1(mContext, 2,Notification.getQNotifications(getActivity()));
+        AcceptedDealsAdapter notsAdapter = new AcceptedDealsAdapter(mContext,3, Notification.getANotifications(mContext));
 
         //Use the events feed adapter
         rvNot.setAdapter(notsAdapter);
-        Log.i("abc", String.valueOf(Requested.requestnumber)+"prov");
-        if(Requested.requestnumber==0) provtext.setVisibility(View.VISIBLE);
-        if(Requested.requestnumber==1) {
-            provtext.setText("Respond to the request in time to make a deal.");
-            provtext.setVisibility(View.VISIBLE);
-        }
+
+        if(Requested.requestnumber==0||Requested.requestnumber==1) acctext.setVisibility(View.VISIBLE);
         return view;
 
     }

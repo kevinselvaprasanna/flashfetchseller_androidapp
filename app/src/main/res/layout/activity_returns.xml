@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <include layout="@layout/app_bar"/>
+
     <ScrollView android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|bottom">
@@ -12,21 +17,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/checklayout"
             android:padding="16dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Return Policy"
-                android:textSize="25sp"
-                android:textColor="#000"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="10dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textColor="#000"
                 android:layout_marginBottom="10dp"
-                android:paddingLeft="15dp"
                 android:text="Check the boxes in which cases you will accept the return of the purchased product from customer"/>
 
 
@@ -51,7 +48,7 @@
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/acceptreturn"
+                android:id="@+id/accept_return_checkbox"
                 android:text="I accept the terms and conditions"/>
             <LinearLayout
                 android:orientation="vertical"
@@ -65,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Submit"
-                    android:id="@+id/button"
+                    android:id="@+id/return_submit_button"
                     android:layout_gravity="bottom|center_horizontal"
                     android:background="@color/ff_black"
                     android:textColor="#fff" />

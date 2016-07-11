@@ -25,44 +25,32 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name = "android.support.multidex.MultiDexApplication"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCsCgansL3MCr-PozNW6EjPw6iIXYmGDKk" />
 
-        <activity
-            android:name=".Intro"
-            android:label="@string/app_name">
+        <service
+            android:name=".Services.IE_GCMListenerService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name">
+        </service>
+
+        <service
+            android:name=".Services.IE_InstanceIDListenerService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        </service>
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".CategoryActivity" />
+        <service
+            android:name=".Services.IE_RegistrationIntentService"
+            android:exported="false" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -76,46 +64,74 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".Services.IE_GCMListenerService"
-            android:exported="false">
+        <activity
+            android:name=".SplashActivity">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </service>
-        <service
-            android:name=".Services.IE_InstanceIDListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".Services.IE_RegistrationIntentService"
-            android:exported="false" />
+        </activity>
 
         <activity
-            android:name=".QuoteActivity"
-            android:label="@string/title_activity_quote"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
-            android:name=".StartActivity"
-            android:label="@string/title_activity_start"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".SignUpActivity"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="Logistics">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".CategoryActivity" />
+
+        <activity android:name=".ForgotPassword" android:parentActivityName=".LoginActivity"/>
+
+        <activity android:name=".PasswordVerification" android:parentActivityName=".ForgotPassword"/>
+
+        <activity android:name=".ChangePassword" android:parentActivityName=".PasswordVerification"/>
+
+        <activity android:name=".QuoteActivity" />
+
+        <!--<activity android:name=".StartActivity" />-->
+
         <activity android:name=".Empty_1" />
+
         <activity android:name=".Empty_2" />
+
         <activity android:name=".Empty_3" />
-        <activity
-            android:name=".feedback"
-            android:label="@string/feedback_title" />
-        <activity
-            android:name=".notif"
-            android:label="@string/notif" />
-        <activity android:name=".Req_Ads" />
-        <activity android:name=".My_Acc" />
-        <activity android:name=".Shop_Det" />
-        <activity android:name=".Returns"
-            android:label="@string/ret_pol"></activity>
+
+        <activity android:name=".notif"/>
+
+        <activity android:name=".FeedBackActivity" />
+
+        <activity android:name=".RequestAds" />
+
+        <activity android:name=".MyAccountInfo" />
+
+        <activity android:name=".ShopDetails" />
+
+        <activity android:name=".Returns"/>
+
+        <activity android:name=".DemoActivity"/>
+
+        <activity android:name=".RewardActivity"/>
+
+        <activity android:name=".ReferAndEarn"/>
+
     </application>
 
 </manifest>

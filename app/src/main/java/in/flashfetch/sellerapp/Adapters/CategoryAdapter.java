@@ -23,24 +23,21 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     Typeface font;
-    //TODO: Set typeface for text
-    private List<String> headcategory; // header titles
-    // child data in format of header title, child title
-    private HashMap<String, List<String>> subcategory;
+    private List<String> headCategory;
+    private HashMap<String, List<String>> subCategory;
     private HashMap<String,List<Boolean>> checks;
 
-    public CategoryAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData, HashMap<String,List<Boolean>> checks) {
+    public CategoryAdapter(Context context, List<String> listDataHeader,HashMap<String, List<String>> listChildData, HashMap<String,List<Boolean>> checks) {
         this.context = context;
-        headcategory = listDataHeader;
-        subcategory = listChildData;
+        headCategory = listDataHeader;
+        subCategory = listChildData;
         this.checks = checks;
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return subcategory.get(headcategory.get(groupPosition))
-                .get(childPosititon);
+    public Object getChild(int groupPosition, int childPosition) {
+        return subCategory.get(headCategory.get(groupPosition))
+                .get(childPosition);
     }
 
     @Override
@@ -67,14 +64,14 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         TextView subcat = (TextView) convertView
                 .findViewById(R.id.subcat);
         CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
-        checkBox.setChecked(checks.get(headcategory.get(groupPosition)).get(childPosition));
+        checkBox.setChecked(checks.get(headCategory.get(groupPosition)).get(childPosition));
         final int gp = groupPosition;
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Boolean> bools = checks.remove(headcategory.get(gp));
+                List<Boolean> bools = checks.remove(headCategory.get(gp));
                 bools.set(childPosition,!bools.get(childPosition));
-                checks.put(headcategory.get(gp),bools);
+                checks.put(headCategory.get(gp),bools);
             }
         });
 
@@ -84,18 +81,18 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return subcategory.get(headcategory.get(groupPosition))
+        return subCategory.get(headCategory.get(groupPosition))
                 .size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return headcategory.get(groupPosition);
+        return headCategory.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return headcategory.size();
+        return headCategory.size();
     }
 
     @Override
@@ -104,27 +101,31 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+
         String headerTitle = (String) getGroup(groupPosition);
+
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_main_category, null);
+
+            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = layoutInflater.inflate(R.layout.item_main_category, null);
         }
 
-        TextView category = (TextView) convertView
-                .findViewById(R.id.main_category);
+        TextView category = (TextView) convertView.findViewById(R.id.main_category);
         category.setText(headerTitle);
+
         ImageView tap = (ImageView)convertView.findViewById(R.id.tap);
-        if(isExpanded)
-        {
-            tap.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.arrow_up));
-        }
-        else
-        {
-            tap.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.arrow_down));
-        }
+
+        tap.setImageDrawable(isExpanded ? ContextCompat.getDrawable(context,R.drawable.arrow_up) : ContextCompat.getDrawable(context,R.drawable.arrow_down));
+        convertView.setBackgroundColor(context.getResources().getColor((isExpanded ? R.color.ff_green : R.color.icons)));
+//        if(isExpanded)
+//        {
+//            tap.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.arrow_up));
+//        }
+//        else
+//        {
+//            tap.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.arrow_down));
+//        }
 
         return convertView;
     }

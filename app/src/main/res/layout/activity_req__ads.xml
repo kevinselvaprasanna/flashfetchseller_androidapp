@@ -1,91 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/ad"
-        android:layout_gravity="top"
-        android:layout_weight="0.35"
-        android:layout_margin="16dp"
-        android:hint="What are you offering?"
-        android:gravity="top"
-        android:background="#fff" />
+    <include layout="@layout/app_bar"/>
+
+    <include layout="@layout/progress_bar"/>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/request_layout"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:padding="4dp"
-        android:id="@+id/start_layout">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingRight="16dp"
+        android:paddingTop="32dp"
+        android:paddingLeft="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select starting date"
-            android:id="@+id/datestart"
-            android:layout_weight="1"
-            android:textSize="18sp"
-            android:gravity="center_vertical" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/date_start_text"
-            android:text="fadsf"
-            android:layout_marginRight="5dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/ad"
+            android:gravity="top"
+            android:hint="What are you offering to your customers ?"
+            android:background="@drawable/edit_text_border" />
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/date_start"
-            android:src="@drawable/ic_event_black"/>
-    </LinearLayout>
+            android:layout_marginTop="32dp"
+            android:layout_gravity="center_vertical">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:padding="4dp"
-        android:id="@+id/end_layout">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Select Starting Date"
+                android:id="@+id/startDate"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select ending date"
-            android:id="@+id/dateend"
-            android:layout_weight="1"
-            android:textSize="18sp"
-            android:gravity="center_vertical" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/date_start_text"
+                android:hint="01/01/2016"
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/startDatePicker"
+                android:src="@drawable/ic_event_black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/date_end_text"
-            android:text="fadsf"
-            android:layout_marginRight="5dp"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/date_end"
-            android:src="@drawable/ic_event_black"/>
+            android:layout_marginTop="32dp"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Select Ending Date"
+                android:id="@+id/endDate"
+                android:layout_weight="1"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/date_end_text"
+                android:layout_marginLeft="8dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:hint="31/12/2016" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/endDatePicker"
+                android:src="@drawable/ic_event_black"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit"
         android:id="@+id/submit"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
         android:textColor="#fff"
         android:background="@color/ff_green" />
 

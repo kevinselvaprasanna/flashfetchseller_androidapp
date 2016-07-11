@@ -3,25 +3,22 @@ package in.flashfetch.sellerapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,22 +28,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toolbar;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import in.flashfetch.sellerapp.Constants.URLConstants;
-import in.flashfetch.sellerapp.Network.PostRequest;
-import in.flashfetch.sellerapp.Objects.Notification;
-import in.flashfetch.sellerapp.Objects.PostParam;
-import in.flashfetch.sellerapp.Objects.UserProfile;
-import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
-
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import in.flashfetch.sellerapp.CommonUtils.Toasts;
+import in.flashfetch.sellerapp.CommonUtils.Utils;
+import in.flashfetch.sellerapp.Constants.Constants;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
+import in.flashfetch.sellerapp.Network.ServiceManager;
+import in.flashfetch.sellerapp.Objects.UserProfile;
+import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -71,13 +64,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    private Button submitButton;
+    private View mProgressView,mLoginFormView,mHideView;
+    private TextView forgotPassword, registerHere;
     Typeface font;
 
     //TODO: Set typeface for text
@@ -85,10 +78,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(UserProfile.getEmail(LoginActivity.this)!="")
-        {
-            Intent i =new Intent(LoginActivity.this,MainActivity.class);
-            startActivity(i);
+
+
+        if(UserProfile.getEmail(LoginActivity.this) != "") {
+            Intent intent =new Intent(LoginActivity.this,MainActivity.class);
+            intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
+            startActivity(intent);
             finish();
             /*if (checkPlayServices()) {
                 // Start IntentService to register this application with GCM.
@@ -103,6 +98,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 "fonts/Lato-Medium.ttf");*/
         setContentView(R.layout.login_main);
         // Set up the login form.
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        getSupportActionBar().setTitle("FlashFetch Seller");
+        toolbar.setNavigationIcon(R.drawable.toolbaricon24);
+
         mEmailView = (AutoCompleteTextView) findViewById(R.id.EmailID);
         populateAutoComplete();
 
@@ -126,25 +129,36 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.submit);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        forgotPassword = (TextView)findViewById(R.id.forgot_pass);
+
+        forgotPassword.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,ForgotPassword.class);
+                startActivity(intent);
+            }
+        });
+
+        submitButton = (Button) findViewById(R.id.submit);
+        submitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
 
-        /*Button mEmailSignUp = (Button)findViewById(R.id.email_sign_up);
-        mEmailSignUp.setOnClickListener(new OnClickListener() {
+        registerHere = (TextView)findViewById(R.id.login_register);
+
+        registerHere.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(i);
-                }
-        });*/
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        mProgressView = findViewById(R.id.progress_bar);
     }
 
     private void populateAutoComplete() {
@@ -154,20 +168,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         getLoaderManager().initLoader(0, null, this);
     }
-   /* private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                Log.i("tag", "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }*/
 
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -211,10 +211,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -238,7 +234,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!Utils.isValidEmail(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -251,9 +247,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            mProgressView.setVisibility(View.VISIBLE);
+            mLoginFormView.setVisibility(View.GONE);
+
+            ServiceManager.callLoginService(LoginActivity.this, email, password, new UIListener() {
+                @Override
+                public void onSuccess() {
+                    mProgressView.setVisibility(View.GONE);
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
+                    startActivity(intent);
+                    intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
+                    startService(intent);
+                }
+
+                @Override
+                public void onFailure() {
+                    mProgressView.setVisibility(View.GONE);
+                    mLoginFormView.setVisibility(View.VISIBLE);
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
+                }
+
+                @Override
+                public void onConnectionError() {
+                    mProgressView.setVisibility(View.GONE);
+                    mLoginFormView.setVisibility(View.VISIBLE);
+                    Toasts.internetUnavailableToast(LoginActivity.this);
+                }
+
+                @Override
+                public void onCancelled(){
+                    mProgressView.setVisibility(View.GONE);
+                    mLoginFormView.setVisibility(View.VISIBLE);
+                    Toasts.serviceInterrupted(LoginActivity.this);
+                }
+            });
         }
     }
 
@@ -357,115 +386,115 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        JSONObject ResponseJSON;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-
-          /*  for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split("check@check.com:hello");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }*/
-
-            ArrayList<PostParam> iPostParams = new ArrayList<PostParam>();
-            PostParam postemail = new PostParam("email", mEmail);
-            PostParam postpassword = new PostParam("pass",mPassword);
-            iPostParams.add(postemail);
-            iPostParams.add(postpassword);
-            //ResponseJSON = PostRequest.execute("http://192.168.43.66/login_buyer.php", iPostParams, null);
-            ResponseJSON = PostRequest.execute(URLConstants.URLLogin, iPostParams, null);
-            Log.d("RESPONSE", ResponseJSON.toString());
-            try {
-                if(ResponseJSON.getJSONObject("data").getInt("result")==1) {
-                    JSONObject trans = new JSONObject();
-                    JSONObject translist = ResponseJSON.getJSONObject("data").getJSONObject("Transactions");
-                    Notification not;
-                    for (int i=0; i<ResponseJSON.getJSONObject("data").getInt("length"); i++){
-                        trans = translist.getJSONObject(String.valueOf(i));
-                        not = new Notification(trans);
-//                        Log.d(LOG_TAG, "Category of event is " + event.getCate)
-                        not.saveNot(LoginActivity.this);
-                    }
-                    UserProfile.setEmail(mEmail, LoginActivity.this);
-                    UserProfile.setCategory(ResponseJSON.getJSONObject("data").getInt("cat"), LoginActivity.this);
-                    UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"), LoginActivity.this);
-                    UserProfile.setName(ResponseJSON.getJSONObject("data").getString("user"), LoginActivity.this);
-                    UserProfile.setPhone(ResponseJSON.getJSONObject("data").getString("mobile"), LoginActivity.this);
-                    UserProfile.setPassword(ResponseJSON.getJSONObject("data").getString("password"), LoginActivity.this);
-                    UserProfile.setShopId(ResponseJSON.getJSONObject("data").getString("shopid"), LoginActivity.this);
-                    UserProfile.setShopPhone(ResponseJSON.getJSONObject("data").getString("office_no"), LoginActivity.this);
-                    UserProfile.setAddress1(ResponseJSON.getJSONObject("data").getString("Address1"), LoginActivity.this);
-                    UserProfile.setAddress2(ResponseJSON.getJSONObject("data").getString("Address2"), LoginActivity.this);
-                    UserProfile.setShopName(ResponseJSON.getJSONObject("data").getString("shopname"), LoginActivity.this);
-                    UserProfile.setLocation(ResponseJSON.getJSONObject("data").getString("sel_loc"), LoginActivity.this);
-                    return true;
-                }
-                else if(ResponseJSON.getJSONObject("data").getInt("result")==0) {
-                    return false;
-                }
-              /*  else if (mEmail.equals("abc@def")&&mPassword.equals("123456"))
-                {
-                    return true;
-                }*/
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return false;
-            // TODO: register the new account here.
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            try {
-                if (ResponseJSON.getJSONObject("data").getInt("result")==1) {
-                   /* Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(i);*/
-                    Intent intent = new Intent(LoginActivity.this,StartActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("LOGIN", true);
-                    startActivity(intent);
-                    intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
-                    startService(intent);
-                    finish();
-                } else if(ResponseJSON.getJSONObject("data").getInt("result")==0){
-                    mPasswordView.setError(getString(R.string.error_incorrect_password));
-                    mPasswordView.requestFocus();
-                }else {
-                    Snackbar.make(mLoginFormView,"Network not available",Snackbar.LENGTH_LONG);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
+//    /**
+//     * Represents an asynchronous login/registration task used to authenticate
+//     * the user.
+//     */
+//    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+//
+//        private final String mEmail;
+//        JSONObject ResponseJSON;
+//        private final String mPassword;
+//
+//        UserLoginTask(String email, String password) {
+//            mEmail = email;
+//            mPassword = password;
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//            // TODO: attempt authentication against a network service.
+//
+//
+//          /*  for (String credential : DUMMY_CREDENTIALS) {
+//                String[] pieces = credential.split("check@check.com:hello");
+//                if (pieces[0].equals(mEmail)) {
+//                    // Account exists, return true if the password matches.
+//                    return pieces[1].equals(mPassword);
+//                }
+//            }*/
+//
+//            ArrayList<PostParam> iPostParams = new ArrayList<PostParam>();
+//            PostParam postemail = new PostParam("email", mEmail);
+//            PostParam postpassword = new PostParam("pass",mPassword);
+//            iPostParams.add(postemail);
+//            iPostParams.add(postpassword);
+//            //ResponseJSON = PostRequest.execute("http://192.168.43.66/login_buyer.php", iPostParams, null);
+//            ResponseJSON = PostRequest.execute(URLConstants.URLLogin, iPostParams, null);
+//            Log.d("RESPONSE", ResponseJSON.toString());
+//            try {
+//                if(ResponseJSON.getJSONObject("data").getInt("result")==1) {
+//                    JSONObject trans = new JSONObject();
+//                    JSONObject translist = ResponseJSON.getJSONObject("data").getJSONObject("Transactions");
+//                    NotificationsActivity not;
+//                    for (int i=0; i<ResponseJSON.getJSONObject("data").getInt("length"); i++){
+//                        trans = translist.getJSONObject(String.valueOf(i));
+//                        not = new NotificationsActivity(trans);
+////                        Log.d(LOG_TAG, "Category of event is " + event.getCate)
+//                        not.saveNot(LoginActivity.this);
+//                    }
+//                    UserProfile.setEmail(mEmail, LoginActivity.this);
+//                    UserProfile.setCategory(ResponseJSON.getJSONObject("data").getInt("cat"), LoginActivity.this);
+//                    UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"), LoginActivity.this);
+//                    UserProfile.setName(ResponseJSON.getJSONObject("data").getString("user"), LoginActivity.this);
+//                    UserProfile.setPhone(ResponseJSON.getJSONObject("data").getString("mobile"), LoginActivity.this);
+//                    UserProfile.setPassword(ResponseJSON.getJSONObject("data").getString("password"), LoginActivity.this);
+//                    UserProfile.setShopId(ResponseJSON.getJSONObject("data").getString("shopid"), LoginActivity.this);
+//                    UserProfile.setShopPhone(ResponseJSON.getJSONObject("data").getString("office_no"), LoginActivity.this);
+//                    UserProfile.setAddress1(ResponseJSON.getJSONObject("data").getString("Address1"), LoginActivity.this);
+//                    UserProfile.setAddress2(ResponseJSON.getJSONObject("data").getString("Address2"), LoginActivity.this);
+//                    UserProfile.setShopName(ResponseJSON.getJSONObject("data").getString("shopName"), LoginActivity.this);
+//                    UserProfile.setLocation(ResponseJSON.getJSONObject("data").getString("sel_loc"), LoginActivity.this);
+//                    return true;
+//                }
+//                else if(ResponseJSON.getJSONObject("data").getInt("result")==0) {
+//                    return false;
+//                }
+//              /*  else if (mEmail.equals("abc@def")&&mPassword.equals("123456"))
+//                {
+//                    return true;
+//                }*/
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return false;
+//            // TODO: register the new account here.
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            mAuthTask = null;
+//            showProgress(false);
+//
+//            try {
+//                if (ResponseJSON.getJSONObject("data").getInt("result")==1) {
+//                   /* Intent i = new Intent(LoginActivity.this, MainActivity.class);
+//                    startActivity(i);*/
+//                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+////                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////                    intent.putExtra("LOGIN", true);
+//                    startActivity(intent);
+//                    intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
+//                    startService(intent);
+//                    finish();
+//                } else if(ResponseJSON.getJSONObject("data").getInt("result")==0){
+//                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                    mPasswordView.requestFocus();
+//                }else {
+//                    Toast.makeText(LoginActivity.this,"Network connection unavailable",Toast.LENGTH_LONG).show();
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        @Override
+//        protected void onCancelled() {
+//            mAuthTask = null;
+//            showProgress(false);
+//        }
+//    }
 
     @Override
     protected void onResume() {

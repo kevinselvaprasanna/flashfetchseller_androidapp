@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,7 @@ import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
-public class Shop_Det extends AppCompatActivity {
+public class ShopDetails extends AppCompatActivity {
 
     EditText shopname,shopid,shopad1,shopad2,shopphone;
     String tsname,tsid,tshad1,tshad2,tphone;
@@ -31,6 +32,22 @@ public class Shop_Det extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop__det);
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Shop Details");
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShopDetails.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         shopname = (EditText)findViewById(R.id.shop_name);
         shopid = (EditText)findViewById(R.id.shop_id);
         shopad1 = (EditText)findViewById(R.id.add_1);
@@ -38,12 +55,12 @@ public class Shop_Det extends AppCompatActivity {
         shopphone = (EditText)findViewById(R.id.telephone);
 
         submit = (Button)findViewById(R.id.submit);
-        editcat = (Button)findViewById(R.id.editcat);
+        editcat = (Button)findViewById(R.id.editCategories);
 
         editcat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Shop_Det.this,CategoryActivity.class);
+                Intent intent = new Intent(ShopDetails.this,CategoryActivity.class);
                 startActivity(intent);
                 //Intent to edit categories
             }
@@ -90,17 +107,17 @@ public class Shop_Det extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
-            PostParams.add(new PostParam("email", UserProfile.getEmail(Shop_Det.this)));
-            PostParams.add(new PostParam("token",UserProfile.getToken(Shop_Det.this)));
-            PostParams.add(new PostParam("name",UserProfile.getName(Shop_Det.this)));
-            PostParams.add(new PostParam("mobile",UserProfile.getPhone(Shop_Det.this)));
-            PostParams.add(new PostParam("shopname",tsname));
+            PostParams.add(new PostParam("email", UserProfile.getEmail(ShopDetails.this)));
+            PostParams.add(new PostParam("token",UserProfile.getToken(ShopDetails.this)));
+            PostParams.add(new PostParam("name",UserProfile.getName(ShopDetails.this)));
+            PostParams.add(new PostParam("mobile",UserProfile.getPhone(ShopDetails.this)));
+            PostParams.add(new PostParam("shopName",tsname));
             PostParams.add(new PostParam("address1",tshad1));
             PostParams.add(new PostParam("address2",tshad2));
-            PostParams.add(new PostParam("pass",UserProfile.getPassword(Shop_Det.this)));
+            PostParams.add(new PostParam("pass",UserProfile.getPassword(ShopDetails.this)));
             PostParams.add(new PostParam("sid",tsid));
             PostParams.add(new PostParam("office",tphone));
-            PostParams.add(new PostParam("sel_loc",UserProfile.getLocation(Shop_Det.this)));
+            PostParams.add(new PostParam("sel_loc",UserProfile.getLocation(ShopDetails.this)));
             ResponseJSON = PostRequest.execute(URLConstants.URLUpdate, PostParams, null);
             Log.d("RESPONSE", ResponseJSON.toString());
 

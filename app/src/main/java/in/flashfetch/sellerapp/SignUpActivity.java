@@ -1,15 +1,14 @@
 package in.flashfetch.sellerapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,18 +23,13 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import in.flashfetch.sellerapp.Constants.URLConstants;
-import in.flashfetch.sellerapp.Network.ImageUploader;
-import in.flashfetch.sellerapp.Network.PostRequest;
-import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.CommonUtils.Toasts;
+import in.flashfetch.sellerapp.CommonUtils.Utils;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
+import in.flashfetch.sellerapp.Network.ServiceManager;
+import in.flashfetch.sellerapp.Objects.SignUpObject;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.util.ArrayList;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText name, shop_name, email, phone,password, confpassword, shop_id, shop_telephone, address1, address2; //city, postal_code, country, state,
@@ -43,21 +37,44 @@ public class SignUpActivity extends AppCompatActivity {
     TextView loc_gps,shopimg;
     ViewFlipper viewFlipper;
     private String selectedImagePath;
+    private View firstView, secondView;
     Typeface font;
     Uri selectedImageUri;
     private static final int PLACE_PICKER_REQUEST = 1;
     //private static final int SELECT_PICTURE = 2;
     private static final int SELECT_PHOTO = 2;
-    ProgressBar signupprogress;
-    String toastMsg = "";
+    private ProgressBar signUpProgress;
+    String shopLocation = "";
+
+    private SignUpObject signUpObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        firstView = (View)findViewById(R.id.first_view);
+        secondView = (View)findViewById(R.id.second_view);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        if(toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle("Registration");
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(viewFlipper.getCurrentView() == firstView){
+                    Intent intent = new Intent(SignUpActivity.this,StartActivity.class);
+                    startActivity(intent);
+                }else{
+                    viewFlipper.showPrevious();
+                }
+            }
+        });
 
         //TODO: Set typeface for text
 
@@ -67,8 +84,8 @@ public class SignUpActivity extends AppCompatActivity {
         Next1 = (Button)findViewById(R.id.Next);
         Back = (Button)findViewById(R.id.back);
 
-        signupprogress = (ProgressBar)findViewById(R.id.signup_progress);
-        //set signupprogress visible and viewflipper invisible when showing progress
+        signUpProgress = (ProgressBar)findViewById(R.id.signup_progress);
+        //set signUpProgress visible and viewflipper invisible when showing progress
 
         viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper2);
 
@@ -140,12 +157,78 @@ public class SignUpActivity extends AppCompatActivity {
 
         Submit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 if(validate2()) {
-                    signupprogress.setVisibility(View.VISIBLE);
+
+                    signUpProgress.setVisibility(View.VISIBLE);
                     viewFlipper.setVisibility(View.GONE);
-                    Signup signuptask = new Signup();
-                    signuptask.execute();
+
+//                    signUpObject.setName(name.getText().toString());
+//                    signUpObject.setEmail(email.getText().toString());
+//                    signUpObject.setPassword(password.getText().toString());
+//                    signUpObject.setPhone(phone.getText().toString());
+//                    signUpObject.setShopName(shop_name.getText().toString());
+//                    signUpObject.setShopId(shop_id.getText().toString());
+//                    signUpObject.setShopTelephone(shop_telephone.getText().toString());
+//                    signUpObject.setShopAddress1(address1.getText().toString());
+//                    signUpObject.setShopAddress2(address2.getText().toString());
+//                    signUpObject.setShopLocation(shopLocation);
+
+                    if(Utils.isInternetAvailable(SignUpActivity.this)){
+                        ServiceManager.callSignUpService(SignUpActivity.this, signUpObject, new UIListener() {
+                            @Override
+                            public void onSuccess() {
+
+                                signUpProgress.setVisibility(View.GONE);
+
+                                UserProfile.setName(name.getText().toString(), SignUpActivity.this);
+                                UserProfile.setEmail(email.getText().toString(), SignUpActivity.this);
+                                UserProfile.setPhone(phone.getText().toString(), SignUpActivity.this);
+                                UserProfile.setPassword(password.getText().toString(),SignUpActivity.this);
+                                UserProfile.setShopId(shop_id.getText().toString(), SignUpActivity.this);
+                                UserProfile.setShopPhone(shop_telephone.getText().toString(), SignUpActivity.this);
+                                UserProfile.setAddress1(address1.getText().toString(), SignUpActivity.this);
+                                UserProfile.setAddress2(address2.getText().toString(), SignUpActivity.this);
+                                UserProfile.setShopName(shop_name.getText().toString(), SignUpActivity.this);
+                                UserProfile.setLocation(shopLocation,SignUpActivity.this);
+
+                                Intent intent = new Intent(SignUpActivity.this,CategoryActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.putExtra("EXIT", true);
+                                startActivity(intent);
+
+                                intent = new Intent(SignUpActivity.this, IE_RegistrationIntentService.class);
+                                startService(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                signUpProgress.setVisibility(View.GONE);
+                                viewFlipper.setVisibility(View.VISIBLE);
+
+                                //TODO: set the viewflipper to first registration page
+
+                                Toast.makeText(SignUpActivity.this,"Email is already registered",Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onConnectionError() {
+                                signUpProgress.setVisibility(View.GONE);
+                                viewFlipper.setVisibility(View.VISIBLE);
+
+                                Toast.makeText(SignUpActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onCancelled() {
+                                signUpProgress.setVisibility(View.GONE);
+                                viewFlipper.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }else{
+                        Toasts.internetUnavailableToast(SignUpActivity.this);
+                    }
                 }
             }
         });
@@ -167,8 +250,8 @@ public class SignUpActivity extends AppCompatActivity {
             case PLACE_PICKER_REQUEST:
                 if (resultCode == RESULT_OK) {
                     Place place = PlacePicker.getPlace(this, data);
-                    toastMsg = String.format("%s", place.getName());
-                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                    shopLocation = String.format("%s", place.getName());
+                    Toast.makeText(this, shopLocation, Toast.LENGTH_LONG).show();
                     break;
                 }
         }
@@ -179,7 +262,7 @@ public class SignUpActivity extends AppCompatActivity {
     public String getPath(Uri uri) {
         // just some safety built in
         if( uri == null ) {
-            // TODO perform some logging or show user feedback
+            // TODO perform some logging or show user FeedBackActivity
             return null;
         }
         // try to retrieve the image from the media store first
@@ -199,12 +282,12 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean validate1()
     {
 
-        if(isempty(name))
+        if(TextUtils.isEmpty(name.getText().toString()))
         {
             Toast.makeText(this,"Name cannot be empty",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(email))
+        if(TextUtils.isEmpty(email.getText().toString()))
         {
             Toast.makeText(this,"Email cannot be empty",Toast.LENGTH_SHORT).show();
             return false;
@@ -265,10 +348,10 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this,"Address 2 cannot be empty",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(toastMsg.isEmpty())
+        if(shopLocation.isEmpty())
         {
             Toast.makeText(this,"Select your location",Toast.LENGTH_SHORT).show();
-            //return false;
+            return false;
         }
         return true;
     }
@@ -278,100 +361,4 @@ public class SignUpActivity extends AppCompatActivity {
     {
         return editText.getText().toString().isEmpty();
     }
-
-    class Signup extends AsyncTask<String, Void, Void> {
-        //JSONObject data = new JSONObject();
-        JSONObject ResponseJSON;
-        String tname = name.getText().toString();
-        String temail = email.getText().toString();
-        String phone1 = phone.getText().toString();
-        String tsname = shop_name.getText().toString();
-        String tsid = shop_id.getText().toString();
-        String tstelph = shop_telephone.getText().toString();
-        String tshadd1 = address1.getText().toString();
-        String tshadd2 = address2.getText().toString();
-        String tpassword = password.getText().toString();
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-                ArrayList<PostParam> instiPostParams = new ArrayList<PostParam>();
-                PostParam postUser = new PostParam("name", tname);
-                PostParam postEmail = new PostParam("email", temail);
-                PostParam postPass = new PostParam("password", tpassword);
-                instiPostParams.add(postUser);
-                instiPostParams.add(postEmail);
-                instiPostParams.add(postPass);
-                instiPostParams.add(new PostParam("mobile",phone1));
-                instiPostParams.add(new PostParam("pass",tpassword));
-                instiPostParams.add(new PostParam("shopname",tsname));
-                instiPostParams.add(new PostParam("address1",tshadd1));
-                instiPostParams.add(new PostParam("address2",tshadd2));
-                instiPostParams.add(new PostParam("sid",tsid));
-                instiPostParams.add(new PostParam("office",tstelph));
-                instiPostParams.add(new PostParam("sel_loc",toastMsg));
-
-
-                    ResponseJSON = PostRequest.execute(URLConstants.URLSignup, instiPostParams, null);
-                    Log.d("RESPONSE", ResponseJSON.toString());
-
-             /*   JSONObject json = ImageUploader.execute( URLConstants.URLImage, selectedImageUri.toString(),null);
-                Log.d("IMAGE_RESPONSE", ResponseJSON.toString());*/
-
-
-
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            //tvv.setText(ResponseJSON.toString());
-            super.onPostExecute(aVoid);
-            try {
-                if(ResponseJSON.getJSONObject("data").getInt("result")==1){
-                    UserProfile.setName(tname, SignUpActivity.this);
-                    UserProfile.setEmail(temail, SignUpActivity.this);
-                    UserProfile.setPhone(phone1, SignUpActivity.this);
-                    UserProfile.setPassword(tpassword,SignUpActivity.this);
-                    UserProfile.setShopId(tsid, SignUpActivity.this);
-                    UserProfile.setShopPhone(tstelph, SignUpActivity.this);
-                    UserProfile.setAddress1(tshadd1, SignUpActivity.this);
-                    UserProfile.setAddress2(tshadd2, SignUpActivity.this);
-                    UserProfile.setShopName(tsname, SignUpActivity.this);
-                    UserProfile.setLocation(toastMsg,SignUpActivity.this);
-                    UserProfile.setToken(ResponseJSON.getJSONObject("data").getString("token"), SignUpActivity.this);
-                    Intent intent = new Intent(SignUpActivity.this,StartActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("EXIT", true);
-                    startActivity(intent);
-                    intent = new Intent(SignUpActivity.this, IE_RegistrationIntentService.class);
-                    startService(intent);
-                    finish();
-                }else if(ResponseJSON.getJSONObject("data").getInt("result")==0)
-                {
-                    Toast.makeText(SignUpActivity.this,"Email is already registered",Toast.LENGTH_LONG).show();
-                    signupprogress.setVisibility(View.GONE);
-                    viewFlipper.setVisibility(View.VISIBLE);
-                }
-                else{
-                    Toast.makeText(SignUpActivity.this,"Server is not working",Toast.LENGTH_LONG).show();
-                    signupprogress.setVisibility(View.GONE);
-                    viewFlipper.setVisibility(View.VISIBLE);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(SignUpActivity.this,"Server is not working",Toast.LENGTH_LONG).show();
-                signupprogress.setVisibility(View.GONE);
-                viewFlipper.setVisibility(View.VISIBLE);
-            }
-
-
-        }
-
-    }
-
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checklayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Check the boxes in which cases you will accept the return of the purchased product from customer"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Other points:"
+        android:textColor="#000"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seller can always accept the return irrespective of the policy
+        \nIn cases of return, customer can choose to return or replace the product. If customer chooses to return the product, he/she is to be refunded the entire amount on the spot. If the customer chooses to replace the product with the product he placed order, the price should not exceed the price they have dealed through FlashFetch app
+        \nIf Seller disagrees a return request, Buyer can file a dispute under the Buyer Protection Program if the condition is under the seller return policy
+        \nThe seller has to refund entire amount to FlashFetch delivery executive, if the product is returned as it is picked up within 3 working days from the point of purchase or pickup"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+    <CheckBox
+        android:id="@+id/accept_return_checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I accept the terms and conditions" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="32dp"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/return_submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/ff_black"
+            android:text="Submit"
+            android:textColor="#fff" />
+    </LinearLayout>
+</LinearLayout>

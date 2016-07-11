@@ -1,4 +1,4 @@
-package in.flashfetch.sellerapp;
+package in.flashfetch.sellerapp.Fragments;
 
 
 import android.app.Activity;
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.flashfetch.sellerapp.R;
+
 /**
  * Created by Sharath on 26-06-2016.
  */
@@ -22,11 +24,14 @@ public class DialogFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.dialog_access, container, false);
+
         final EditText accesscode_text=(EditText)view.findViewById(R.id.access_text);
-        Button accesscode_submit=(Button) view.findViewById(R.id.access_submit);
+
+        Button accesscode_submit = (Button) view.findViewById(R.id.access_submit);
+
         accesscode_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,6 +44,7 @@ public class DialogFragment extends Fragment {
         });
         return view;
     }
+
     public interface dialogInterface{
         public void accessAllowed();
     }
