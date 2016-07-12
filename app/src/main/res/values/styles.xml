@@ -13,9 +13,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!--<style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">-->
-        <!--<item name="android:windowBackground">@drawable/splash_gif</item>-->
-    <!--</style>-->
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
 
     <style name="ToolBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorPrimary">#29303f</item>

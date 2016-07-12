@@ -6,7 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import in.flashfetch.sellerapp.R;
 
@@ -15,7 +18,7 @@ import in.flashfetch.sellerapp.R;
  */
 public class DemoImageFragment extends Fragment {
 
-    private static int[] images = new int[]{R.drawable.arrow_up,R.drawable.arrow_down};
+    private static int[] images = new int[]{R.drawable.demo_1,R.drawable.demo_2,R.drawable.demo_3,R.drawable.demo_4,R.drawable.demo_5};
 
     public static DemoImageFragment newInstance(int index){
         DemoImageFragment demoImageFragment = new DemoImageFragment();
@@ -42,7 +45,16 @@ public class DemoImageFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        int index = getArguments().getInt("index");
+
         ImageView imageView = (ImageView)view.findViewById(R.id.demo_imageView);
-        imageView.setBackgroundResource(images[getArguments().getInt("index")]);
+        Glide.with(getActivity()).load(images[index]).into(imageView);
+
+        if(index == 4){
+            Button getStarted = (Button)view.findViewById(R.id.get_started);
+            getStarted.setVisibility(View.VISIBLE);
+        }
+
+
     }
 }
