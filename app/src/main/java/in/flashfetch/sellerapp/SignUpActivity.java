@@ -22,6 +22,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
@@ -45,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
     private static final int SELECT_PHOTO = 2;
     private ProgressBar signUpProgress;
     String shopLocation = "";
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
 
     private SignUpObject signUpObject;
 
@@ -118,6 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
                 //TODO : Populate
 
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                builder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
 
                 //Context context = getApplicationContext();
                 try {
@@ -251,7 +255,6 @@ public class SignUpActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     Place place = PlacePicker.getPlace(this, data);
                     shopLocation = String.format("%s", place.getName());
-                    Toast.makeText(this, shopLocation, Toast.LENGTH_LONG).show();
                     break;
                 }
         }

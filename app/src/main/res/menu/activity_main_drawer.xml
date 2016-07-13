@@ -2,10 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <!--<item-->
-            <!--android:id="@+id/homepg"-->
-            <!--android:icon="@drawable/home"-->
-            <!--android:title="@string/home" />-->
+
         <item
             android:id="@+id/account"
             android:icon="@drawable/acc"
@@ -15,11 +12,6 @@
             android:title="@string/shopdet"
             android:icon="@drawable/shop_48"/>
 
-        <!--android:icon="@drawable/shopdet"-->
-        <!--<item
-            android:id="@+id/inven"
-            android:icon="@drawable/inven"
-            android:title="@string/inven" />-->
         <item
             android:id="@+id/notif"
             android:icon="@drawable/notif"
@@ -28,10 +20,6 @@
             android:id="@+id/reqad"
             android:icon="@drawable/reqad"
             android:title="@string/reqad" />
-        <item
-            android:id="@+id/helpimp"
-            android:icon="@drawable/helpimp"
-            android:title="@string/helpimp" />
 
         <item
             android:id="@+id/rewardPoints"
@@ -44,14 +32,20 @@
             android:title="Refer and Earn"/>
 
         <item
+            android:id="@+id/helpimp"
+            android:icon="@drawable/helpimp"
+            android:title="@string/helpimp" />
+
+        <item
             android:id="@+id/demo"
             android:title="Demo"
             android:icon="@drawable/demo"/>
 
         <item
             android:id="@+id/logout"
-            android:icon="@android:drawable/ic_input_delete"
+            android:icon="@drawable/logout"
             android:title="@string/logout" />
+
     </group>
 
 </menu>
