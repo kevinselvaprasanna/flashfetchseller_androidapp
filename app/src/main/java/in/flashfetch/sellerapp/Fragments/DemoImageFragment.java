@@ -18,7 +18,7 @@ import in.flashfetch.sellerapp.R;
  */
 public class DemoImageFragment extends Fragment {
 
-    private static int[] images = new int[]{R.drawable.demo_1,R.drawable.demo_2,R.drawable.demo_3,R.drawable.demo_4,R.drawable.demo_5};
+    private static int[] images = new int[]{R.drawable.demo_1,R.drawable.demo_2,R.drawable.demo_3,R.drawable.demo_5,R.drawable.demo_4};
 
     public static DemoImageFragment newInstance(int index){
         DemoImageFragment demoImageFragment = new DemoImageFragment();
@@ -49,12 +49,5 @@ public class DemoImageFragment extends Fragment {
 
         ImageView imageView = (ImageView)view.findViewById(R.id.demo_imageView);
         Glide.with(getActivity()).load(images[index]).into(imageView);
-
-        if(index == 4){
-            Button getStarted = (Button)view.findViewById(R.id.get_started);
-            getStarted.setVisibility(View.VISIBLE);
-        }
-
-
     }
 }

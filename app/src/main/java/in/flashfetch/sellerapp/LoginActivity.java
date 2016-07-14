@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
@@ -80,14 +81,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setTheme(R.style.AppTheme);
-                Log.d("LoginActivity","SplashAnimation");
-            }
-        }, 5000);
+        try{
+            TimeUnit.MILLISECONDS.sleep(5000);
+            Log.d("LoginActivity","SplashAnimation");
+        }catch(InterruptedException e){
 
+        }
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
 

@@ -329,9 +329,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void logout() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout?");
-        //Creating ok button with listener
+
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -340,10 +341,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences prefs = getSharedPreferences("sharedPreferences", 0);
                 prefs.edit().putString("delete", "hellothisisacheck").apply();
+
                 Log.d("delete", prefs.getString("delete", "nope"));
+
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.clear();
-                editor.commit();
+                editor.apply();
                 UserProfile.clear(MainActivity.this);
                 Log.d("delete", prefs.getString("delete", "nope"));
                 GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getBaseContext());
