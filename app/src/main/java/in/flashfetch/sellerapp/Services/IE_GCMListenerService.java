@@ -10,29 +10,22 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
-import in.flashfetch.sellerapp.Empty_1;
-import in.flashfetch.sellerapp.Helper.DatabaseHelper;
-import in.flashfetch.sellerapp.MainActivity;
-import in.flashfetch.sellerapp.Objects.Notification;
-import in.flashfetch.sellerapp.Objects.UserProfile;
-import in.flashfetch.sellerapp.R;
-
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.MainActivity;
+import in.flashfetch.sellerapp.R;
 
 
 public class IE_GCMListenerService extends GcmListenerService{

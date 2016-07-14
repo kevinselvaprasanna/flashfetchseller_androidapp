@@ -42,6 +42,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/refer_earn_button"
         android:text="Refer &amp; Earn"
         android:background="@color/ff_green"
         android:textColor="@color/icons"

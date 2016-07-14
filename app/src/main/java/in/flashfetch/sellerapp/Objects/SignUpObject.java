@@ -5,8 +5,12 @@ package in.flashfetch.sellerapp.Objects;
  */
 public class SignUpObject {
 
-    private String name, email, password, phone, shopName, shopId, shopTelephone, shopAddress1, shopAddress2, shopLocation;
+    private String name, email, password, phone, shopName, shopId, shopTelephone, shopAddress1, shopAddress2, shopLocation, referralCode;
     private boolean isDummyObject;
+
+    public SignUpObject(){
+
+    }
 
     public SignUpObject(String name, String email, String password, String phone, String shopName, String shopId, String shopTelephone, String shopAddress1, String shopAddress2, String shopLocation, boolean isDummyObject){
         this.name = name;
@@ -108,5 +112,13 @@ public class SignUpObject {
 
     public void setDummyObject(boolean dummyObject) {
         isDummyObject = dummyObject;
+    }
+
+    public String getReferralCode() {
+        return referralCode;
+    }
+
+    public void setReferralCode(String referralCode) {
+        this.referralCode = referralCode;
     }
 }

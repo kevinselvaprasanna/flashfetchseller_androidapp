@@ -1,26 +1,45 @@
 package in.flashfetch.sellerapp.CommonUtils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
+
+import in.flashfetch.sellerapp.Constants.Constants;
+import in.flashfetch.sellerapp.LoginActivity;
+import in.flashfetch.sellerapp.Objects.UserProfile;
+import in.flashfetch.sellerapp.R;
+import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
+
+import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * Created by KRANTHI on 05-06-2016.
  */
 public class Utils {
-
-    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     public static boolean isValidEmail(String emailText) {
         if(emailText == null){
@@ -64,12 +83,21 @@ public class Utils {
         return list;
     }
 
+    public static void startPlayServices(Activity activity) {
+        if (Utils.checkPlayServices(activity)) {
+            Intent intent = new Intent(activity, IE_RegistrationIntentService.class);
+            activity.startService(intent);
+        }else{
+            activity.finish();
+        }
+    }
+
     public static boolean checkPlayServices(Activity activity) {
         int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GoogleApiAvailability.getInstance().isUserResolvableError(resultCode)) {
                 GoogleApiAvailability.getInstance().getErrorDialog(activity,resultCode,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                        Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Log.i("tag", "This device is not supported.");
                 activity.finish();
@@ -103,5 +131,92 @@ public class Utils {
             return true;
         }
         return false;
+    }
+
+    public static boolean checkPhoneNumberLength(String phoneNumber){
+        if(phoneNumber.length() == 10){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean validatePhoneNumberUpdate(String previousText, String updatedText){
+        if(!previousText.equals(updatedText)){
+            return true;
+        }
+        return false;
+    }
+
+    public static void doLogout(final Activity activity) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        builder.setTitle("Logout");
+        builder.setMessage("Are you sure you want to logout?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                logout(activity);
+                Toast.makeText(activity,"Successfully Logged out",Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
+    private static void logout(Activity activity){
+        clearApplicationData(activity);
+
+        SharedPreferences prefs = activity.getSharedPreferences("sharedPreferences", 0);
+        prefs.edit().putString("delete", "hellothisisacheck").apply();
+
+        Log.d("delete", prefs.getString("delete", "nope"));
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
+
+        UserProfile.clear(activity);
+        Log.d("delete", prefs.getString("delete", "nope"));
+
+        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(activity.getBaseContext());
+        try {
+            gcm.unregister();
+        } catch (IOException e) {
+            System.out.println("Error Message: " + e.getMessage());
+        }
+
+        Intent i = new Intent(activity, LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(i);
+        activity.finish();
+    }
+
+    public static void clearApplicationData(Context context) {
+        File cache = context.getCacheDir();
+        File appDir = new File(cache.getParent());
+        if (appDir.exists()) {
+            String[] children = appDir.list();
+            for (String s : children) {
+                if (!s.equals("lib")) {
+                    deleteDir(new File(appDir, s));
+                    Log.i("TAG", "File /data/data/APP_PACKAGE/" + s + " DELETED");
+                }
+            }
+        }
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
     }
 }

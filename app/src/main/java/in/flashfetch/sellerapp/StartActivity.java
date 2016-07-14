@@ -27,8 +27,7 @@ public class StartActivity extends AppCompatActivity {
             finish();
         }
         setContentView(R.layout.signup);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+
         login = (Button)findViewById(R.id.login);
         register = (Button)findViewById(R.id.register);
         login.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +43,4 @@ public class StartActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

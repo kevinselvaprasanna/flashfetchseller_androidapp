@@ -34,7 +34,6 @@ import in.flashfetch.sellerapp.Objects.UserProfile;
 
 public class Returns extends AppCompatActivity {
 
-    //CheckBox pol1,pol2,pol3,pol4,pol_other;
     private CheckBox[] check;
     private EditText other;
     private Button submit;

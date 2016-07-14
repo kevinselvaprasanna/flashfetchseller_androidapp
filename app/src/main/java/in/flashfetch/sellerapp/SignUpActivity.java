@@ -27,39 +27,38 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
+import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
 import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.SignUpObject;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
-public class SignUpActivity extends AppCompatActivity {
-    EditText name, shop_name, email, phone,password, confpassword, shop_id, shop_telephone, address1, address2; //city, postal_code, country, state,
-    Button Submit,Next1,Back;
-    TextView loc_gps,shopimg;
-    ViewFlipper viewFlipper;
-    private String selectedImagePath;
-    private View firstView, secondView;
-    Typeface font;
-    Uri selectedImageUri;
-    private static final int PLACE_PICKER_REQUEST = 1;
-    //private static final int SELECT_PICTURE = 2;
-    private static final int SELECT_PHOTO = 2;
-    private ProgressBar signUpProgress;
-    String shopLocation = "";
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+public class SignUpActivity extends BaseActivity {
 
-    private SignUpObject signUpObject;
+    private EditText name, shopName, email, phone,password, confirmPassword, shopId, shopTelephone, address1, address2, referralCode;
+    private Button submitButton, nextButton, backButton;
+    private TextView loc_gps,shopimg;
+    private ViewFlipper viewFlipper;
+    private String selectedImagePath;
+    private View firstView;
+    private Typeface font;
+    private Uri selectedImageUri;
+    private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int SELECT_PHOTO = 2;
+    private ProgressBar progressBar;
+    private String shopLocation = null;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+    private SignUpObject signUpObject = new SignUpObject();
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_sign_up);
 
-        firstView = (View)findViewById(R.id.first_view);
-        secondView = (View)findViewById(R.id.second_view);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("Registration");
@@ -71,59 +70,47 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(viewFlipper.getCurrentView() == firstView){
-                    Intent intent = new Intent(SignUpActivity.this,StartActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
                     startActivity(intent);
+                    finish();
                 }else{
                     viewFlipper.showPrevious();
                 }
             }
         });
 
-        //TODO: Set typeface for text
-
-       /* font = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Medium.ttf");*/
-
-        Next1 = (Button)findViewById(R.id.Next);
-        Back = (Button)findViewById(R.id.back);
-
-        signUpProgress = (ProgressBar)findViewById(R.id.signup_progress);
-        //set signUpProgress visible and viewflipper invisible when showing progress
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
 
         viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper2);
 
+        firstView = (View)findViewById(R.id.first_view);
 
         name = (EditText)findViewById(R.id.Name);
         email = (EditText)findViewById(R.id.EmailID);
         phone = (EditText)findViewById(R.id.MobileNum);
         password = (EditText)findViewById(R.id.Password);
-        confpassword = (EditText)findViewById(R.id.confPass);
+        confirmPassword = (EditText)findViewById(R.id.confPass);
+        referralCode = (EditText)findViewById(R.id.referral_code);
 
-        shop_name = (EditText)findViewById(R.id.shop_name);
-        shop_id = (EditText)findViewById(R.id.shop_id);
-        shop_telephone = (EditText)findViewById(R.id.telephone);
+        shopName = (EditText)findViewById(R.id.shop_name);
+        shopId = (EditText)findViewById(R.id.shop_id);
+        shopTelephone = (EditText)findViewById(R.id.telephone);
         address1 = (EditText)findViewById(R.id.add_1);
         address2 = (EditText)findViewById(R.id.add_2);
-        /*
-        city = (EditText)findViewById(R.id.city);
-        postal_code = (EditText)findViewById(R.id.postal_code);
-        country = (EditText)findViewById(R.id.country);
-        state = (EditText)findViewById(R.id.state);
-        */
-        Submit = (Button)findViewById(R.id.next);
 
         loc_gps = (TextView)findViewById(R.id.location);
         shopimg = (TextView)findViewById(R.id.shop_img);
 
+        nextButton = (Button)findViewById(R.id.Next);
+        backButton = (Button)findViewById(R.id.back);
+        submitButton = (Button)findViewById(R.id.next);
+
         loc_gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO : Populate
-
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                 builder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
 
-                //Context context = getApplicationContext();
                 try {
                     startActivityForResult(builder.build(SignUpActivity.this), PLACE_PICKER_REQUEST);
                 } catch (GooglePlayServicesRepairableException e) {
@@ -131,9 +118,9 @@ public class SignUpActivity extends AppCompatActivity {
                 } catch (GooglePlayServicesNotAvailableException e) {
                     e.printStackTrace();
                 }
-                //Toast.makeText(SignUpActivity.this, "Shop location", Toast.LENGTH_SHORT).show();
             }
         });
+
         shopimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +130,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        Next1.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(validate1()) {
@@ -152,53 +139,53 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        Back.setOnClickListener(new View.OnClickListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 viewFlipper.showPrevious();
             }
         });
 
-        Submit.setOnClickListener(new View.OnClickListener() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 if(validate2()) {
 
-                    signUpProgress.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
                     viewFlipper.setVisibility(View.GONE);
 
-//                    signUpObject.setName(name.getText().toString());
-//                    signUpObject.setEmail(email.getText().toString());
-//                    signUpObject.setPassword(password.getText().toString());
-//                    signUpObject.setPhone(phone.getText().toString());
-//                    signUpObject.setShopName(shop_name.getText().toString());
-//                    signUpObject.setShopId(shop_id.getText().toString());
-//                    signUpObject.setShopTelephone(shop_telephone.getText().toString());
-//                    signUpObject.setShopAddress1(address1.getText().toString());
-//                    signUpObject.setShopAddress2(address2.getText().toString());
-//                    signUpObject.setShopLocation(shopLocation);
+                    signUpObject.setName(name.getText().toString());
+                    signUpObject.setEmail(email.getText().toString());
+                    signUpObject.setPassword(password.getText().toString());
+                    signUpObject.setPhone(phone.getText().toString());
+                    signUpObject.setShopName(shopName.getText().toString());
+                    signUpObject.setShopId(shopId.getText().toString());
+                    signUpObject.setShopTelephone(shopTelephone.getText().toString());
+                    signUpObject.setShopAddress1(address1.getText().toString());
+                    signUpObject.setShopAddress2(address2.getText().toString());
+                    signUpObject.setShopLocation(shopLocation);
+                    signUpObject.setReferralCode(referralCode.getText().toString());
 
                     if(Utils.isInternetAvailable(SignUpActivity.this)){
                         ServiceManager.callSignUpService(SignUpActivity.this, signUpObject, new UIListener() {
                             @Override
                             public void onSuccess() {
 
-                                signUpProgress.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
 
                                 UserProfile.setName(name.getText().toString(), SignUpActivity.this);
                                 UserProfile.setEmail(email.getText().toString(), SignUpActivity.this);
                                 UserProfile.setPhone(phone.getText().toString(), SignUpActivity.this);
                                 UserProfile.setPassword(password.getText().toString(),SignUpActivity.this);
-                                UserProfile.setShopId(shop_id.getText().toString(), SignUpActivity.this);
-                                UserProfile.setShopPhone(shop_telephone.getText().toString(), SignUpActivity.this);
+                                UserProfile.setShopId(shopId.getText().toString(), SignUpActivity.this);
+                                UserProfile.setShopPhone(shopTelephone.getText().toString(), SignUpActivity.this);
                                 UserProfile.setAddress1(address1.getText().toString(), SignUpActivity.this);
                                 UserProfile.setAddress2(address2.getText().toString(), SignUpActivity.this);
-                                UserProfile.setShopName(shop_name.getText().toString(), SignUpActivity.this);
+                                UserProfile.setShopName(shopName.getText().toString(), SignUpActivity.this);
                                 UserProfile.setLocation(shopLocation,SignUpActivity.this);
 
                                 Intent intent = new Intent(SignUpActivity.this,CategoryActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                intent.putExtra("EXIT", true);
                                 startActivity(intent);
 
                                 intent = new Intent(SignUpActivity.this, IE_RegistrationIntentService.class);
@@ -208,7 +195,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure() {
-                                signUpProgress.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
                                 viewFlipper.setVisibility(View.VISIBLE);
 
                                 //TODO: set the viewflipper to first registration page
@@ -218,7 +205,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             @Override
                             public void onConnectionError() {
-                                signUpProgress.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
                                 viewFlipper.setVisibility(View.VISIBLE);
 
                                 Toast.makeText(SignUpActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
@@ -226,7 +213,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             @Override
                             public void onCancelled() {
-                                signUpProgress.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
                                 viewFlipper.setVisibility(View.VISIBLE);
                             }
                         });
@@ -238,8 +225,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-
         switch(requestCode) {
             case SELECT_PHOTO:
                 if(resultCode == RESULT_OK){
@@ -248,8 +233,6 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(this, selectedImagePath, Toast.LENGTH_LONG).show();
                     Log.d("imagepath",selectedImageUri.toString());
                     break;
-                    /*InputStream imageStream = getContentResolver().openInputStream(selectedImage);
-                    Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);*/
                 }
             case PLACE_PICKER_REQUEST:
                 if (resultCode == RESULT_OK) {
@@ -263,7 +246,6 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     public String getPath(Uri uri) {
-        // just some safety built in
         if( uri == null ) {
             // TODO perform some logging or show user FeedBackActivity
             return null;
@@ -278,13 +260,11 @@ public class SignUpActivity extends AppCompatActivity {
             cursor.moveToFirst();
             return cursor.getString(column_index);
         }
-        // this is our fallback here
         return uri.getPath();
     }
 
     private boolean validate1()
     {
-
         if(TextUtils.isEmpty(name.getText().toString()))
         {
             Toast.makeText(this,"Name cannot be empty",Toast.LENGTH_SHORT).show();
@@ -310,12 +290,12 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this,"Password cannot be empty or less than 8 letters",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(confpassword))
+        if(isempty(confirmPassword))
         {
             Toast.makeText(this,"Password cannot be empty",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(!password.getText().toString().equals(confpassword.getText().toString()))
+        if(!password.getText().toString().equals(confirmPassword.getText().toString()))
         {
             Toast.makeText(this, "Password and Confirm Password do not match", Toast.LENGTH_SHORT).show();
             return false;
@@ -326,17 +306,17 @@ public class SignUpActivity extends AppCompatActivity {
 
     private boolean validate2()
     {
-        if(isempty(shop_name))
+        if(isempty(shopName))
         {
             Toast.makeText(this,"Shop Name cannot be empty",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(shop_id))
+        if(isempty(shopId))
         {
             Toast.makeText(this,"Shop ID cannot be empty",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(shop_telephone))
+        if(isempty(shopTelephone))
         {
             Toast.makeText(this,"Shop Telephone cannot be empty",Toast.LENGTH_SHORT).show();
             return false;

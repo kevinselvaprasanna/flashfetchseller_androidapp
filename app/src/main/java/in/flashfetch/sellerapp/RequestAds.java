@@ -38,7 +38,7 @@ import in.flashfetch.sellerapp.Objects.UserProfile;
 public class RequestAds extends AppCompatActivity {
 
     EditText ad;
-    TextView start,end, startDateText, endDateText;
+    TextView startDateText, endDateText;
     ImageView startDatePicker, endDatePicker;
     Button submit;
     Calendar myCalendar;
@@ -47,6 +47,7 @@ public class RequestAds extends AppCompatActivity {
     private Date currentDate,dateStarted, dateEnded;
     private ProgressBar progressBar;
     private LinearLayout requestLayout;
+    private int nextDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,19 +75,15 @@ public class RequestAds extends AppCompatActivity {
 
         ad = (EditText) findViewById(R.id.ad);
 
-        start = (TextView) findViewById(R.id.startDate);
-        end = (TextView) findViewById(R.id.endDate);
-
         startDatePicker = (ImageView) findViewById(R.id.startDatePicker);
         endDatePicker = (ImageView) findViewById(R.id.endDatePicker);
-
-        submit = (Button) findViewById(R.id.submit);
-
         startDateText = (TextView) findViewById(R.id.date_start_text);
         endDateText = (TextView) findViewById(R.id.date_end_text);
+        submit = (Button) findViewById(R.id.submit);
 
         myCalendar = Calendar.getInstance();
         currentDate = myCalendar.getTime();
+        nextDate = myCalendar.get(Calendar.DAY_OF_MONTH) + 1;
 
         text = ad.getText().toString();
 

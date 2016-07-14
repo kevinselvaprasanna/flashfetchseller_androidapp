@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/demo_imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp" />
+        android:scaleType="centerInside"/>
 
-</LinearLayout>
+    <!--<Button-->
+        <!--android:id="@+id/get_start_button"-->
+        <!--android:text="GET STARTED"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:textColor="@color/icons"-->
+        <!--android:visibility="invisible"-->
+        <!--android:background="@color/ff_green"-->
+        <!--android:textSize="@dimen/button_text_size"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+
+</FrameLayout>

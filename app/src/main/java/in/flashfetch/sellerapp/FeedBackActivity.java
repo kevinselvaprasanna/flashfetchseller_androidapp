@@ -87,6 +87,7 @@ public class FeedBackActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 Intent intent = new Intent(FeedBackActivity.this, MainActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
 
                             @Override

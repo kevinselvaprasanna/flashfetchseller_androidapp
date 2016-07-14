@@ -7,6 +7,10 @@ import in.flashfetch.sellerapp.Objects.SignUpObject;
  */
 public class Constants {
 
+    public static final int REQUEST_READ_CONTACTS = 0;
+
+    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
     public static final boolean IS_FROM_FORGOT_PASSWORD = true;
 
     public static final boolean IS_FROM_PASSWORD_VERIFICATION = true;
@@ -25,4 +29,14 @@ public class Constants {
     public static final String DUMMY_EMAIL = "abc@gmail.com";
 
     public static final String DUMMY_PASSWORD = "123123";
+
+    public static final String CONTACT_NUMBER = "+919940126973";
+
+    public static final String APP_NAME = "FlashFetch";
+
+    public static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp&hl=en";
+
+    public static final String TWITTER_URL = "https://twitter.com/flashfetch";
+
+    public static final String FACEBOOK_URL = "https://www.facebook.com/Flashfetch-140606842997095/";
 }

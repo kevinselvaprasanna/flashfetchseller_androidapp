@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -18,7 +19,7 @@ import in.flashfetch.sellerapp.R;
  */
 public class DemoImageFragment extends Fragment {
 
-    private static int[] images = new int[]{R.drawable.demo_1,R.drawable.demo_2,R.drawable.demo_3,R.drawable.demo_5,R.drawable.demo_4};
+    private static int[] images = new int[]{R.drawable.demo_1,R.drawable.demo_2,R.drawable.demo_3,R.drawable.demo_4,R.drawable.demo_5};
 
     public static DemoImageFragment newInstance(int index){
         DemoImageFragment demoImageFragment = new DemoImageFragment();
@@ -49,5 +50,9 @@ public class DemoImageFragment extends Fragment {
 
         ImageView imageView = (ImageView)view.findViewById(R.id.demo_imageView);
         Glide.with(getActivity()).load(images[index]).into(imageView);
+
+        if(index == 4){
+            Toast.makeText(getContext(),"You reached end of demo",Toast.LENGTH_SHORT).show();
+        }
     }
 }

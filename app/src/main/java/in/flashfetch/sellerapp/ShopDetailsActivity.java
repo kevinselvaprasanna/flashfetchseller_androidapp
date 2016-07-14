@@ -21,7 +21,7 @@ import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
-public class ShopDetails extends AppCompatActivity {
+public class ShopDetailsActivity extends AppCompatActivity {
 
     EditText shopname,shopid,shopad1,shopad2,shopphone;
     String tsname,tsid,tshad1,tshad2,tphone;
@@ -42,7 +42,7 @@ public class ShopDetails extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShopDetails.this,MainActivity.class);
+                Intent intent = new Intent(ShopDetailsActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -60,11 +60,11 @@ public class ShopDetails extends AppCompatActivity {
         editcat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShopDetails.this,CategoryActivity.class);
+                Intent intent = new Intent(ShopDetailsActivity.this,CategoryActivity.class);
                 startActivity(intent);
-                //Intent to edit categories
             }
         });
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,17 +107,17 @@ public class ShopDetails extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
-            PostParams.add(new PostParam("email", UserProfile.getEmail(ShopDetails.this)));
-            PostParams.add(new PostParam("token",UserProfile.getToken(ShopDetails.this)));
-            PostParams.add(new PostParam("name",UserProfile.getName(ShopDetails.this)));
-            PostParams.add(new PostParam("mobile",UserProfile.getPhone(ShopDetails.this)));
+            PostParams.add(new PostParam("email", UserProfile.getEmail(ShopDetailsActivity.this)));
+            PostParams.add(new PostParam("token",UserProfile.getToken(ShopDetailsActivity.this)));
+            PostParams.add(new PostParam("name",UserProfile.getName(ShopDetailsActivity.this)));
+            PostParams.add(new PostParam("mobile",UserProfile.getPhone(ShopDetailsActivity.this)));
             PostParams.add(new PostParam("shopName",tsname));
             PostParams.add(new PostParam("address1",tshad1));
             PostParams.add(new PostParam("address2",tshad2));
-            PostParams.add(new PostParam("pass",UserProfile.getPassword(ShopDetails.this)));
+            PostParams.add(new PostParam("pass",UserProfile.getPassword(ShopDetailsActivity.this)));
             PostParams.add(new PostParam("sid",tsid));
             PostParams.add(new PostParam("office",tphone));
-            PostParams.add(new PostParam("sel_loc",UserProfile.getLocation(ShopDetails.this)));
+            PostParams.add(new PostParam("sel_loc",UserProfile.getLocation(ShopDetailsActivity.this)));
             ResponseJSON = PostRequest.execute(URLConstants.URLUpdate, PostParams, null);
             Log.d("RESPONSE", ResponseJSON.toString());
 

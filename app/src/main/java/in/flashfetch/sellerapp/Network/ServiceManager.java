@@ -95,7 +95,6 @@ public class ServiceManager {
             instiPostParams.add(new PostParam("office",shopTelephone));
             instiPostParams.add(new PostParam("sel_loc",shopLocation));
 
-
             response = PostRequest.execute(URLConstants.URLSignup, instiPostParams, null);
             Log.d("RESPONSE", response.toString());
 
@@ -103,7 +102,6 @@ public class ServiceManager {
         }
         @Override
         protected void onPostExecute(Void aVoid) {
-            //tvv.setText(response.toString());
             super.onPostExecute(aVoid);
             try {
                 if(response.getJSONObject("data").getInt("result") == 1) {
@@ -120,10 +118,7 @@ public class ServiceManager {
                 e.printStackTrace();
                 uiListener.onConnectionError();
             }
-
-
         }
-
     }
 
     public static void callLoginService(Context context, String email, String password, final UIListener uiListener) {
@@ -716,8 +711,136 @@ public class ServiceManager {
             super.onPostExecute(aVoid);
             try {
                 if (response.getJSONObject("data").getInt("result") == 1) {
-                    uiListener.onSuccess();
                     UserProfile.setReferralCode(response.getJSONObject("data").getString("referralcode"),context);
+                    uiListener.onSuccess();
+                }else {
+                    uiListener.onFailure();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                uiListener.onConnectionError();
+            }
+        }
+    }
+
+    public static void callRewardsService(Context context, String referralCode, final UIListener uiListener) {
+
+        RewardsTask rewardsTask = new RewardsTask(context,referralCode,uiListener);
+        if(rewardsTask != null){
+            return;
+        }
+        rewardsTask.execute();
+    }
+
+    public static class RewardsTask extends AsyncTask<Void, Void, Void> {
+
+        private JSONObject response;
+        private String referralCode;
+        private Context context;
+        private UIListener uiListener;
+
+        public RewardsTask(Context context, String referralCode, final UIListener uiListener){
+            this.context = context;
+            this.uiListener = uiListener;
+            this.referralCode = referralCode;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            ArrayList<PostParam> requestParams = new ArrayList<PostParam>();
+
+            requestParams.add(new PostParam("email", UserProfile.getEmail(context)));
+            requestParams.add(new PostParam("token", UserProfile.getToken(context)));
+            requestParams.add(new PostParam("shopId", referralCode));
+
+            response = PostRequest.execute(URLConstants.URL_FETCH_REFERRAL_CODE, requestParams, null);
+            Log.d("RESPONSE", response.toString());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            //tvv.setText(ResponseJSON.toString());
+            super.onPostExecute(aVoid);
+            try {
+                if (response.getJSONObject("data").getInt("result") == 1) {
+                    UserProfile.setReferralCode(response.getJSONObject("data").getString("referralcode"),context);
+                    uiListener.onSuccess();
+                }else {
+                    uiListener.onFailure();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                uiListener.onConnectionError();
+            }
+        }
+    }
+
+    public static void callUpdateService(Context context, String newPhoneNumber, final UIListener uiListener) {
+
+        UpdateTask updateTask = new UpdateTask(context,newPhoneNumber,uiListener);
+        if(updateTask != null){
+            return;
+        }
+        updateTask.execute();
+    }
+
+    public static class UpdateTask extends AsyncTask<Void, Void, Boolean> {
+
+        private JSONObject response;
+        private Context context;
+        private UIListener uiListener;
+        private String newPhoneNumber;
+
+        public UpdateTask(Context context, String newPhoneNumber, final UIListener uiListener){
+            this.context = context;
+            this.uiListener = uiListener;
+            this.newPhoneNumber = newPhoneNumber;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
+
+            PostParams.add(new PostParam("email", UserProfile.getEmail(context)));
+            PostParams.add(new PostParam("token",UserProfile.getToken(context)));
+            PostParams.add(new PostParam("name",UserProfile.getName(context)));
+            PostParams.add(new PostParam("mobile",newPhoneNumber));
+            PostParams.add(new PostParam("pass",UserProfile.getPassword(context)));
+            PostParams.add(new PostParam("shopName",UserProfile.getShopName(context)));
+            PostParams.add(new PostParam("address1",UserProfile.getAddress1(context)));
+            PostParams.add(new PostParam("address2",UserProfile.getAddress2(context)));
+            PostParams.add(new PostParam("sid",UserProfile.getShopId(context)));
+            PostParams.add(new PostParam("shopPhone",UserProfile.getShopPhone(context)));
+            PostParams.add(new PostParam("sel_loc",UserProfile.getLocation(context)));
+
+            response = PostRequest.execute(URLConstants.URLUpdate, PostParams, null);
+            Log.d("RESPONSE", response.toString());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            try {
+                if (response.getJSONObject("data").getInt("result") == 1) {
+                    uiListener.onSuccess();
                 }else {
                     uiListener.onFailure();
                 }

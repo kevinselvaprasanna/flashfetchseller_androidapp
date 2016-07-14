@@ -61,7 +61,8 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+
+        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -9,13 +9,7 @@
 
     <include layout="@layout/app_bar" />
 
-    <ProgressBar
-        android:id="@+id/signup_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+    <include layout="@layout/progress_bar"/>
 
     <ViewFlipper
         android:id="@+id/viewFlipper2"
@@ -125,6 +119,7 @@
                     android:layout_gravity="bottom"
                     android:background="@color/ff_green"
                     android:text="NEXT"
+                    android:textSize="@dimen/button_text_size"
                     android:textAppearance="@android:style/TextAppearance.Holo.Large"
                     android:textColor="#fff" />
 
@@ -272,6 +267,7 @@
                         android:layout_gravity="bottom"
                         android:layout_weight="1"
                         android:background="#0BC6A0"
+                        android:textSize="@dimen/button_text_size"
                         android:text="Next"
                         android:textColor="#fff" />
                 </LinearLayout>

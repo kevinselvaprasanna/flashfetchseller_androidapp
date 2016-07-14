@@ -106,12 +106,15 @@ public class Provided extends Fragment {
 
         //Use the events feed adapter
         rvNot.setAdapter(notsAdapter);
+
         Log.i("abc", String.valueOf(Requested.requestnumber)+"prov");
+
         if(Requested.requestnumber==0) provtext.setVisibility(View.VISIBLE);
         if(Requested.requestnumber==1) {
             provtext.setText("Respond to the request in time to make a deal.");
             provtext.setVisibility(View.VISIBLE);
         }
+
         return view;
 
     }
