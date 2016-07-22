@@ -6,7 +6,7 @@
     android:opacity="opaque">
 
     <item>
-        <bitmap android:src="@drawable/get_started_copy" />
+        <bitmap android:src="@drawable/splash_blue" />
     </item>
 
 </layer-list>

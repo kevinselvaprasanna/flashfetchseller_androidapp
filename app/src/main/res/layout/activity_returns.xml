@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/app_bar"/>
-
-    <ScrollView android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|bottom">
 
         <LinearLayout
-            android:orientation="vertical" android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/checklayout"
             android:padding="16dp">
+
+            <View
+                android:background="@color/icons"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -38,34 +44,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:text="Seller can always accept the return irrespective of the policy
-        \nIn cases of return, customer can choose to return or replace the product. If customer chooses to return the product, he/she is to be refunded the entire amount on the spot. If the customer chooses to replace the product with the product he placed order, the price should not exceed the price they have dealed through FlashFetch app
-        \nIf Seller disagrees a return request, Buyer can file a dispute under the Buyer Protection Program if the condition is under the seller return policy
-        \nThe seller has to refund entire amount to FlashFetch delivery executive, if the product is returned as it is picked up within 3 working days from the point of purchase or pickup"/>
+        \n\nIn cases of return, customer can choose to return or replace the product. If customer chooses to return the product, he/she is to be refunded the entire amount on the spot. If the customer chooses to replace the product with the product he placed order, the price should not exceed the price they have dealed through FlashFetch app
+        \n\nIf Seller disagrees a return request, Buyer can file a dispute under the Buyer Protection Program if the condition is under the seller return policy
+        \n\nThe seller has to refund entire amount to FlashFetch delivery executive, if the product is returned as it is picked up within 3 working days from the point of purchase or pickup"/>
 
             <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:buttonTint="@color/ff_green"
                 android:id="@+id/accept_return_checkbox"
                 android:text="I accept the terms and conditions"/>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:gravity="bottom"
-                android:layout_marginTop="32dp">
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Submit"
-                    android:id="@+id/return_submit_button"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:background="@color/ff_black"
-                    android:textColor="#fff" />
-            </LinearLayout>
+            <View
+                android:background="@color/icons"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"/>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <include
+        android:layout_gravity="top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/app_bar"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:layout_marginTop="32dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/return_submit_button"
+            android:layout_gravity="bottom"
+            android:background="@color/ff_black"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+</FrameLayout>

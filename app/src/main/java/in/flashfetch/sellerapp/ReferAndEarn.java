@@ -62,31 +62,31 @@ public class ReferAndEarn extends AppCompatActivity implements View.OnClickListe
         more = (ImageView) findViewById(R.id.more);
         more.setOnClickListener(this);
 
-        if(Utils.isInternetAvailable(ReferAndEarn.this)){
-            ServiceManager.callReferralCodeService(ReferAndEarn.this, UserProfile.getShopId(ReferAndEarn.this), new UIListener() {
-                @Override
-                public void onSuccess() {
-                    code.setText("Your code : " + UserProfile.getReferralCode(ReferAndEarn.this));
-                }
-
-                @Override
-                public void onFailure() {
-                    Toasts.serverBusyToast(ReferAndEarn.this);
-                }
-
-                @Override
-                public void onConnectionError() {
-                    Toasts.serverBusyToast(ReferAndEarn.this);
-                }
-
-                @Override
-                public void onCancelled() {
-
-                }
-            });
-        }else{
-            Toasts.internetUnavailableToast(ReferAndEarn.this);
-        }
+//        if(Utils.isInternetAvailable(ReferAndEarn.this)){
+//            ServiceManager.callReferralCodeService(ReferAndEarn.this, UserProfile.getShopId(ReferAndEarn.this), new UIListener() {
+//                @Override
+//                public void onSuccess() {
+//                    code.setText("Your code : " + UserProfile.getReferralCode(ReferAndEarn.this));
+//                }
+//
+//                @Override
+//                public void onFailure() {
+//                    Toasts.serverBusyToast(ReferAndEarn.this);
+//                }
+//
+//                @Override
+//                public void onConnectionError() {
+//                    Toasts.serverBusyToast(ReferAndEarn.this);
+//                }
+//
+//                @Override
+//                public void onCancelled() {
+//
+//                }
+//            });
+//        }else{
+//            Toasts.internetUnavailableToast(ReferAndEarn.this);
+//        }
     }
 
     @Override

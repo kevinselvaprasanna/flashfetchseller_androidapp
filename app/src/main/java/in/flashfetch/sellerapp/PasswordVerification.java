@@ -76,48 +76,53 @@ public class PasswordVerification extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(!TextUtils.isEmpty(verificationEditText.getText().toString())){
-                    progressBar.setVisibility(View.VISIBLE);
-                    passwordVerificationLayout.setVisibility(View.GONE);
 
-                    ServiceManager.callPasswordVerificationService(PasswordVerification.this, email, verificationEditText.getText().toString(), new UIListener() {
-                        @Override
-                        public void onSuccess() {
-                            Toasts.verificationCodeSuccessfullyVerified(PasswordVerification.this);
-                            progressBar.setVisibility(View.GONE);
+                    if(Utils.isInternetAvailable(PasswordVerification.this)) {
 
-                            Intent intent = new Intent(PasswordVerification.this,ChangePassword.class);
-                            intent.putExtra("EMAIL",email);
-                            intent.putExtra("FROM_PASSWORD_VERIFICATION_FLOW",Constants.IS_FROM_PASSWORD_VERIFICATION);
-                            startActivity(intent);
-                        }
+                        progressBar.setVisibility(View.VISIBLE);
+                        passwordVerificationLayout.setVisibility(View.GONE);
 
-                        @Override
-                        public void onFailure() {
-                            Toasts.enterValidVerificationCode(PasswordVerification.this);
-                            progressBar.setVisibility(View.GONE);
-                            passwordVerificationLayout.setVisibility(View.VISIBLE);
-                        }
+                        ServiceManager.callPasswordVerificationService(PasswordVerification.this, email, verificationEditText.getText().toString(), new UIListener() {
+                            @Override
+                            public void onSuccess() {
+                                Toasts.verificationCodeSuccessfullyVerified(PasswordVerification.this);
+                                progressBar.setVisibility(View.GONE);
 
-                        @Override
-                        public void onConnectionError() {
-                            Toasts.serverBusyToast(PasswordVerification.this);
-                            progressBar.setVisibility(View.GONE);
-                            passwordVerificationLayout.setVisibility(View.VISIBLE);
-                        }
+                                Intent intent = new Intent(PasswordVerification.this, ChangePassword.class);
+                                intent.putExtra("EMAIL", email);
+                                intent.putExtra("FROM_PASSWORD_VERIFICATION_FLOW", Constants.IS_FROM_PASSWORD_VERIFICATION);
+                                startActivity(intent);
+                            }
 
-                        @Override
-                        public void onCancelled() {
-                            progressBar.setVisibility(View.GONE);
-                            passwordVerificationLayout.setVisibility(View.VISIBLE);
-                        }
-                    });
+                            @Override
+                            public void onFailure() {
+                                Toasts.enterValidVerificationCode(PasswordVerification.this);
+                                progressBar.setVisibility(View.GONE);
+                                passwordVerificationLayout.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onConnectionError() {
+                                Toasts.serverBusyToast(PasswordVerification.this);
+                                progressBar.setVisibility(View.GONE);
+                                passwordVerificationLayout.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onCancelled() {
+                                progressBar.setVisibility(View.GONE);
+                                passwordVerificationLayout.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }else{
+                        Toasts.internetUnavailableToast(PasswordVerification.this);
+                    }
                 }else{
                     Toasts.enterVerificationCode(PasswordVerification.this);
                 }
             }
         });
     }
-
-
 }

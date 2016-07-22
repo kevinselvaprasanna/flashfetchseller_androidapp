@@ -58,7 +58,9 @@ public class ForgotPassword extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ForgotPassword.this,LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -71,15 +73,25 @@ public class ForgotPassword extends AppCompatActivity {
         emailText = (EditText)findViewById(R.id.forgot_email);
         button = (Button)findViewById(R.id.send_button);
 
+        registerHere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ForgotPassword.this,SignUpActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Utils.isValidEmail(emailText.getText().toString())){
 
-                    progressBar.setVisibility(View.VISIBLE);
-                    forgotPasswordLayout.setVisibility(View.GONE);
-
                     if(Utils.isInternetAvailable(ForgotPassword.this)){
+
+                        progressBar.setVisibility(View.VISIBLE);
+                        forgotPasswordLayout.setVisibility(View.GONE);
+
                         ServiceManager.callForgotPasswordService(ForgotPassword.this, emailText.getText().toString(), new UIListener() {
                             @Override
                             public void onSuccess() {

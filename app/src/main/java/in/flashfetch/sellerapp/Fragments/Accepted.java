@@ -38,83 +38,64 @@ public class Accepted extends Fragment {
     //private String mParam2;
 
     private Context mContext;
-
     Typeface font;
-
     public static TextView noAccessText;
-
-    // private OnFragmentInteractionListener mListener;
-
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Requested.
-     */
-    // TODO: Rename and change types and number of parameters
-    /*public static Requested newInstance(String param1, String param2) {
-        Requested fragment = new Requested(mContext);
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
+    private boolean isAccessed;
+    private RecyclerView recyclerView;
+    private ArrayList<Notification> transactions;
+    private AcceptedDealsAdapter acceptedDealsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-
-       /* font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");*/
-        // Inflate the layout for this fragment
-
-        //TODO: Set typeface for text
-
-
-        View view = inflater.inflate(R.layout.fragment_accepted, container, false);
-
-        LinearLayoutManager layoutManager;
-        RecyclerView rvNot;
-        ArrayList<Notification> nots;
 
         mContext=getActivity();
 
-        rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
-        layoutManager = new LinearLayoutManager(mContext);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            isAccessed = bundle.getBoolean("ACCESS");
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Medium.ttf");
+
+        View view = inflater.inflate(R.layout.fragment_accepted, container, false);
 
         TextView acctext=(TextView)view.findViewById(R.id.acceptedtext);
         acctext.setVisibility(View.GONE);
-        //set the recycler view to use the linear layout manager
-        rvNot.setLayoutManager(layoutManager);
 
-        noAccessText = (TextView)view.findViewById(R.id.no_access_text);
+        recyclerView = (RecyclerView)view.findViewById(R.id.rvNotifications);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
         //nots = NotificationsActivity.getAllNotifications(mContext);
 
         //initialize events feed adapter
-        AcceptedDealsAdapter notsAdapter = new AcceptedDealsAdapter(mContext,3, Notification.getANotifications(mContext));
+        acceptedDealsAdapter = new AcceptedDealsAdapter(mContext,3, Notification.getANotifications(mContext));
 
-        //Use the events feed adapter
-        rvNot.setAdapter(notsAdapter);
+        recyclerView.setAdapter(acceptedDealsAdapter);
 
-        if(Requested.requestnumber==0||Requested.requestnumber==1) acctext.setVisibility(View.VISIBLE);
+//        if(Requested.requestnumber==0||Requested.requestnumber==1) acctext.setVisibility(View.VISIBLE);
+
+        if(isAccessed){
+            if (Requested.noOfRequests == 0) {
+                acctext.setVisibility(View.VISIBLE);
+            }else if (Requested.noOfRequests == 1) {
+                acctext.setText("No request yet!! They are on its way!");
+                acctext.setVisibility(View.VISIBLE);
+            }else{
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        }else{
+            acctext.setVisibility(View.VISIBLE);
+            acctext.setText("You will receive product requests after FlashFetch Buyer App is launched. Meanwhile get familiarized with the features of your App. Stay tuned!");
+        }
+
         return view;
 
     }

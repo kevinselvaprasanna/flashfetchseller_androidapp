@@ -22,16 +22,17 @@ import java.util.ArrayList;
  * Created by kevin selva prasanna on 24-Aug-15.
  */
 public class IE_RegistrationIntentService extends IntentService {
-    private static final String TAG = "RegIntentService";
+    private static final String TAG = "RegistrationIntentService";
     private static final String[] TOPICS = {"global"};
-    String Old_ID,token;
-    Boolean senttokentoserver;
+    private String Old_ID,token;
+    private Boolean tokenSentToServer;
 
     public IE_RegistrationIntentService() {
         super(TAG);
     }
     @Override
     protected void onHandleIntent(Intent intent) {
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Old_ID = sharedPreferences.getString("token", "");
 
@@ -55,8 +56,8 @@ public class IE_RegistrationIntentService extends IntentService {
 
                 // TODO: Implement this method to send any registration to your app's servers.
 
-                senttokentoserver = sharedPreferences.getBoolean("sentTokenToServer", false);
-//                if((!token.equals(Old_ID))||(!senttokentoserver))
+                tokenSentToServer = sharedPreferences.getBoolean("sentTokenToServer", false);
+//                if((!token.equals(Old_ID))||(!tokenSentToServer))
                     sendRegistrationToServer(token);
 
                 // Subscribe to topic channels
@@ -88,12 +89,13 @@ public class IE_RegistrationIntentService extends IntentService {
      *
      * token The new token.
      */
+
     private void sendRegistrationToServer(String freshtoken) {
+
         ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
-        PostParam postemail = new PostParam("email", UserProfile.getEmail(IE_RegistrationIntentService.this));
-        PostParam postgcmid = new PostParam("gcmid",freshtoken);
-        PostParams.add(postemail);
-        PostParams.add(postgcmid);
+
+        PostParams.add(new PostParam("email", UserProfile.getEmail(IE_RegistrationIntentService.this)));
+        PostParams.add(new PostParam("gcmid",freshtoken));
         PostParams.add(new PostParam("token",UserProfile.getToken(IE_RegistrationIntentService.this)));
 
         JSONObject ResponseJSON = PostRequest.execute(URLConstants.URLGCM_Register, PostParams, null);

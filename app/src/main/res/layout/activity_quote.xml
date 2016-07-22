@@ -1,291 +1,347 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
-
-<android.support.design.widget.CoordinatorLayout
-
-    android:id="@+id/user_profile_coordinatorlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:visibility="visible">
+    android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/user_profile_coordinatorlayout"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:visibility="visible">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:visibility="visible"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleGravity="left|bottom"
+                app:expandedTitleMarginStart="16dp"
+                app:expandedTitleTextAppearance="@android:color/transparent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <ImageView
+                    android:id="@+id/picture1"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_media_route_on_mono_dark"
+                    app:layout_collapseMode="parallax" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <ViewFlipper
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/flipperimg">
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/picture1"
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_media_route_on_mono_dark"
-                app:layout_collapseMode="parallax" />
-
-                <ImageView
-                    android:id="@+id/picture2"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_menu_manage"
-                    app:layout_collapseMode="parallax" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/picture3"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="24dp"
+                            android:text="Name of the Product" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Price of the Product" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Buyer" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Location" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Time Left" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="24dp"
+                            android:text=" : " />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text=" : " />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text=" : " />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text=" : " />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text=" : " />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="5dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:paddingBottom="8dp"
+                            android:text=": Name" />
+
+                        <TextView
+                            android:id="@+id/price_product"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center_vertical"
+                            android:text=": Price" />
+
+                        <TextView
+                            android:id="@+id/buyer_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center_vertical"
+                            android:text=": Buyer name" />
+
+                        <TextView
+                            android:id="@+id/buyer_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center_vertical"
+                            android:text=": Buyer location" />
+
+                        <TextView
+                            android:id="@+id/timer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center_vertical"
+                            android:text=": Timer" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_media_pause"
-                    app:layout_collapseMode="parallax" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            </ViewFlipper>
+                    <EditText
+                        android:id="@+id/price"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:ems="10"
+                        android:hint="Quote your Price(in Rs.)"
+                        android:inputType="number" />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+                    <TextView
+                        android:id="@+id/ptype"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_horizontal"
+                        android:paddingBottom="4dp"
+                        android:text="Product Type" />
 
-    <android.support.v4.widget.NestedScrollView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:background="@color/ff_black"
+                        android:orientation="horizontal"
+                        android:padding="1dp">
+
+                        <Button
+                            android:id="@+id/same"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/left_side_button_border"
+                            android:gravity="center"
+                            android:text="Same" />
+
+                        <Button
+                            android:id="@+id/similar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/right_side_button_border"
+                            android:gravity="center"
+                            android:text="Similar" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/deltype"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_horizontal"
+                        android:paddingBottom="4dp"
+                        android:text="Delivery Type" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:background="@color/ff_black"
+                        android:orientation="horizontal"
+                        android:padding="1dp">
+
+                        <Button
+                            android:id="@+id/home_del"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/left_side_button_border"
+                            android:gravity="center"
+                            android:text="Home Delivery" />
+
+                        <Button
+                            android:id="@+id/shop_vis"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/right_side_button_border"
+                            android:gravity="center"
+                            android:text="Visit Shop" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/Comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="75dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/edit_text_border"
+                        android:ems="10"
+                        android:gravity="top"
+                        android:hint="Enter Comments"
+                        android:inputType="textMultiLine"
+                        android:maxLines="3" />
+
+                    <View
+                        android:background="@color/icons"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <!--android:fillViewport="true"-->
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical" android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/deals_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="#29303F"
+            android:gravity="center"
+            android:text="More Deals"
+            android:textColor="#fff" />
 
+        <Button
+            android:id="@+id/quote_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="#0BC6A0"
+            android:gravity="center"
+            android:text="Quote now"
+            android:textColor="#fff" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:id="@+id/name"
-                android:layout_gravity="left"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                android:padding="3dp"
-                android:lines="2"
-                android:maxLines="2"
-                android:ellipsize="end" />
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Price"
-                android:id="@+id/price_product"
-                android:layout_gravity="left"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:padding="3dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Buyer name"
-                android:id="@+id/buyer_name"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:padding="3dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Buyer location"
-                android:id="@+id/buyer_location"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:padding="3dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Timer"
-                android:id="@+id/timer"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:padding="3dp" />
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/price"
-                android:layout_marginTop="20dp"
-                android:hint="Price(in Rs.)" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Product Type"
-                android:id="@+id/ptype"
-                android:padding="3dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="1dp"
-                android:layout_margin="0dp"
-                android:background="@color/ff_black">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Same"
-                    android:id="@+id/same"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:padding="5dp"
-                    android:background="#fff"
-                    android:layout_marginRight="1dp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Similar"
-                    android:id="@+id/similar"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:padding="5dp"
-                    android:background="#fff" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Delivery Type"
-                android:id="@+id/deltype"
-                android:padding="3dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="1dp"
-                android:layout_margin="0dp"
-                android:background="@color/ff_black">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Home Delivery"
-                    android:id="@+id/home_del"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:background="#fff"
-                    android:layout_marginRight="1dp"
-                    android:padding="5dp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Visit Shop"
-                    android:id="@+id/shop_vis"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:background="#fff"
-                    android:padding="5dp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Upload image"
-                android:id="@+id/uplimg"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/upimg" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/Comments"
-                android:layout_marginTop="20dp"
-                android:hint="Enter Comments" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="More Deals"
-                    android:id="@+id/deals_more"
-                    android:layout_weight="0.4"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="#fff"
-                    android:background="#29303F"
-                    android:padding="5dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Quote now"
-                    android:id="@+id/quote_now"
-                    android:layout_weight="0.6"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_vertical"
-                    android:background="#0BC6A0"
-                    android:textColor="#fff"
-                    android:padding="5dp" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-</android.support.design.widget.CoordinatorLayout>
-</LinearLayout>
+</FrameLayout>

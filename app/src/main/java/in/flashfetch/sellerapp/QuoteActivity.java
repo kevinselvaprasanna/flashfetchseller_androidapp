@@ -1,18 +1,21 @@
 package in.flashfetch.sellerapp;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,30 +24,27 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.CommonUtils.Toasts;
+import in.flashfetch.sellerapp.CommonUtils.Utils;
+import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
-import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
+import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.Notification;
-import in.flashfetch.sellerapp.Objects.PostParam;
-import in.flashfetch.sellerapp.Objects.UserProfile;
+import in.flashfetch.sellerapp.Objects.QuoteObject;
 
-public class QuoteActivity extends AppCompatActivity {
+public class QuoteActivity extends BaseActivity {
 
-    ViewFlipper flipper,imflipper;
-    Typeface font;
-    JSONObject ResponseJSON;
-    EditText comnts,price_quote;
-    ImageView upimg;
-    QuoteTask qt;
-    int deltype,type;
-    String distance;
-    String comment,qprice,id,pname;
-    TextView uplimg,name,tprice,buyer_name,buyer_location,timer,same,similar,home_del,shop_vis,more_deals,quote_now;
+    private ImageView upimg;
+    private ProgressDialog progressDialog;
+    private int deliveryType,productType;
+    private Typeface font;
+    private ArrayList<Notification> transactions;
+    private EditText editComments,quotePrice;
+    private String comments,quotedPrice,location,productId,productPrice,productName,buyerName;
+    private TextView productNameText,productPriceText,buyerNameText,buyerLocationText,timer,sameProduct,similarProduct,homeDelivery,shopVisit,moreDeals,quoteNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,224 +53,250 @@ public class QuoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quote);
 
         Bundle bundle = getIntent().getExtras();
-        id = bundle.getString("id");
-        final ArrayList<Notification> mItem =  Notification.getNotification(this, id);
-        name = (TextView)findViewById(R.id.name);   //Name of product
-        name.setText(mItem.get(0).name);
-        pname = mItem.get(0).name;
-        tprice = (TextView)findViewById(R.id.price_product);  //Retrieved price of product
-        tprice.setText("Rs. "+mItem.get(0).price);
-        buyer_name = (TextView)findViewById(R.id.buyer_name);
-        buyer_name.setText(mItem.get(0).buyer_name);
-        buyer_location = (TextView)findViewById(R.id.buyer_location);
-        distance = mItem.get(0).loc;
-        timer = (TextView)findViewById(R.id.timer);
+        if(bundle != null) {
+            productId = bundle.getString("id");
+        }
+
+//        transactions =  Notification.getNotification(this, productId);
+        transactions = new ArrayList<>();
+        transactions.add(Constants.DUMMY_TRANSACTION);
+
+        productName = transactions.get(0).name;
+        productPrice = transactions.get(0).price;
+        buyerName = transactions.get(0).buyer_name;
+        location = transactions.get(0).loc;
+
+        progressDialog = getProgressDialog(QuoteActivity.this);
+
         upimg = (ImageView)findViewById(R.id.picture1);
-        Glide
-                .with(QuoteActivity.this)
-                .load(mItem.get(0).imgurl)
-                .centerCrop()
-                .into(upimg);
-        if(mItem.get(0).time - System.currentTimeMillis() > 0) {
-            CountDownTimer countDownTimer = new CountDownTimer( mItem.get(0).time - System.currentTimeMillis(), 1000) {
+
+        productNameText = (TextView)findViewById(R.id.name);
+        productPriceText = (TextView)findViewById(R.id.price_product);
+        buyerNameText = (TextView)findViewById(R.id.buyer_name);
+        buyerLocationText = (TextView)findViewById(R.id.buyer_location);
+        timer = (TextView)findViewById(R.id.timer);
+
+        quotePrice = (EditText)findViewById(R.id.price);
+        editComments = (EditText)findViewById(R.id.Comments);
+
+
+        sameProduct = (Button)findViewById(R.id.same);
+        similarProduct = (Button)findViewById(R.id.similar);
+
+        homeDelivery = (Button)findViewById(R.id.home_del);
+        shopVisit = (Button)findViewById(R.id.shop_vis);
+
+        quoteNow = (Button)findViewById(R.id.quote_now);
+        moreDeals = (Button)findViewById(R.id.deals_more);
+
+
+        productNameText.setText(productName);
+        productPriceText.setText("Rs. " + productPrice);
+        buyerNameText.setText(buyerName);
+        buyerLocationText.setText(location);
+
+        Glide.with(QuoteActivity.this).load(transactions.get(0).imgurl).centerCrop().into(upimg);
+
+        if(transactions.get(0).time - System.currentTimeMillis() > 0) {
+            CountDownTimer countDownTimer = new CountDownTimer( transactions.get(0).time - System.currentTimeMillis(), 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
+
                     int hr = (int) (millisUntilFinished / 3600000);
                     int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
-                    int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
+
                     timer.setText(hr + " h : " + min + " m");
+                    //TODO: Set timer for red before few mins
                 }
 
                 @Override
                 public void onFinish() {
+                    timer.setTextColor(Color.RED);
                     timer.setText("Time Up");
                 }
             };
             countDownTimer.start();
-        }else
-        {
+        }else {
+            timer.setTextColor(Color.RED);
             timer.setText("Time Up");
         }
-        more_deals = (TextView)findViewById(R.id.deals_more); //Go Back
-        more_deals.setOnClickListener(new View.OnClickListener() {
+
+        homeDelivery.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+        homeDelivery.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.black));
+
+        shopVisit.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+        shopVisit.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
+
+        homeDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mItem.get(0).url));
+                homeDelivery.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+                homeDelivery.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
+
+                shopVisit.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                shopVisit.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.black));
+
+                deliveryType = Constants.HOME_DELIVERY;
+            }
+        });
+
+        shopVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeDelivery.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                homeDelivery.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.black));
+
+                shopVisit.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+                shopVisit.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
+
+                deliveryType = Constants.SHOP_VISIT;
+            }
+        });
+
+
+        sameProduct.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+        sameProduct.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
+
+        similarProduct.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+        similarProduct.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.black));
+
+        sameProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sameProduct.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+                sameProduct.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
+
+                similarProduct.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                similarProduct.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.black));
+
+                productType = Constants.SAME_PRODUCT;
+            }
+        });
+
+        similarProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sameProduct.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
+                sameProduct.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.black));
+
+                similarProduct.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
+                similarProduct.setTextColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
+
+                productType = Constants.SIMILAR_PRODUCT;
+            }
+        });
+
+        font = Typeface.createFromAsset(getAssets(),"fonts/Roboto_Medium.ttf");
+
+        setTypeface();
+
+//        AppBarLayout appBar = (AppBarLayout)findViewById(R.id.appbar);
+//        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBar.getLayoutParams();
+//        AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
+//        behavior.setTopAndBottomOffset(-500);
+//        params.setBehavior(behavior);
+//        appBar.setLayoutParams(params);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Quote your Products");
+
+        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitleEnabled(false);
+
+        moreDeals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(transactions.get(0).url));
                 startActivity(browserIntent);
             }
         });
 
-        //buyer_location.setText("Distance:"+distance+"km");  //Enter distance in KM
-        buyer_location.setText(distance);
-        comnts = (EditText)findViewById(R.id.Comments);
-
-       //upimg = (ImageView)findViewById(R.id.uploadimg);
-        uplimg = (TextView)findViewById(R.id.uplimg);
-        uplimg.setVisibility(View.GONE);
-
-
-        home_del = (TextView)findViewById(R.id.home_del);
-        shop_vis = (TextView)findViewById(R.id.shop_vis);
-        home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
-        shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-        deltype =1;
-        home_del.setOnClickListener(new View.OnClickListener() {
+        quoteNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-                shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
-                deltype =0;
-                //Home del selected
-            }
-        });
-        shop_vis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                home_del.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
-                shop_vis.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-                deltype =1;
-                //Shop vis selected
-            }
-        });
 
-        same = (TextView)findViewById(R.id.same);
-        similar = (TextView)findViewById(R.id.similar);
-        same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-        similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
-        type =0;
-        same.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-                similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_gray));
-                type =0;
-                //same selected
-            }
-        });
-        similar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                same.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.icons));
-                similar.setBackgroundColor(ContextCompat.getColor(QuoteActivity.this,R.color.ff_green));
-                type =1;
-                //similar selected
-            }
-        });
+                quotedPrice = quotePrice.getText().toString();
+                comments = editComments.getText().toString();
 
-        price_quote = (EditText)findViewById(R.id.price);    //This is the price which the seller quotes
+                if(!TextUtils.isEmpty(quotedPrice)) {
 
-        imflipper = (ViewFlipper)findViewById(R.id.flipperimg);
+                    if(Utils.isInternetAvailable(QuoteActivity.this)){
 
-        quote_now = (TextView)findViewById(R.id.quote_now);
+                        QuoteObject quoteObject  = new QuoteObject();
+                        quoteObject.setProductId(productId);
+                        quoteObject.setQuotedPrice(quotedPrice);
+                        quoteObject.setComments(comments);
+                        quoteObject.setProductType(productType);
+                        quoteObject.setDeliveryType(deliveryType);
 
-        uplimg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: Add method to upload images and show in upimg
-            }
-        });
-/*
-        font = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Medium.ttf");*/
+                        progressDialog.show();
 
-        //TODO: Set typeface for text
+                        ServiceManager.callQuoteService(QuoteActivity.this, quoteObject, new UIListener() {
+                            @Override
+                            public void onSuccess() {
+                                progressDialog.dismiss();
 
+                                ContentValues cv = new ContentValues();
+                                cv.put("name",productName);
+                                cv.put("qprice",quotedPrice);
+                                cv.put("type",productType);
+                                cv.put("deltype",deliveryType);
+                                cv.put("comment",comments);
+                                cv.put("quoted", true);
+                                cv.put("id",productId);
 
-        AppBarLayout appBar = (AppBarLayout)findViewById(R.id.appbar);
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.user_profile_coordinatorlayout);
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBar.getLayoutParams();
-        AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
-        behavior.setTopAndBottomOffset(-500);
-        params.setBehavior(behavior);
-        appBar.setLayoutParams(params);
+                                DatabaseHelper dh = new DatabaseHelper(QuoteActivity.this);
+                                dh.addNot(cv);
 
-        imflipper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imflipper.showNext();
-                imflipper.setInAnimation(QuoteActivity.this, R.anim.right_in);
-                imflipper.setOutAnimation(QuoteActivity.this, R.anim.left_out);
-            }
-        });
-        quote_now.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(validate()) {
-                    qt = new QuoteTask();
-                    qt.execute();
+                                Intent intent = new Intent(QuoteActivity.this,MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.putExtra("FROM_QUOTE_FLOW",Constants.IS_FROM_QUOTE_FLOW);
+                                startActivity(intent);
+
+                                finish();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                progressDialog.dismiss();
+                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onConnectionError() {
+                                progressDialog.dismiss();
+                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onCancelled() {
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                    }else{
+                        Toasts.internetUnavailableToast(QuoteActivity.this);
+                    }
+                }else{
+                    Toast.makeText(QuoteActivity.this,"Enter your price",Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-
     }
 
-    private boolean validate()
-    {
-        if(price_quote.getText().length()!=0)
-        {
-            return true;
-        }
-        Toast.makeText(this,"Enter a price",Toast.LENGTH_SHORT).show();
-        return false;
+    private void setTypeface() {
+
+        productNameText.setTypeface(font);
+        productPriceText.setTypeface(font);
+        buyerNameText.setTypeface(font);
+        timer.setTypeface(font);
+        sameProduct.setTypeface(font);
+        similarProduct.setTypeface(font);
+        homeDelivery.setTypeface(font);
+        shopVisit.setTypeface(font);
+        moreDeals.setTypeface(font);
+        quoteNow.setTypeface(font);
     }
-
-    public class QuoteTask extends AsyncTask<Void, Void, Boolean> {
-        QuoteTask(){
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            qprice = price_quote.getText().toString();
-            comment = comnts.getText().toString();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            ArrayList<PostParam> instiPostParams = new ArrayList<PostParam>();
-            instiPostParams.add(new PostParam("type",String.valueOf(type)));
-            instiPostParams.add(new PostParam("deltype",String.valueOf(deltype)));
-            instiPostParams.add(new PostParam("comment",comment));
-            instiPostParams.add(new PostParam("qprice",qprice));
-            instiPostParams.add(new PostParam("id",id));
-            instiPostParams.add(new PostParam("email", UserProfile.getEmail(QuoteActivity.this)));
-            instiPostParams.add(new PostParam("token",UserProfile.getToken(QuoteActivity.this)));
-            ResponseJSON = PostRequest.execute(URLConstants.URL_Quote, instiPostParams, null);
-            Log.d("RESPONSE", ResponseJSON.toString());
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            try {
-                if(ResponseJSON.getJSONObject("data").getInt("result")==1){
-                    ContentValues cv = new ContentValues();
-                    cv.put("name",pname);
-                    cv.put("qprice",qprice);
-                    cv.put("type",type);
-                    cv.put("deltype",deltype);
-                    cv.put("comment",comment);
-                    cv.put("quoted", 1);
-                    cv.put("id",id);
-                    DatabaseHelper dh = new DatabaseHelper(QuoteActivity.this);
-                    dh.addNot(cv);
-                    startActivity(new Intent(QuoteActivity.this,MainActivity.class));
-                    finish();
-                }else {
-                    Toast.makeText(QuoteActivity.this,R.string.SERVER_ERROR,Toast.LENGTH_LONG).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(QuoteActivity.this,R.string.SERVER_ERROR,Toast.LENGTH_LONG).show();
-            }
-
-        }
-    }
-
-
 }

@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,10 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import org.json.JSONObject;
+
+import in.flashfetch.sellerapp.CommonUtils.Toasts;
+import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
 import in.flashfetch.sellerapp.Network.Connectivity;
 import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
@@ -34,35 +40,29 @@ import java.util.ArrayList;
 
 public class RequestedDealsAdapter extends RecyclerView.Adapter<RequestedDealsAdapter.ViewHolder> {
 
-    Context mContext;
-    Typeface font;
-    ArrayList<Notification> mItems;
-    //TimeHelper th;
+    private Context context;
+    private Typeface font;
+    private ArrayList<Notification> transactions;
     private static String LOG_TAG = "EventDetails";
-    int LayoutSelector;
 
-    public RequestedDealsAdapter(Context context, int LayoutSelect, ArrayList<Notification> items) {
-        mContext = context;
-        mItems = items;
-        LayoutSelector = LayoutSelect;
+    public RequestedDealsAdapter(Context context, ArrayList<Notification> transactions) {
+        this.context = context;
+        this.transactions = transactions;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView name,price,time,decline,quote;
-        LinearLayout notsfeed;
-        ImageView imageview;
-        CardView cv;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView itemName, itemPrice, time, decline, quote;
+        public ImageView imageview;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageview = (ImageView)itemView.findViewById(R.id.image);
-            name =(TextView)itemView.findViewById(R.id.name);
-            price = (TextView)itemView.findViewById(R.id.price);
-            time = (TextView)itemView.findViewById(R.id.time);
-            decline = (TextView)itemView.findViewById(R.id.decline);
-            quote = (TextView)itemView.findViewById(R.id.quote);
-            notsfeed = (LinearLayout)itemView.findViewById(R.id.notsfeed);
-            cv = (CardView)itemView.findViewById(R.id.card_view);
+
+            imageview = (ImageView) itemView.findViewById(R.id.image);
+            itemName = (TextView) itemView.findViewById(R.id.name);
+            itemPrice = (TextView) itemView.findViewById(R.id.price);
+            time = (TextView) itemView.findViewById(R.id.time);
+            decline = (TextView) itemView.findViewById(R.id.decline);
+            quote = (TextView) itemView.findViewById(R.id.quote);
         }
     }
 
@@ -72,139 +72,109 @@ public class RequestedDealsAdapter extends RecyclerView.Adapter<RequestedDealsAd
     }
 
     public RequestedDealsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout;
 
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notifications, parent, false);
 
-       /* font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");*/
-
-                layout = R.layout.item_notifications;
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(layout, parent, false);
-
-                return new ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final RequestedDealsAdapter.ViewHolder holder, final int position) {
+//        font = Typeface.createFromAsset(context.getAssets(),"fonts/Roboto_Medium.ttf");
 
+        holder.itemName.setText(transactions.get(position).name);
+        holder.itemPrice.setText("Rs. " + String.valueOf(transactions.get(position).price));
 
-        //th = new TimeHelper();
-        holder.name.setText(mItems.get(position).name);
-        /*holder.name.setTypeface(font);
-        holder.price.setTypeface(font);
-        holder.time.setTypeface(font);*/
-
-        holder.price.setText("Rs. " + String.valueOf(mItems.get(position).price));
-
-        if(mItems.get(position).time - System.currentTimeMillis() > 0) {
-            CountDownTimer countDownTimer = new CountDownTimer( mItems.get(position).time - System.currentTimeMillis(), 1000) {
+        if (transactions.get(position).time - System.currentTimeMillis() > 0) {
+            CountDownTimer countDownTimer = new CountDownTimer(transactions.get(position).time - System.currentTimeMillis(), 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
 
                     holder.quote.setVisibility(View.VISIBLE);
+                    holder.decline.setVisibility(View.VISIBLE);
                     holder.time.setBackgroundColor(Color.parseColor("#0BC6A0"));
+
                     int hr = (int) (millisUntilFinished / 3600000);
                     int min = (int) ((millisUntilFinished / 60000) - 60 * hr);
-                    int sec = (int) ((millisUntilFinished / 1000) - 60 * min - 3600 * hr);
-                    holder.time.setText(hr + " h : " + min + " m");
 
+                    holder.time.setText(hr + " h : " + min + " m");
+                    //TODO: Set Time Limit
+                    if(min <= 1){
+                        holder.time.setBackgroundColor(ContextCompat.getColor(context,R.color.ff_red));
+                    }
                 }
 
                 @Override
                 public void onFinish() {
                     holder.time.setText("Time Up");
+                    holder.quote.setVisibility(View.GONE);
+                    holder.decline.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 }
             };
             countDownTimer.start();
-        }else
-        {
+        } else {
             holder.time.setText("Time Up");
             holder.quote.setVisibility(View.GONE);
+            holder.decline.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
-     /*   holder.quote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, QuoteActivity.class);
-                //TODO: Populate the intent with required data
-                mContext.startActivity(intent);
-            }
-        });*/
+
+        Glide.with(context)
+                .load(transactions.get(position).imgurl)
+                .centerCrop()
+                .into(holder.imageview);
+
         holder.decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!Connectivity.isNetworkAvailable(mContext)){
-                    Toast.makeText(mContext,"NETWORK NOT AVAILABLE",Toast.LENGTH_SHORT);
+                if (Utils.isInternetAvailable(context)) {
+
+                    ServiceManager.callItemDeclineService(context, transactions.get(position).id, new UIListener() {
+                        @Override
+                        public void onSuccess() {
+                            transactions.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, transactions.size());
+
+                            Toast.makeText(context,"Request has been deleted Successfully",Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure() {
+
+                        }
+
+                        @Override
+                        public void onConnectionError() {
+
+                        }
+
+                        @Override
+                        public void onCancelled() {
+
+                        }
+                    });
+                } else {
+                    Toasts.internetUnavailableToast(context);
                 }
-                DeclineTask dt = new DeclineTask(mItems.get(position).id);
-                dt.execute();
-                mItems.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, mItems.size());
             }
         });
-        Glide
-                .with(mContext)
-                .load(mItems.get(position).imgurl)
-                .centerCrop()
-                .into(holder.imageview);
-        //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
+
         holder.quote.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mContext, QuoteActivity.class);
+                Intent i = new Intent(context, QuoteActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("id", mItems.get(position).id);
+                bundle.putString("productId", transactions.get(position).id);
                 i.putExtras(bundle);
-                mContext.startActivity(i);
+                context.startActivity(i);
             }
         });
-
-
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return transactions.size();
     }
+}
 
-    public class DeclineTask extends AsyncTask<Void, Void, Boolean> {
-        String id;
-
-        public DeclineTask(String id) {
-            this.id = id;
-        }
-
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            JSONObject ResponseJSON;
-            ArrayList<PostParam> iPostParams = new ArrayList<PostParam>();
-            PostParam postemail = new PostParam("email", UserProfile.getEmail(mContext));
-            PostParam posttoken = new PostParam("token",UserProfile.getToken(mContext));
-            iPostParams.add(postemail);
-            iPostParams.add(posttoken);
-            iPostParams.add(new PostParam("decid",id));
-            DatabaseHelper dh = new DatabaseHelper(mContext);
-            dh.deleteNot(id);
-            //ResponseJSON = PostRequest.execute("http://192.168.43.66/login_buyer.php", iPostParams, null);
-            ResponseJSON = PostRequest.execute(URLConstants.URLDecline, iPostParams, null);
-            Log.d("RESPONSE", ResponseJSON.toString());
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-        }
-        }
-    }

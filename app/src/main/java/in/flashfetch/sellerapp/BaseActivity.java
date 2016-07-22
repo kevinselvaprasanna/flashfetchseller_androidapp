@@ -18,7 +18,7 @@ public class BaseActivity extends AppCompatActivity {
     public Typeface font;
     private Toolbar toolbar;
 
-    public ProgressDialog showProgressDialog(Context context){
+    public ProgressDialog getProgressDialog(Context context){
         progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Please wait...");
@@ -27,7 +27,7 @@ public class BaseActivity extends AppCompatActivity {
         return progressDialog;
     }
 
-    public ProgressDialog showProgressDialog(Context context, boolean isCancelable){
+    public ProgressDialog getProgressDialog(Context context, boolean isCancelable){
         progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Please wait...");

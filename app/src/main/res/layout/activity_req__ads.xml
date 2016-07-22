@@ -24,6 +24,7 @@
             android:layout_height="200dp"
             android:inputType="textMultiLine"
             android:ems="10"
+            android:focusable="false"
             android:id="@+id/ad"
             android:gravity="top"
             android:hint="What are you offering to your customers ?"

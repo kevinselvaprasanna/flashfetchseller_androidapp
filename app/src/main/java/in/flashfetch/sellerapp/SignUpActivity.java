@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -46,7 +47,7 @@ public class SignUpActivity extends BaseActivity {
     private Uri selectedImageUri;
     private static final int PLACE_PICKER_REQUEST = 1;
     private static final int SELECT_PHOTO = 2;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private String shopLocation = null;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
     private SignUpObject signUpObject = new SignUpObject();
@@ -79,7 +80,7 @@ public class SignUpActivity extends BaseActivity {
             }
         });
 
-        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        progressDialog = getProgressDialog(SignUpActivity.this);
 
         viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper2);
 
@@ -151,9 +152,6 @@ public class SignUpActivity extends BaseActivity {
             public void onClick(final View view) {
                 if(validate2()) {
 
-                    progressBar.setVisibility(View.VISIBLE);
-                    viewFlipper.setVisibility(View.GONE);
-
                     signUpObject.setName(name.getText().toString());
                     signUpObject.setEmail(email.getText().toString());
                     signUpObject.setPassword(password.getText().toString());
@@ -167,11 +165,15 @@ public class SignUpActivity extends BaseActivity {
                     signUpObject.setReferralCode(referralCode.getText().toString());
 
                     if(Utils.isInternetAvailable(SignUpActivity.this)){
+
+                        progressDialog.show();
+                        viewFlipper.setVisibility(View.GONE);
+
                         ServiceManager.callSignUpService(SignUpActivity.this, signUpObject, new UIListener() {
                             @Override
                             public void onSuccess() {
 
-                                progressBar.setVisibility(View.GONE);
+                                progressDialog.dismiss();
 
                                 UserProfile.setName(name.getText().toString(), SignUpActivity.this);
                                 UserProfile.setEmail(email.getText().toString(), SignUpActivity.this);
@@ -195,7 +197,7 @@ public class SignUpActivity extends BaseActivity {
 
                             @Override
                             public void onFailure() {
-                                progressBar.setVisibility(View.GONE);
+                                progressDialog.dismiss();
                                 viewFlipper.setVisibility(View.VISIBLE);
 
                                 //TODO: set the viewflipper to first registration page
@@ -205,7 +207,7 @@ public class SignUpActivity extends BaseActivity {
 
                             @Override
                             public void onConnectionError() {
-                                progressBar.setVisibility(View.GONE);
+                                progressDialog.dismiss();
                                 viewFlipper.setVisibility(View.VISIBLE);
 
                                 Toast.makeText(SignUpActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
@@ -213,7 +215,7 @@ public class SignUpActivity extends BaseActivity {
 
                             @Override
                             public void onCancelled() {
-                                progressBar.setVisibility(View.GONE);
+                                progressDialog.dismiss();
                                 viewFlipper.setVisibility(View.VISIBLE);
                             }
                         });

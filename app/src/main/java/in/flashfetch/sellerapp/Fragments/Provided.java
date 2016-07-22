@@ -16,83 +16,37 @@ import in.flashfetch.sellerapp.Adapters.ProvidedDealsAdapter;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.R;
-/*
-*//*
-*//**//**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Provided.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Provided#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Provided extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_PARAM1 = "param1";
-    //private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    //private String mParam1;
-    //private String mParam2;
+public class Provided extends Fragment {
 
     private Context mContext = getActivity();
-    Typeface font;
-
-
-
-    // private OnFragmentInteractionListener mListener;
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-
-     * @return A new instance of fragment Requested.
-     */
-    // TODO: Rename and change types and number of parameters
-    /*public static Requested newInstance(String param1, String param2) {
-        Requested fragment = new Requested(mContext);
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
+    private Typeface font;
+    private RecyclerView recyclerView;
+    private boolean isAccessed;
+    private ProvidedDealsAdapter providedDealsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
+
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            isAccessed = bundle.getBoolean("ACCESS");
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Medium.ttf");
 
-      /*  font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");*/
-
-        //TODO: Set typeface for text
         View view = inflater.inflate(R.layout.fragment_provided, container, false);
 
-        LinearLayoutManager layoutManager;
-        RecyclerView rvNot;
-        //ArrayList<NotificationsActivity> nots;
+        recyclerView = (RecyclerView)view.findViewById(R.id.rvNotifications);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
 
-
-        rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
-        layoutManager = new LinearLayoutManager(mContext);
         TextView provtext=(TextView)view.findViewById(R.id.providedtext);
         provtext.setVisibility(View.GONE);
-        //set the recycler view to use the linear layout manager
-        rvNot.setLayoutManager(layoutManager);
         mContext= getActivity();
 
         // Load events from Database
@@ -102,17 +56,28 @@ public class Provided extends Fragment {
         //initialize events feed adapter
 
         //put conidition to switch layout
-        ProvidedDealsAdapter notsAdapter = new ProvidedDealsAdapter(mContext, 2, Notification.getQNotifications(getActivity()));
+        providedDealsAdapter = new ProvidedDealsAdapter(mContext, 2, Notification.getQNotifications(getActivity()));
 
-        //Use the events feed adapter
-        rvNot.setAdapter(notsAdapter);
+        recyclerView.setAdapter(providedDealsAdapter);
 
-        Log.i("abc", String.valueOf(Requested.requestnumber)+"prov");
+//        if(Requested.requestnumber==0) provtext.setVisibility(View.VISIBLE);
+//        if(Requested.requestnumber==1) {
+//            provtext.setText("Respond to the request in time to make a deal.");
+//            provtext.setVisibility(View.VISIBLE);
+//        }
 
-        if(Requested.requestnumber==0) provtext.setVisibility(View.VISIBLE);
-        if(Requested.requestnumber==1) {
-            provtext.setText("Respond to the request in time to make a deal.");
+        if(isAccessed){
+            if (Requested.noOfRequests == 0) {
+                provtext.setVisibility(View.VISIBLE);
+            }else if (Requested.noOfRequests == 1) {
+                provtext.setText("No request yet!! They are on its way!");
+                provtext.setVisibility(View.VISIBLE);
+            }else{
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        }else{
             provtext.setVisibility(View.VISIBLE);
+            provtext.setText("You will receive product requests after FlashFetch Buyer App is launched. Meanwhile get familiarized with the features of your App. Stay tuned!");
         }
 
         return view;

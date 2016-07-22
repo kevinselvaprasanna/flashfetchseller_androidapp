@@ -1,28 +1,27 @@
 package in.flashfetch.sellerapp;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
+import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -37,6 +37,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -59,11 +65,23 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     private View mProgressView, mLoginFormView;
     private TextView forgotPassword, registerHere;
     private Typeface font;
-    private Toolbar toolbar;
     private ProgressDialog progressDialog;
+    private Handler handler;
+    private long lastUpdateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        if(Utils.isInternetAvailable(LoginActivity.this)){
+//            try {
+//                TimeUnit.MILLISECONDS.sleep(5000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }else{
+//            Toasts.internetUnavailableToast(LoginActivity.this);
+//
+//        }
 
         try {
             TimeUnit.MILLISECONDS.sleep(5000);
@@ -74,29 +92,60 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
+        handler = new Handler();
+
+    /* Get Last Update Time from Preferences */
+        SharedPreferences prefs = this.getPreferences(0);
+        lastUpdateTime = prefs.getLong("lastUpdateTime", 0);
+
+    /* Should Activity Check for Updates Now? */
+        if ((lastUpdateTime + (24 * 60 * 60 * 1000)) < System.currentTimeMillis()) {
+
+        /* Save current timestamp for next Check*/
+            lastUpdateTime = System.currentTimeMillis();
+            SharedPreferences.Editor editor = getPreferences(0).edit();
+            editor.putLong("lastUpdateTime", lastUpdateTime);
+            editor.commit();
+
+        /* Start Update */
+            checkUpdate.start();
+        }
+
         if (UserProfile.getEmail(LoginActivity.this) != "") {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
-            startActivity(intent);
-            finish();
+
+            if (Utils.isInternetAvailable(LoginActivity.this)) {
+                if (UserProfile.getCategory(LoginActivity.this) == 1) {
+                    Toast.makeText(LoginActivity.this, "Please fill up your categories to complete registration", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(LoginActivity.this, CategoryActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                    finish();
+                } else if (UserProfile.getReturns(LoginActivity.this) == 1) {
+                    Toast.makeText(LoginActivity.this, "Please provide your returns policy to complete registration", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(LoginActivity.this, Returns.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            } else {
+                Toasts.internetUnavailableToast(LoginActivity.this);
+            }
         }
 
         setContentView(R.layout.login_main);
-
-        Utils.startPlayServices(this);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setTitle("FlashFetch Seller");
-        toolbar.setNavigationIcon(R.drawable.toolbar_30);
 
         font = getTypeface();
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.progress_bar);
 
-        progressDialog = showProgressDialog(this);
+        progressDialog = getProgressDialog(this);
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.EmailID);
         mPasswordView = (EditText) findViewById(R.id.Password);
@@ -169,47 +218,56 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         if (cancel) {
             focusView.requestFocus();
         } else {
-            progressDialog.show();
-            mLoginFormView.setVisibility(View.GONE);
 
-            ServiceManager.callLoginService(LoginActivity.this, email, password, new UIListener() {
-                @Override
-                public void onSuccess() {
-                    progressDialog.dismiss();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
-                    startActivity(intent);
-                    intent = new Intent(LoginActivity.this, IE_RegistrationIntentService.class);
-                    startService(intent);
-                }
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mPasswordView.getWindowToken(), 0);
 
-                @Override
-                public void onFailure() {
-                    progressDialog.dismiss();
-                    mLoginFormView.setVisibility(View.VISIBLE);
-                    mPasswordView.setError(getString(R.string.error_incorrect_password));
-                    mPasswordView.requestFocus();
-                }
+            if (Utils.isInternetAvailable(LoginActivity.this)) {
 
-                @Override
-                public void onConnectionError() {
-                    progressDialog.dismiss();
-                    mLoginFormView.setVisibility(View.VISIBLE);
-                    Toasts.internetUnavailableToast(LoginActivity.this);
-                }
+                progressDialog.show();
+                mLoginFormView.setVisibility(View.GONE);
 
-                @Override
-                public void onCancelled() {
-                    progressDialog.dismiss();
-                    mLoginFormView.setVisibility(View.VISIBLE);
-                    Toasts.serviceInterrupted(LoginActivity.this);
-                }
-            });
+                ServiceManager.callLoginService(LoginActivity.this, email, password, new UIListener() {
+                    @Override
+                    public void onSuccess() {
+                        progressDialog.dismiss();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        progressDialog.dismiss();
+                        mLoginFormView.setVisibility(View.VISIBLE);
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                        mPasswordView.requestFocus();
+                    }
+
+                    @Override
+                    public void onConnectionError() {
+                        progressDialog.dismiss();
+                        mLoginFormView.setVisibility(View.VISIBLE);
+                        Toast.makeText(LoginActivity.this, "Check your username and password", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled() {
+                        progressDialog.dismiss();
+                        mLoginFormView.setVisibility(View.VISIBLE);
+                        Toasts.serviceInterrupted(LoginActivity.this);
+                    }
+                });
+            } else {
+                Toasts.internetUnavailableToast(LoginActivity.this);
+            }
         }
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 0;
+        return password.length() >= 8;
     }
 
     private void populateAutoComplete() {
@@ -301,6 +359,62 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
+
+    /* This Thread checks for Updates in the Background */
+    private Thread checkUpdate = new Thread() {
+        public void run() {
+            try {
+                URL updateURL = new URL("http://my.company.com/update");
+                URLConnection conn = updateURL.openConnection();
+                InputStream is = conn.getInputStream();
+                BufferedInputStream bis = new BufferedInputStream(is);
+                FileOutputStream baf = new FileOutputStream(new File(Environment.getExternalStorageDirectory() + File.separator + "test.txt"));
+
+                int current = 0;
+                while((current = bis.read()) != -1){
+                    baf.write((byte)current);
+                }
+                baf.close();
+
+            /* Convert the Bytes read to a String. */
+                final String s = new String(baf.toString());
+
+            /* Get current Version Number */
+                int curVersion = getPackageManager().getPackageInfo("in.flashfetch.sellerapp", 0).versionCode;
+                int newVersion = Integer.valueOf(s);
+
+            /* Is a higher version than the current already out? */
+                if (newVersion > curVersion) {
+                /* Post a Handler for the UI to pick up and open the Dialog */
+                    handler.post(showUpdate);
+                }
+            } catch (Exception e) {
+            }
+        }
+    };
+
+    /* This Runnable creates a Dialog and asks the user to open the Market */
+    private Runnable showUpdate = new Runnable(){
+        public void run(){
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setTitle("Update Available")
+                    .setMessage("Mandatory Update for the App")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        /* User clicked OK so do some stuff */
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp"));
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        /* User clicked Cancel */
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+    };
 
     @Override
     protected void onResume() {

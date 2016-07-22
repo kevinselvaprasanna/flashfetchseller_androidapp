@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -17,8 +18,11 @@ import android.widget.Toast;
 
 import in.flashfetch.sellerapp.Adapters.CategoryAdapter;
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
+import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
 import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
@@ -32,16 +36,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-public class CategoryActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+public class CategoryActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
 
-    Boolean mobiles, laptops, tablets;
-    JSONObject ResponseJSON;
-    Button submit;
-    CategoryAdapter categoryAdapter;
-    int category=30;
-    Typeface font;
-    ProgressBar progressBar;
-    long product = 1;
+    private Boolean mobiles, laptops, tablets;
+    private Button submit;
+    private CategoryAdapter categoryAdapter;
+    private Typeface font;
+    private ProgressDialog progressDialog;
+    private int product = 1;
 
     int[] aud = {29,31,37,41,43};
     int[] book = {47,53,59,61,67,71};
@@ -62,29 +64,19 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
 
-        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        progressDialog = getProgressDialog(CategoryActivity.this);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         getSupportActionBar().setTitle("Categories");
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CategoryActivity.this,SignUpActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-
-        getSupportActionBar().setTitle("Categories");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CategoryActivity.this,SignUpActivity.class);
+                Intent intent = new Intent(CategoryActivity.this,LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -115,9 +107,6 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
         subhead.put(headers.get(6),music);
         subhead.put(headers.get(7),sports);
         subhead.put(headers.get(8),watches);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         final HashMap<String,List<Boolean>> subcheck = new HashMap<>();
         List<Boolean> avcheck = new ArrayList<>();
@@ -155,70 +144,50 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
 
         ExpandableListView expandableListView = (ExpandableListView)findViewById(R.id.lvExp);
         expandableListView.setAdapter(categoryAdapter);
-        /*expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Log.i("Click","Child");
-                Log.i("Product",product+"");
-
-                switch (groupPosition)
-                {
-                    case 0:
-                        product = product*aud[childPosition];
-                    case 1:
-                        product = product*book[childPosition];
-                    case 2:
-                        product = product*compi[childPosition];
-                    case 3:
-                        product = product*cami[childPosition];
-                    case 4:
-                        product = product*gami[childPosition];
-                    case 5:
-                        product = product*mobi[childPosition];
-                    case 6:
-                        product = product*musi[childPosition];
-                    case 7:
-                        product = product*spo[childPosition];
-                    case 8:
-                        product = product*watc[childPosition];
-                }
-                //use product
-                return true;
-            }
-        });
-
-
-      /*  font = Typeface.createFromAsset(getAssets(),
-                "fonts/Lato-Medium.ttf");
-*/
-        //TODO: Set typeface for text
-        /*
-
-        mobiles =false;
-        laptops=false;
-        tablets=false;
-        cmobiles = (CheckBox)findViewById(R.id.mobiles);
-        claptops = (CheckBox)findViewById(R.id.laptops);
-        ctablets = (CheckBox)findViewById(R.id.tablets);
-
-        submit = (Button)findViewById(R.id.submit2);
-
-        cmobiles.setOnCheckedChangeListener(this);
-        claptops.setOnCheckedChangeListener(this);
-        ctablets.setOnCheckedChangeListener(this);
-        */
 
         submit = (Button)findViewById(R.id.Submit);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                if(validate(categoryAdapter.getChecks())) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    submit.setVisibility(View.GONE);
-                    Submit submittask = new Submit();
-                    submittask.execute();
-                   Log.i("Product",product+"");
+
+                   if(Utils.isInternetAvailable(CategoryActivity.this)){
+
+                       progressDialog.show();
+
+                       ServiceManager.callCategoryService(CategoryActivity.this, product, new UIListener() {
+                           @Override
+                           public void onSuccess() {
+                               progressDialog.dismiss();
+                               Toast.makeText(CategoryActivity.this,"Categories have been successfully saved",Toast.LENGTH_SHORT).show();
+
+                               Intent intent = new Intent(CategoryActivity.this,Returns.class);
+                               startActivity(intent);
+                           }
+
+                           @Override
+                           public void onFailure() {
+                               progressDialog.dismiss();
+                               Toasts.serverBusyToast(CategoryActivity.this);
+                           }
+
+                           @Override
+                           public void onConnectionError() {
+                               progressDialog.dismiss();
+                               Toasts.serverBusyToast(CategoryActivity.this);
+                           }
+
+                           @Override
+                           public void onCancelled() {
+                                progressDialog.dismiss();
+                           }
+                       });
+
+                   }else{
+                        Toasts.internetUnavailableToast(CategoryActivity.this);
+                   }
                }
             }
         });
@@ -227,8 +196,7 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
 
     private List<Boolean> populate(List<String> string, List<Boolean> bool)
     {
-        for(String s:string)
-        {
+        for(String s:string) {
             bool.add(false);
         }
         return bool;
@@ -236,20 +204,20 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
 
     private boolean validate(HashMap<String,List<Boolean>> check)
     {
-        int product =1;
         for(int i=0;i<headers.size();i++) {
+
             List<Boolean> bools = check.get(headers.get(i));
+
             product = product*cat_head[i];
+
             for(int j=0;j<bools.size();j++)
             {
-                if(bools.get(j))
-                {
-                    //product = product*product(i,j)
-
+                if(bools.get(j)) {
+                    product = product*product(i,j);
                 }
             }
         }
-        this.product = product;
+
         Log.i("Product",product+"");
         return product>1;
     }
@@ -275,47 +243,6 @@ public class CategoryActivity extends AppCompatActivity implements CompoundButto
                 else
                 tablets=false;
                 break;
-        }
-    }
-    class Submit extends AsyncTask<String, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            ArrayList<PostParam> instiPostParams = new ArrayList<PostParam>();
-            instiPostParams.add(new PostParam("token",UserProfile.getToken(CategoryActivity.this)));
-            instiPostParams.add(new PostParam("email",UserProfile.getEmail(CategoryActivity.this)));
-            instiPostParams.add(new PostParam("category",String.valueOf(product)));
-
-
-            ResponseJSON = PostRequest.execute(URLConstants.URLCategory, instiPostParams, null);
-            Log.d("RESPONSE",ResponseJSON.toString());
-
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            try {
-                if(ResponseJSON.getJSONObject("data").getInt("result")==1) {
-                    super.onPostExecute(aVoid);
-                    UserProfile.setCategory(category,CategoryActivity.this);
-                    //Intent i = new Intent(CategoryActivity.this, MainActivity.class);
-                    Intent i = new Intent(CategoryActivity.this, Returns.class);
-                    startActivity(i);
-                    finish();
-                }else {
-                    Toasts.serverBusyToast(CategoryActivity.this);
-
-                    progressBar.setVisibility(View.GONE);
-                    submit.setVisibility(View.VISIBLE);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
     }
 

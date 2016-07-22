@@ -3,10 +3,13 @@ package in.flashfetch.sellerapp.Fragments;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,155 +18,108 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.Adapters.RequestedDealsAdapter;
-import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.R;
-//import it.gmariotti.recyclerview.adapter.AlphaAnimatorAdapter;
-//import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Requested.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Requested#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Requested extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_PARAM1 = "param1";
-    //private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    //private String mParam1;
-    //private String mParam2;
+    private Context context = getActivity();
+    private Typeface font;
+    private LinearLayoutManager layoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView recyclerView;
+    private ArrayList<Notification> transactions;
+    private RequestedDealsAdapter requestedDealsAdapter;
+    private boolean isAccessed = false;
 
-    private Context mContext= getActivity();
-    public static int requestnumber = -1;
-    Typeface font;
-
-
-
-    // private OnFragmentInteractionListener mListener;
-    
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-
-     * @return A new instance of fragment Requested.
-     */
-    // TODO: Rename and change types and number of parameters
-    /*public static Requested newInstance(String param1, String param2) {
-        Requested fragment = new Requested(mContext);
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
+    public static int noOfRequests = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
+
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            isAccessed = bundle.getBoolean("ACCESS");
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-       /* font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");*/
-
-        //TODO: Set typeface for text
+        font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Medium.ttf");
 
         View view = inflater.inflate(R.layout.fragment_requested, container, false);
 
-        LinearLayoutManager layoutManager;
-        RecyclerView rvNot;
-        ArrayList<Notification> nots;
-        mContext= getActivity();
-        TextView reqtext=(TextView)view.findViewById(R.id.requestedtext);
-        reqtext.setVisibility(View.GONE);
+        context = getActivity();
+        TextView reqText = (TextView) view.findViewById(R.id.requestedtext);
+        reqText.setVisibility(View.GONE);
 
-        rvNot = (RecyclerView)view.findViewById(R.id.rvNotifications);
-        //rvNot.setItemAnimator(new SlideInOutLeftItemAnimator(rvNot));
-        layoutManager = new LinearLayoutManager(mContext);
+        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.refresh_container);
 
-        //set the recycler view to use the linear layout manager
-        rvNot.setLayoutManager(layoutManager);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                transactions.clear();
 
-        // Load events from Database
-        // events = Event.getAllRelevantEvents(getActivity());
-        nots = Notification.getAllNotifications(getActivity());
+                transactions.add(Constants.DUMMY_TRANSACTION);
+                transactions.add(Constants.DUMMY_TRANSACTION);
+                transactions.add(Constants.DUMMY_TRANSACTION);
 
-        //initialize events feed adapter
-       RequestedDealsAdapter notsAdapter = new RequestedDealsAdapter(mContext,0,nots);
-      // AlphaAnimatorAdapter animatorAdapter = new AlphaAnimatorAdapter(notsAdapter, rvNot);
+                requestedDealsAdapter.notifyDataSetChanged();
 
-        //Use the events feed adapter
-       //rvNot.setAdapter(animatorAdapter);
-        rvNot.setAdapter(notsAdapter);
-        if(notsAdapter.getItemCount()==0) {
-            reqtext.setVisibility(View.VISIBLE);
-            requestnumber=0;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(swipeRefreshLayout.isRefreshing()){
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                },3000);
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.ff_green,R.color.ff_black);
+
+        TypedValue typedValue = new TypedValue();
+        int actionBarHeight = 0;
+        if (getActivity().getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(typedValue.data, getResources().getDisplayMetrics());
         }
-        if(notsAdapter.getItemCount()==1) {
-            reqtext.setText("No request yet!! They are on its way!");
-            reqtext.setVisibility(View.VISIBLE);
-            requestnumber=1;
-        }
 
-        Log.i("abc", String.valueOf(requestnumber));
+        swipeRefreshLayout.setProgressViewEndTarget(true, actionBarHeight);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.requested_transactions);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        layoutManager = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
+
+        recyclerView.setLayoutManager(layoutManager);
+
+        transactions = Notification.getAllNotifications(getActivity());
+
+        transactions.add(Constants.DUMMY_TRANSACTION);
+        transactions.add(Constants.DUMMY_TRANSACTION);
+
+        requestedDealsAdapter = new RequestedDealsAdapter(context, transactions);
+
+        recyclerView.setAdapter(requestedDealsAdapter);
+
+        if(isAccessed){
+            if (requestedDealsAdapter.getItemCount() == 0) {
+                reqText.setVisibility(View.VISIBLE);
+                noOfRequests = 0;
+            }else if (requestedDealsAdapter.getItemCount() == 1) {
+                reqText.setText("No request yet!! They are on its way!");
+                reqText.setVisibility(View.VISIBLE);
+                noOfRequests = 1;
+            }else{
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        }else{
+            reqText.setVisibility(View.VISIBLE);
+            reqText.setText("You will receive product requests after FlashFetch Buyer App is launched. Meanwhile get familiarized with the features of your App. Stay tuned!");
+        }
         return view;
-
     }
-    /*
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     *//*
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
 }

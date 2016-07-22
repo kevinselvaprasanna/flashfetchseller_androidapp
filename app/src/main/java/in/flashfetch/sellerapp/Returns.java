@@ -22,7 +22,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Constants.URLConstants;
@@ -43,6 +45,14 @@ public class Returns extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        try {
+//            TimeUnit.MILLISECONDS.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+//        setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_returns);
@@ -132,7 +142,7 @@ public class Returns extends AppCompatActivity {
             }
             check[i].setLayoutParams(lp);
             check[i].setTextSize(14);
-            check[i].setButtonTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+            check[i].setButtonTintList(ColorStateList.valueOf(getResources().getColor(R.color.ff_green)));
             if (i < 7)
                 check[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -148,18 +158,25 @@ public class Returns extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(acceptReturns.isChecked()){
+
                     for (int i = 0; i < 11; i++) {
                         if (check[i].isChecked()) {
                             product = product * (check[i].getId());
                         }
+                    }
 
+                    if(Utils.isInternetAvailable(Returns.this)){
+                        //TODO: Block Service Call if Return URL is not working
                         ServiceManager.callReturnPolicyService(Returns.this, product, new UIListener() {
                             @Override
                             public void onSuccess() {
                                 Toast.makeText(Returns.this, "Yours returns policy has been saved", Toast.LENGTH_LONG).show();
+                                UserProfile.setReturns(product,Returns.this);
                                 Intent intent = new Intent(Returns.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("FROM_REGISTRATION", Constants.IS_FROM_REGISTRATION_FLOW);
                                 startActivity(intent);
+                                finish();
                             }
 
                             @Override
@@ -177,6 +194,8 @@ public class Returns extends AppCompatActivity {
 
                             }
                         });
+                    }else{
+                        Toasts.internetUnavailableToast(Returns.this);
                     }
                 }else{
                     Toast.makeText(Returns.this,"Please accept the terms and conditions",Toast.LENGTH_SHORT).show();
@@ -184,8 +203,6 @@ public class Returns extends AppCompatActivity {
             }
         });
     }
-
-
 }
 
 

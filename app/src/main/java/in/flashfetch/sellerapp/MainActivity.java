@@ -14,7 +14,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +27,10 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.util.concurrent.TimeUnit;
+
 import in.flashfetch.sellerapp.Adapters.PagerAdapter;
+import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
@@ -38,16 +40,14 @@ import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    public static int reqnumber = -1;
 
-    Typeface font;
-    ImageView nav_img;
-    LinearLayout nav_bg;
-    TextView shopName, sellerEmail;
-    ViewPager pager;
-    PagerSlidingTabStrip pagerSlidingTabStrip;
-    EditText accessCodeText;
+    private Typeface font;
+    private ImageView nav_img;
+    private LinearLayout nav_bg;
+    private TextView shopName, sellerEmail;
+    private ViewPager pager;
+    private PagerSlidingTabStrip pagerSlidingTabStrip;
+    private EditText accessCodeText;
     private ProgressBar progressBar;
     private AlertDialog alertDialog;
     private boolean isAccessAllowed;
@@ -55,6 +55,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        try {
+            TimeUnit.MILLISECONDS.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
@@ -63,16 +70,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Utils.startPlayServices(this);
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            if(bundle.getBoolean("FROM_LOGIN",false)){
-                isFromLoginFlow = true;
-                isAccessAllowed = UserProfile.getAccess(MainActivity.this);
-            }else if(bundle.getBoolean("FROM_REGISTRATION",false)){
-                isFromRegistrationFlow = true;
-            }else{
-                isAccessAllowed = UserProfile.getAccess(MainActivity.this);
-            }
-        }
+
+//        if(bundle != null){
+//            if(bundle.getBoolean("FROM_LOGIN",false)){
+//                isFromLoginFlow = true;
+//                isAccessAllowed = UserProfile.getAccess(MainActivity.this);
+//            }else if(bundle.getBoolean("FROM_REGISTRATION",false)){
+//                isFromRegistrationFlow = true;
+//            }else if(bundle.getBoolean("IS_FROM_QUOTE_FLOW",false)){
+//                pager.setCurrentItem(1,true);
+//            }else{
+//                isAccessAllowed = UserProfile.getAccess(MainActivity.this);
+//            }
+//        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,8 +98,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -109,51 +118,56 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         setTypeface();
 
-        if(isFromRegistrationFlow){
-            showAccessDialog();
-        }else if(isFromLoginFlow){
-            if(!isAccessAllowed){
-                showAccessDialog();
-            }
-        }
+//        if(isFromRegistrationFlow){
+//            showAccessDialog();
+//        }else if(isFromLoginFlow){
+//            if(!isAccessAllowed){
+//                showAccessDialog();
+//            }
+//        }
 
-        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(), this));
+        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(), this, false));
         pagerSlidingTabStrip.setViewPager(pager);
     }
 
     private void checkAccessCode() {
 
-        progressBar.setVisibility(View.VISIBLE);
+        if(Utils.isInternetAvailable(MainActivity.this)){
 
-        ServiceManager.callAccessCodeVerificationService(MainActivity.this,UserProfile.getToken(MainActivity.this), UserProfile.getEmail(MainActivity.this), accessCodeText.getText().toString(), new UIListener() {
-            @Override
-            public void onSuccess() {
-                UserProfile.setAccess(true,MainActivity.this);
-                progressBar.setVisibility(View.GONE);
-                alertDialog.dismiss();
-                Toast.makeText(MainActivity.this,"Hurray! You are ready to receive your orders",Toast.LENGTH_SHORT).show();
-            }
+            progressBar.setVisibility(View.VISIBLE);
 
-            @Override
-            public void onFailure() {
-                UserProfile.setAccess(false,MainActivity.this);
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(MainActivity.this,"Enter correct access code",Toast.LENGTH_SHORT).show();
-            }
+            ServiceManager.callAccessCodeVerificationService(MainActivity.this,UserProfile.getToken(MainActivity.this), UserProfile.getEmail(MainActivity.this), accessCodeText.getText().toString(), new UIListener() {
+                @Override
+                public void onSuccess() {
+                    UserProfile.setAccess(true,MainActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    alertDialog.dismiss();
+                    Toast.makeText(MainActivity.this,"Hurray! You are ready to receive your orders",Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onConnectionError() {
-                UserProfile.setAccess(false,MainActivity.this);
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(MainActivity.this,"Server is currently busy please try again after sometime",Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onFailure() {
+                    UserProfile.setAccess(false,MainActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(MainActivity.this,"Enter correct access code",Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onCancelled() {
-                UserProfile.setAccess(false,MainActivity.this);
-                progressBar.setVisibility(View.GONE);
-            }
-        });
+                @Override
+                public void onConnectionError() {
+                    UserProfile.setAccess(false,MainActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(MainActivity.this,"Server is currently busy please try again after sometime",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled() {
+                    UserProfile.setAccess(false,MainActivity.this);
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+        }else{
+            Toasts.internetUnavailableToast(MainActivity.this);
+        }
     }
 
     @SuppressLint("NewApi")
@@ -175,15 +189,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
                 UserProfile.setAccess(false,MainActivity.this);
-
-//                pager.getChildAt(0).findViewById(R.id.rvNotifications).setVisibility(View.GONE);
-//                pager.getChildAt(1).findViewById(R.id.rvNotifications).setVisibility(View.GONE);
-//                pager.getChildAt(2).findViewById(R.id.rvNotifications).setVisibility(View.GONE);
-//
-//                pager.getChildAt(0).findViewById(R.id.no_access_text).setVisibility(View.VISIBLE);
-//                pager.getChildAt(1).findViewById(R.id.no_access_text).setVisibility(View.VISIBLE);
-//                pager.getChildAt(2).findViewById(R.id.no_access_text).setVisibility(View.VISIBLE);
-
             }
         });
 
@@ -276,7 +281,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.account) {

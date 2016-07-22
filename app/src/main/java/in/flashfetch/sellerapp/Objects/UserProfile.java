@@ -8,7 +8,7 @@ import java.io.Serializable;
 import in.flashfetch.sellerapp.SignUpActivity;
 
 
-public class UserProfile implements Serializable{
+public class UserProfile {
 
     public static String name,email,token,text;
     public static int category;
@@ -103,6 +103,13 @@ public class UserProfile implements Serializable{
         editor.commit();
     }
 
+    public static void setReturns(int returns, Context context){
+        SharedPreferences preferences = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("returns", returns);
+        editor.commit();
+    }
+
     public static void setReferralCode(String referralCode, Context context){
         SharedPreferences preferences = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -174,6 +181,11 @@ public class UserProfile implements Serializable{
     public static int getCategory(Context context) {
         SharedPreferences pref = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
         return pref.getInt("category", 1);
+    }
+
+    public static int getReturns(Context context) {
+        SharedPreferences pref = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        return pref.getInt("returns", 1);
     }
 
     public static String getReferralCode(Context context) {

@@ -1,35 +1,22 @@
 package in.flashfetch.sellerapp;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
-import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
-import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Network.ServiceManager;
-import in.flashfetch.sellerapp.Objects.Notification;
-import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
-import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 /**
  * Created by KRANTHI on 03-07-2016.
@@ -86,74 +73,84 @@ public class ChangePassword extends AppCompatActivity {
                 }else{
                     if(Utils.checkSamePassword(newPassword.getText().toString(),confirmPassword.getText().toString())){
 
-                        progressBar.setVisibility(View.VISIBLE);
-                        changePasswordLayout.setVisibility(View.GONE);
+                        if(Utils.isInternetAvailable(ChangePassword.this)) {
 
-                        ServiceManager.callPasswordChangeService(ChangePassword.this, email, newPassword.getText().toString(), new UIListener() {
-                            @Override
-                            public void onSuccess() {
+                            progressBar.setVisibility(View.VISIBLE);
+                            changePasswordLayout.setVisibility(View.GONE);
 
-                                Toasts.successfulPasswordChangeToast(ChangePassword.this);
+                            ServiceManager.callPasswordChangeService(ChangePassword.this, email, newPassword.getText().toString(), new UIListener() {
+                                @Override
+                                public void onSuccess() {
 
-                                ServiceManager.callLoginService(ChangePassword.this, email, newPassword.getText().toString(), new UIListener() {
+                                    Toasts.successfulPasswordChangeToast(ChangePassword.this);
 
-                                    @Override
-                                    public void onSuccess() {
-                                        if(UserProfile.getCategory(ChangePassword.this) == 1){
-                                            Intent i =new Intent(ChangePassword.this,CategoryActivity.class);
-                                            startActivity(i);
+                                    ServiceManager.callLoginService(ChangePassword.this, email, newPassword.getText().toString(), new UIListener() {
+
+                                        @Override
+                                        public void onSuccess() {
+                                            if(UserProfile.getCategory(ChangePassword.this) == 1){
+                                                Intent i =new Intent(ChangePassword.this,CategoryActivity.class);
+                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(i);
+                                                finish();
+                                            }
+                                            else {
+                                                Intent i = new Intent(ChangePassword.this, MainActivity.class);
+                                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(i);
+                                                finish();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure() {
+                                            Intent intent = new Intent(ChangePassword.this,LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
                                             finish();
                                         }
-                                        else {
-                                            Intent i = new Intent(ChangePassword.this, MainActivity.class);
-                                            startActivity(i);
+
+                                        @Override
+                                        public void onConnectionError() {
+                                            Toasts.serverBusyForLoginToast(ChangePassword.this);
+                                            Intent intent = new Intent(ChangePassword.this,LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
                                             finish();
                                         }
-                                    }
 
-                                    @Override
-                                    public void onFailure() {
-                                        Intent intent = new Intent(ChangePassword.this,LoginActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
+                                        @Override
+                                        public void onCancelled() {
+                                            progressBar.setVisibility(View.GONE);
+                                            changePasswordLayout.setVisibility(View.VISIBLE);
+                                        }
+                                    });
+                                }
 
-                                    @Override
-                                    public void onConnectionError() {
-                                        Toasts.serverBusyForLoginToast(ChangePassword.this);
-                                        Intent intent = new Intent(ChangePassword.this,LoginActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
+                                @Override
+                                public void onFailure() {
+                                    progressBar.setVisibility(View.GONE);
+                                    changePasswordLayout.setVisibility(View.VISIBLE);
+                                    Toasts.serverBusyToast(ChangePassword.this);
+                                }
 
-                                    @Override
-                                    public void onCancelled() {
-                                        progressBar.setVisibility(View.GONE);
-                                        changePasswordLayout.setVisibility(View.VISIBLE);
-                                    }
-                                });
-                            }
+                                @Override
+                                public void onConnectionError() {
+                                    progressBar.setVisibility(View.GONE);
+                                    changePasswordLayout.setVisibility(View.VISIBLE);
+                                    Toasts.serverBusyToast(ChangePassword.this);
+                                }
 
-                            @Override
-                            public void onFailure() {
-                                progressBar.setVisibility(View.GONE);
-                                changePasswordLayout.setVisibility(View.VISIBLE);
-                                Toasts.serverBusyToast(ChangePassword.this);
-                            }
+                                @Override
+                                public void onCancelled() {
+                                    progressBar.setVisibility(View.GONE);
+                                    changePasswordLayout.setVisibility(View.VISIBLE);
+                                }
+                            });
 
-                            @Override
-                            public void onConnectionError() {
-                                progressBar.setVisibility(View.GONE);
-                                changePasswordLayout.setVisibility(View.VISIBLE);
-                                Toasts.serverBusyToast(ChangePassword.this);
-                            }
-
-                            @Override
-                            public void onCancelled() {
-                                progressBar.setVisibility(View.GONE);
-                                changePasswordLayout.setVisibility(View.VISIBLE);
-                            }
-                        });
+                        }else{
+                            Toasts.internetUnavailableToast(ChangePassword.this);
+                        }
                     }else{
                         Toasts.passwordNotSameToast(ChangePassword.this);
                     }

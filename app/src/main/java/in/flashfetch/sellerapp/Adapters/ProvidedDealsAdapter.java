@@ -83,7 +83,7 @@ public class ProvidedDealsAdapter extends RecyclerView.Adapter<ProvidedDealsAdap
             priceText2 = (TextView) itemView.findViewById(R.id.price_text_2);
             button1 = (Button) itemView.findViewById(R.id.button_1);
             button2 = (Button) itemView.findViewById(R.id.button_2);
-            notsfeed = (LinearLayout)itemView.findViewById(R.id.notsfeed);
+//            notsfeed = (LinearLayout)itemView.findViewById(R.id.notsfeed);
         }
     }
 
@@ -108,7 +108,7 @@ public class ProvidedDealsAdapter extends RecyclerView.Adapter<ProvidedDealsAdap
     public void onBindViewHolder(final ProvidedDealsAdapter.ViewHolder holder, final int position) {
 
         Glide.with(mContext).load(mItems.get(position).imgurl).centerCrop().into(holder.imageView);
-        holder.name.setText(mItems.get(position).name);
+//        holder.name.setText(mItems.get(position).name);
 
         if (getItemViewType(position) == ITEM_BARGAINED) {
 

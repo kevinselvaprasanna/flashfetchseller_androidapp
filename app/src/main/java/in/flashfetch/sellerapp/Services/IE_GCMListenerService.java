@@ -56,6 +56,7 @@ public class IE_GCMListenerService extends GcmListenerService{
          */
         //JSONObject notjs;
         Log.i("GCM-message",data.toString());
+
         if(!(data.getString("not")==null)){
             ContentValues cv = new ContentValues();
             cv.put("id", data.getString("id"));
@@ -66,10 +67,9 @@ public class IE_GCMListenerService extends GcmListenerService{
             sendNotification("FlashFetch",data.getString("text"));
         }
         else {
-          //try {
-            //notjs = new JSONObject(String.valueOf(data));
-            //Notification not = new Notification(notjs);
+
             ContentValues cv = new ContentValues();
+
             cv.put("name", data.getString("name"));
             cv.put("imgurl", data.getString("imgurl"));
             cv.put("price", data.getString("price"));
@@ -80,6 +80,7 @@ public class IE_GCMListenerService extends GcmListenerService{
             cv.put("time", Long.parseLong(data.getString("time")));
             cv.put("id", data.getString("id"));
             cv.put("timesent",Long.parseLong(data.getString("timenow")));
+
             if (data.getString("quoted").equals("1")) {
                 cv.put("quoted", 1);
                 cv.put("qprice", Long.parseLong(data.getString("qprice")));
@@ -112,47 +113,20 @@ public class IE_GCMListenerService extends GcmListenerService{
                 Date resultdate = new Date(yourmilliseconds);
                 sendNotification("Product Request", "You have a new Flashfech request on " + data.getString("name") + ", You have to respond before" + resultdate);
             }
+
             DatabaseHelper dh = new DatabaseHelper(this);
             dh.addNot(cv);
-
-
-
-            //sendNotification(data.getString("name"), data.getString("imgurl"), data.getString("price"), data.getString("id"), data.getString("time"));
-    }
+        }
     }
 
-  /*  private void app(Bundle data) {
-        *//*if(data.getString("text").equals("counter")){
-            UserProfile.setCounter(1,IE_GCMListenerService.this);
-        }else if(data.getString("text").equals("update")){
-            UserProfile.setUpdate(1, IE_GCMListenerService.this);
-        }else if(data.getString("text").equals("updatecancel")){
-            UserProfile.setUpdate(0, IE_GCMListenerService.this);
-        } if(data.getString("text").equals("countercancel")){
-            UserProfile.setCounter(0, IE_GCMListenerService.this);
-        }else {
-            UserProfile.setText(data.getString("text"), IE_GCMListenerService.this);
-        }*//*
-       sendNotification(data.getString("title"),data.getString("message"));
-
-    }*/
-    // [END receive_message]
-
-   /* *//**
-     * Create and show a simple notification containing the received GCM message.
-     *
-     * message GCM message received.
-     */
     private void sendNotification(String email, String category, String price,String id, String time){
         PendingIntent pendingIntent;
         Uri defaultSoundUri;
         NotificationCompat.Builder notificationBuilder;
+
         Intent i = new Intent(IE_GCMListenerService.this, MainActivity.class);
         NotificationManager notificationManager;
-        pendingIntent = PendingIntent.getActivity(this, 0, i,
-                PendingIntent.FLAG_ONE_SHOT);
-
-
+        pendingIntent = PendingIntent.getActivity(this, 0, i,PendingIntent.FLAG_ONE_SHOT);
 
         defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notificationBuilder = new NotificationCompat.Builder(this)
@@ -162,45 +136,41 @@ public class IE_GCMListenerService extends GcmListenerService{
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
-        notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         android.app.Notification not = notificationBuilder.build();
         not.flags = android.app.Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify((int) (Math.random() * 1000), not);
 
 
     }
+
     private void sendNotification(String title, String message){
+
         PendingIntent pendingIntent;
         Uri defaultSoundUri;
         NotificationCompat.Builder notificationBuilder;
+
         Intent i = new Intent(IE_GCMListenerService.this,MainActivity.class);
         NotificationManager notificationManager;
-        pendingIntent = PendingIntent.getActivity(this, 0, i,
-                PendingIntent.FLAG_ONE_SHOT);
-
-
-
+        pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_ONE_SHOT);
 
         defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationBuilder.setSmallIcon(R.mipmap.nav_transparent)
-            .setColor(Color.RED);
+                    .setColor(Color.RED);
         } else {
             notificationBuilder.setSmallIcon(R.mipmap.nav);
         }
 
-        notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify((int)(Math.random()*1000) , notificationBuilder.build());
-
-
     }
-
 }
