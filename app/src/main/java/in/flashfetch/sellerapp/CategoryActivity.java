@@ -3,38 +3,23 @@ package in.flashfetch.sellerapp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import in.flashfetch.sellerapp.Adapters.CategoryAdapter;
-import in.flashfetch.sellerapp.CommonUtils.Toasts;
-import in.flashfetch.sellerapp.CommonUtils.Utils;
-import in.flashfetch.sellerapp.Constants.URLConstants;
-import in.flashfetch.sellerapp.Interfaces.UIListener;
-import in.flashfetch.sellerapp.Network.PostRequest;
-import in.flashfetch.sellerapp.Network.ServiceManager;
-import in.flashfetch.sellerapp.Objects.PostParam;
-import in.flashfetch.sellerapp.Objects.UserProfile;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
+import in.flashfetch.sellerapp.Adapters.CategoryAdapter;
+import in.flashfetch.sellerapp.CommonUtils.Toasts;
+import in.flashfetch.sellerapp.CommonUtils.Utils;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
+import in.flashfetch.sellerapp.Network.ServiceManager;
 
 public class CategoryActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
 
@@ -79,8 +64,10 @@ public class CategoryActivity extends BaseActivity implements CompoundButton.OnC
                 Intent intent = new Intent(CategoryActivity.this,LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
+
 
         List<String> av = Arrays.asList("Headphones","Speakers","Home Entertainment Systems","MP3 & Media Players","Audio & Video Accessories");
         List<String> books = Arrays.asList("All books","Bestseller","Literature & Fiction","Children's & Young Adult","Textbooks","Exam Related books");
@@ -217,7 +204,6 @@ public class CategoryActivity extends BaseActivity implements CompoundButton.OnC
                 }
             }
         }
-
         Log.i("Product",product+"");
         return product>1;
     }

@@ -14,35 +14,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.Adapters.AcceptedDealsAdapter;
-import in.flashfetch.sellerapp.Helper.DatabaseHelper;
-import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.Constants.Constants;
+import in.flashfetch.sellerapp.Objects.Transactions;
 import in.flashfetch.sellerapp.R;
+import it.gmariotti.recyclerview.itemanimator.ScaleInOutItemAnimator;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Accepted.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Accepted#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Accepted extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_PARAM1 = "param1";
-    //private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    //private String mParam1;
-    //private String mParam2;
 
     private Context mContext;
-    Typeface font;
-    public static TextView noAccessText;
+    private Typeface font;
+    private TextView noAccessText;
     private boolean isAccessed;
     private RecyclerView recyclerView;
-    private ArrayList<Notification> transactions;
+    private ArrayList<Transactions> transactions;
     private AcceptedDealsAdapter acceptedDealsAdapter;
 
     @Override
@@ -53,7 +37,7 @@ public class Accepted extends Fragment {
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            isAccessed = bundle.getBoolean("ACCESS");
+            isAccessed = bundle.getBoolean(Constants.IS_ACCESS_ALLOWED);
         }
     }
 
@@ -68,19 +52,17 @@ public class Accepted extends Fragment {
         acctext.setVisibility(View.GONE);
 
         recyclerView = (RecyclerView)view.findViewById(R.id.rvNotifications);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
+        recyclerView.setItemAnimator(new ScaleInOutItemAnimator(recyclerView));
 
         // Load events from Database
         // events = Event.getAllRelevantEvents(getActivity());
-        //nots = NotificationsActivity.getAllNotifications(mContext);
+        //nots = NotificationsActivity.getAllTransactions(mContext);
 
         //initialize events feed adapter
-        acceptedDealsAdapter = new AcceptedDealsAdapter(mContext,3, Notification.getANotifications(mContext));
+        acceptedDealsAdapter = new AcceptedDealsAdapter(mContext, Transactions.getAcceptedTransactions(mContext));
 
         recyclerView.setAdapter(acceptedDealsAdapter);
-
-//        if(Requested.requestnumber==0||Requested.requestnumber==1) acctext.setVisibility(View.VISIBLE);
 
         if(isAccessed){
             if (Requested.noOfRequests == 0) {

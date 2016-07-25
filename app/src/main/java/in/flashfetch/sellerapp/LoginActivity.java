@@ -55,6 +55,13 @@ import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
@@ -71,17 +78,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-//        if(Utils.isInternetAvailable(LoginActivity.this)){
-//            try {
-//                TimeUnit.MILLISECONDS.sleep(5000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }else{
-//            Toasts.internetUnavailableToast(LoginActivity.this);
-//
-//        }
 
         try {
             TimeUnit.MILLISECONDS.sleep(5000);
@@ -101,6 +97,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     /* Should Activity Check for Updates Now? */
         if ((lastUpdateTime + (24 * 60 * 60 * 1000)) < System.currentTimeMillis()) {
 
+            Log.d("Check for update","UpdateChecked");
         /* Save current timestamp for next Check*/
             lastUpdateTime = System.currentTimeMillis();
             SharedPreferences.Editor editor = getPreferences(0).edit();
@@ -113,32 +110,23 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         if (UserProfile.getEmail(LoginActivity.this) != "") {
 
-            if (Utils.isInternetAvailable(LoginActivity.this)) {
-                if (UserProfile.getCategory(LoginActivity.this) == 1) {
-                    Toast.makeText(LoginActivity.this, "Please fill up your categories to complete registration", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(LoginActivity.this, CategoryActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-                    finish();
-                } else if (UserProfile.getReturns(LoginActivity.this) == 1) {
-                    Toast.makeText(LoginActivity.this, "Please provide your returns policy to complete registration", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(LoginActivity.this, Returns.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-                    finish();
-                } else {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                }
+            if (UserProfile.getCategory(LoginActivity.this) == 1) {
+                Intent i = new Intent(LoginActivity.this, CategoryActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                finish();
             } else {
-                Toasts.internetUnavailableToast(LoginActivity.this);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
         }
 
         setContentView(R.layout.login_main);
+
+        Utils.startPlayServices(this);
 
         font = getTypeface();
 
@@ -345,10 +333,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
         mEmailView.setAdapter(adapter);
     }
 
@@ -371,8 +356,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 FileOutputStream baf = new FileOutputStream(new File(Environment.getExternalStorageDirectory() + File.separator + "test.txt"));
 
                 int current = 0;
-                while((current = bis.read()) != -1){
-                    baf.write((byte)current);
+                while ((current = bis.read()) != -1) {
+                    baf.write((byte) current);
                 }
                 baf.close();
 
@@ -394,8 +379,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     };
 
     /* This Runnable creates a Dialog and asks the user to open the Market */
-    private Runnable showUpdate = new Runnable(){
-        public void run(){
+    private Runnable showUpdate = new Runnable() {
+        public void run() {
             new AlertDialog.Builder(LoginActivity.this)
                     .setTitle("Update Available")
                     .setMessage("Mandatory Update for the App")

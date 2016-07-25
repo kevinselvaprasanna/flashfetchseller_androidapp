@@ -83,6 +83,8 @@ public class PasswordVerification extends AppCompatActivity {
 
                         progressBar.setVisibility(View.VISIBLE);
                         passwordVerificationLayout.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.VISIBLE);
+                        passwordVerificationLayout.setVisibility(View.GONE);
 
                         ServiceManager.callPasswordVerificationService(PasswordVerification.this, email, verificationEditText.getText().toString(), new UIListener() {
                             @Override

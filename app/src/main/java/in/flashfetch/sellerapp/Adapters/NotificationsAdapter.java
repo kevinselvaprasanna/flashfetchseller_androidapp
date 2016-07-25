@@ -10,17 +10,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import in.flashfetch.sellerapp.Objects.Nots;
+import in.flashfetch.sellerapp.Objects.Notifications;
 import in.flashfetch.sellerapp.R;
 
-/**
- * Created by kevinselvaprasanna on 4/1/16.
- */
-public class NotAdapter extends RecyclerView.Adapter<NotAdapter.ViewHolder> {
+public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
 
     Context mContext;
     Typeface font;
-    ArrayList<Nots> mItems;
+    ArrayList<Notifications> mItems;
 
     /*0 -> item_notification
      1 -> list_item_provided_2
@@ -29,7 +26,7 @@ public class NotAdapter extends RecyclerView.Adapter<NotAdapter.ViewHolder> {
     */
 
 
-    public NotAdapter(Context context, ArrayList<Nots> items) {
+    public NotificationsAdapter(Context context, ArrayList<Notifications> items) {
         mContext = context;
         mItems = items;
     }
@@ -50,7 +47,7 @@ public class NotAdapter extends RecyclerView.Adapter<NotAdapter.ViewHolder> {
         return super.getItemViewType(position);
     }
 
-    public NotAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NotificationsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout;
 
 

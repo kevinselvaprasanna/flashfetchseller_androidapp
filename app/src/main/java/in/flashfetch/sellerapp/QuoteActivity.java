@@ -1,16 +1,13 @@
 package in.flashfetch.sellerapp;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -20,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 
@@ -29,11 +25,8 @@ import java.util.ArrayList;
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Constants.Constants;
-import in.flashfetch.sellerapp.Helper.DatabaseHelper;
-import in.flashfetch.sellerapp.Interfaces.UIListener;
-import in.flashfetch.sellerapp.Network.ServiceManager;
-import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.QuoteObject;
+import in.flashfetch.sellerapp.Objects.Transactions;
 
 public class QuoteActivity extends BaseActivity {
 
@@ -41,7 +34,7 @@ public class QuoteActivity extends BaseActivity {
     private ProgressDialog progressDialog;
     private int deliveryType,productType;
     private Typeface font;
-    private ArrayList<Notification> transactions;
+    private ArrayList<Transactions> transactions;
     private EditText editComments,quotePrice;
     private String comments,quotedPrice,location,productId,productPrice,productName,buyerName;
     private TextView productNameText,productPriceText,buyerNameText,buyerLocationText,timer,sameProduct,similarProduct,homeDelivery,shopVisit,moreDeals,quoteNow;
@@ -57,16 +50,16 @@ public class QuoteActivity extends BaseActivity {
             productId = bundle.getString("id");
         }
 
-//        transactions =  Notification.getNotification(this, productId);
+//        transactions =  Notification.getTransaction(this, productId);
         transactions = new ArrayList<>();
-        transactions.add(Constants.DUMMY_TRANSACTION);
+        transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
 
-        productName = transactions.get(0).name;
-        productPrice = transactions.get(0).price;
-        buyerName = transactions.get(0).buyer_name;
-        location = transactions.get(0).loc;
+        productName = transactions.get(0).productName;
+        productPrice = transactions.get(0).productPrice;
+        buyerName = transactions.get(0).buyerName;
+        location = transactions.get(0).buyerLocation;
 
-        progressDialog = getProgressDialog(QuoteActivity.this);
+        progressDialog = getProgressDialog(this);
 
         upimg = (ImageView)findViewById(R.id.picture1);
 
@@ -95,7 +88,7 @@ public class QuoteActivity extends BaseActivity {
         buyerNameText.setText(buyerName);
         buyerLocationText.setText(location);
 
-        Glide.with(QuoteActivity.this).load(transactions.get(0).imgurl).centerCrop().into(upimg);
+        Glide.with(QuoteActivity.this).load(transactions.get(0).imageURL).centerCrop().into(upimg);
 
         if(transactions.get(0).time - System.currentTimeMillis() > 0) {
             CountDownTimer countDownTimer = new CountDownTimer( transactions.get(0).time - System.currentTimeMillis(), 1000) {
@@ -208,7 +201,7 @@ public class QuoteActivity extends BaseActivity {
         moreDeals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(transactions.get(0).url));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(transactions.get(0).productURL));
                 startActivity(browserIntent);
             }
         });
@@ -231,50 +224,53 @@ public class QuoteActivity extends BaseActivity {
                         quoteObject.setProductType(productType);
                         quoteObject.setDeliveryType(deliveryType);
 
-                        progressDialog.show();
+//                        progressDialog.show();
 
-                        ServiceManager.callQuoteService(QuoteActivity.this, quoteObject, new UIListener() {
-                            @Override
-                            public void onSuccess() {
-                                progressDialog.dismiss();
+                        Intent intent = new Intent(QuoteActivity.this,MainActivity.class);
+                        intent.putExtra("FROM_QUOTE_FLOW",Constants.IS_FROM_QUOTE_FLOW);
+                        startActivity(intent);
+                        finish();
 
-                                ContentValues cv = new ContentValues();
-                                cv.put("name",productName);
-                                cv.put("qprice",quotedPrice);
-                                cv.put("type",productType);
-                                cv.put("deltype",deliveryType);
-                                cv.put("comment",comments);
-                                cv.put("quoted", true);
-                                cv.put("id",productId);
-
-                                DatabaseHelper dh = new DatabaseHelper(QuoteActivity.this);
-                                dh.addNot(cv);
-
-                                Intent intent = new Intent(QuoteActivity.this,MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                intent.putExtra("FROM_QUOTE_FLOW",Constants.IS_FROM_QUOTE_FLOW);
-                                startActivity(intent);
-
-                                finish();
-                            }
-
-                            @Override
-                            public void onFailure() {
-                                progressDialog.dismiss();
-                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onConnectionError() {
-                                progressDialog.dismiss();
-                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onCancelled() {
-                                progressDialog.dismiss();
-                            }
-                        });
+//                        ServiceManager.callQuoteService(QuoteActivity.this, quoteObject, new UIListener() {
+//                            @Override
+//                            public void onSuccess() {
+//                                progressDialog.dismiss();
+//
+//                                ContentValues cv = new ContentValues();
+//                                cv.put("name",productName);
+//                                cv.put("qprice",quotedPrice);
+//                                cv.put("type",productType);
+//                                cv.put("deltype",deliveryType);
+//                                cv.put("comment",comments);
+//                                cv.put("quoted", true);
+//                                cv.put("id",productId);
+//
+//                                DatabaseHelper dh = new DatabaseHelper(QuoteActivity.this);
+//                                dh.addTransaction(cv);
+//
+//                                Intent intent = new Intent(QuoteActivity.this,MainActivity.class);
+//                                intent.putExtra("FROM_QUOTE_FLOW",Constants.IS_FROM_QUOTE_FLOW);
+//                                startActivity(intent);
+//                                finish();
+//                            }
+//
+//                            @Override
+//                            public void onFailure() {
+//                                progressDialog.dismiss();
+//                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
+//                            }
+//
+//                            @Override
+//                            public void onConnectionError() {
+//                                progressDialog.dismiss();
+//                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
+//                            }
+//
+//                            @Override
+//                            public void onCancelled() {
+//                                progressDialog.dismiss();
+//                            }
+//                        });
 
                     }else{
                         Toasts.internetUnavailableToast(QuoteActivity.this);

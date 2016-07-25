@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 
+import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Fragments.Accepted;
 import in.flashfetch.sellerapp.Fragments.Provided;
 import in.flashfetch.sellerapp.Fragments.Requested;
@@ -24,7 +25,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         this.fm = fm;
         mContext = context;
 
-        bundle.putBoolean("ACCESS",isAccessed);
+        bundle.putBoolean(Constants.IS_ACCESS_ALLOWED,isAccessed);
     }
 
     @Override

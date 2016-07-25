@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -164,7 +165,32 @@ public class MyAccountInfo extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.doLogout(MyAccountInfo.this);
+
+                final ProgressDialog progressDialog = new ProgressDialog(MyAccountInfo.this);
+                progressDialog.setMessage("Logging out...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+                Utils.doLogout(MyAccountInfo.this, new UIListener() {
+                    @Override
+                    public void onSuccess() {
+                        progressDialog.show();
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+
+                    @Override
+                    public void onConnectionError() {
+
+                    }
+
+                    @Override
+                    public void onCancelled() {
+                        progressDialog.dismiss();
+                    }
+                });
             }
         });
     }

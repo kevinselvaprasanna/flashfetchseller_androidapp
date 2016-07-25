@@ -1,8 +1,6 @@
 package in.flashfetch.sellerapp.Network;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -18,11 +16,10 @@ import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
-import in.flashfetch.sellerapp.MainActivity;
-import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.QuoteObject;
 import in.flashfetch.sellerapp.Objects.SignUpObject;
+import in.flashfetch.sellerapp.Objects.Transactions;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.R;
 import in.flashfetch.sellerapp.Returns;
@@ -127,7 +124,7 @@ public class ServiceManager {
         if(email.equals(Constants.DUMMY_EMAIL) && password.equals(Constants.DUMMY_PASSWORD)){
             UserProfile.setEmail(Constants.DUMMY_SIGN_UP_OBJECT.getEmail(), context);
             UserProfile.setPassword(Constants.DUMMY_SIGN_UP_OBJECT.getPassword(),context);
-            UserProfile.setCategory(0,context);
+            UserProfile.setCategory(20,context);
             UserProfile.setName(Constants.DUMMY_SIGN_UP_OBJECT.getName(),context);
             UserProfile.setPhone(Constants.DUMMY_SIGN_UP_OBJECT.getPhone(),context);
             UserProfile.setShopId(Constants.DUMMY_SIGN_UP_OBJECT.getShopId(),context);
@@ -136,7 +133,9 @@ public class ServiceManager {
             UserProfile.setAddress1(Constants.DUMMY_SIGN_UP_OBJECT.getShopAddress1(),context);
             UserProfile.setAddress2(Constants.DUMMY_SIGN_UP_OBJECT.getShopAddress1(),context);
             UserProfile.setLocation(Constants.DUMMY_SIGN_UP_OBJECT.getShopLocation(),context);
+            UserProfile.setAccess(true,context);
             uiListener.onSuccess();
+            return;
         }
 
         UserLoginTask userLoginTask = new UserLoginTask(context,email,password,uiListener);
@@ -171,15 +170,12 @@ public class ServiceManager {
             try {
                 if(response.getJSONObject("data").getInt("result") == 1) {
 
-                    JSONObject trans = new JSONObject();
-                    JSONObject translist = response.getJSONObject("data").getJSONObject("Transactions");
-                    Notification not;
+                    JSONObject transactionsList = response.getJSONObject("data").getJSONObject("Transactions");
+                    Transactions transactions;
 
                     for (int i=0; i<response.getJSONObject("data").getInt("length"); i++){
-                        trans = translist.getJSONObject(String.valueOf(i));
-                        not = new Notification(trans);
-//                        Log.d(LOG_TAG, "Category of event is " + event.getCate)
-                        not.saveNot(context);
+                        transactions = new Transactions(transactionsList.getJSONObject(String.valueOf(i)));
+                        transactions.saveNot(context);
                     }
 
                     UserProfile.setEmail(mEmail, context);
@@ -639,6 +635,63 @@ public class ServiceManager {
         }
     }
 
+    public static void callReferralCodeService(Context context, String shopId, final UIListener uiListener) {
+
+        ReferralCodeTask referralCodeTask = new ReferralCodeTask(context,shopId,uiListener);
+        referralCodeTask.execute();
+    }
+
+    public static class ReferralCodeTask extends AsyncTask<Void, Void, Void> {
+
+        private JSONObject response;
+        private String shopId;
+        private Context context;
+        private UIListener uiListener;
+
+        public ReferralCodeTask(Context context, String shopId, final UIListener uiListener){
+            this.context = context;
+            this.uiListener = uiListener;
+            this.shopId = shopId;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            ArrayList<PostParam> requestParams = new ArrayList<PostParam>();
+
+            requestParams.add(new PostParam("email", UserProfile.getEmail(context)));
+            requestParams.add(new PostParam("token", UserProfile.getToken(context)));
+            requestParams.add(new PostParam("shopId", shopId));
+
+            response = PostRequest.execute(URLConstants.URL_FETCH_REFERRAL_CODE, requestParams, null);
+            Log.d("RESPONSE", response.toString());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            //tvv.setText(ResponseJSON.toString());
+            super.onPostExecute(aVoid);
+            try {
+                if (response.getJSONObject("data").getInt("result") == 1) {
+                    UserProfile.setReferralCode(response.getJSONObject("data").getString("referralcode"),context);
+                    uiListener.onSuccess();
+                }else {
+                    uiListener.onFailure();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                uiListener.onConnectionError();
+            }
+        }
+    }
+
     public static void callCategoryService(Context context, int categoryProduct, final UIListener uiListener) {
 
         CategoryTask categoryTask = new CategoryTask(context,categoryProduct,uiListener);
@@ -700,64 +753,6 @@ public class ServiceManager {
             uiListener.onCancelled();
         }
     }
-
-    public static void callReferralCodeService(Context context, String shopId, final UIListener uiListener) {
-
-        ReferralCodeTask referralCodeTask = new ReferralCodeTask(context,shopId,uiListener);
-        referralCodeTask.execute();
-    }
-
-    public static class ReferralCodeTask extends AsyncTask<Void, Void, Void> {
-
-        private JSONObject response;
-        private String shopId;
-        private Context context;
-        private UIListener uiListener;
-
-        public ReferralCodeTask(Context context, String shopId, final UIListener uiListener){
-            this.context = context;
-            this.uiListener = uiListener;
-            this.shopId = shopId;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            ArrayList<PostParam> requestParams = new ArrayList<PostParam>();
-
-            requestParams.add(new PostParam("email", UserProfile.getEmail(context)));
-            requestParams.add(new PostParam("token", UserProfile.getToken(context)));
-            requestParams.add(new PostParam("shopId", shopId));
-
-            response = PostRequest.execute(URLConstants.URL_FETCH_REFERRAL_CODE, requestParams, null);
-            Log.d("RESPONSE", response.toString());
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            //tvv.setText(ResponseJSON.toString());
-            super.onPostExecute(aVoid);
-            try {
-                if (response.getJSONObject("data").getInt("result") == 1) {
-                    UserProfile.setReferralCode(response.getJSONObject("data").getString("referralcode"),context);
-                    uiListener.onSuccess();
-                }else {
-                    uiListener.onFailure();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                uiListener.onConnectionError();
-            }
-        }
-    }
-
     public static void callRewardsService(Context context, String referralCode, final UIListener uiListener) {
 
         RewardsTask rewardsTask = new RewardsTask(context,referralCode,uiListener);
@@ -886,14 +881,17 @@ public class ServiceManager {
         itemDeclineTask.execute();
     }
 
-    public static class ItemDeclineTask extends AsyncTask<Void, Void, Boolean> {
+    public static class ItemDeclineTask extends AsyncTask<Void, Void, Void> {
 
         private JSONObject response;
         private String id;
+        private final UIListener uiListener;
         private Context context;
 
         public ItemDeclineTask(Context context, String productId, final UIListener uiListener) {
+            this.context = context;
             this.id = productId;
+            this.uiListener = uiListener;
         }
 
         @Override
@@ -902,7 +900,7 @@ public class ServiceManager {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
 
             ArrayList<PostParam> iPostParams = new ArrayList<PostParam>();
 
@@ -911,17 +909,19 @@ public class ServiceManager {
             iPostParams.add(new PostParam("decline_id",id));
 
             DatabaseHelper dh = new DatabaseHelper(context);
-            dh.deleteNot(id);
+            dh.deleteTransaction(id);
 
             response = PostRequest.execute(URLConstants.URLDecline, iPostParams, null);
             Log.d("RESPONSE", response.toString());
-            return true;
+
+            return null;
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
             //TODO: Service Response
+
         }
     }
 
@@ -980,6 +980,66 @@ public class ServiceManager {
             } catch (JSONException e) {
                 e.printStackTrace();
                 uiListener.onConnectionError();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            uiListener.onCancelled();
+        }
+    }
+
+    public static void callItemAcceptService(Context context, String productId, final UIListener uiListener) {
+
+        AcceptTask acceptTask = new AcceptTask(context,productId,uiListener);
+        acceptTask.execute();
+    }
+
+    public static class AcceptTask extends AsyncTask<Void, Void, Void> {
+
+        private JSONObject response;
+        private Context context;
+        private UIListener uiListener;
+        private String productId;
+
+        public AcceptTask(Context context, String productId, final UIListener uiListener) {
+            this.context = context;
+            this.productId = productId;
+            this.uiListener = uiListener;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            ArrayList<PostParam> iPostParams = new ArrayList<PostParam>();
+
+            iPostParams.add(new PostParam("email", UserProfile.getEmail(context)));
+            iPostParams.add(new PostParam("token", UserProfile.getToken(context)));
+            iPostParams.add(new PostParam("Cus_id", productId));
+
+            response = PostRequest.execute(URLConstants.URLAccept, iPostParams, null);
+            Log.d("RESPONSE", response.toString());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            try {
+                if (response.getInt("status") == 200) {
+                    uiListener.onSuccess();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                uiListener.onFailure();
             }
         }
 

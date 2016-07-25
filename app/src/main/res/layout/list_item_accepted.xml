@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/notsfeed"
-    >
+    android:id="@+id/notsfeed">
+
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_gravity="center"
@@ -19,9 +18,10 @@
         app:cardCornerRadius="2dp"
         app:cardElevation="2dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:text="Buyer Pickup:"
             android:id="@+id/header"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:paddingLeft="4dp"
             android:paddingTop="2dp"
             android:paddingRight="4dp"
@@ -52,6 +51,7 @@
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:minHeight="60dp"
                 android:id="@+id/image"
                 android:layout_weight="1" />
 
@@ -59,13 +59,11 @@
                 android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:layout_marginLeft="5dp">
+                android:layout_weight="3">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Name"
                     android:id="@+id/name"
                     android:padding="2dp"
@@ -76,7 +74,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Rs. X"
                     android:id="@+id/price_final"
                     android:padding="2dp" />
@@ -84,7 +81,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Buyer Name"
                     android:id="@+id/buyer_name"
                     android:padding="2dp" />
@@ -98,7 +94,6 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Call"
                         android:id="@+id/caller"
                         android:layout_weight="1"
@@ -111,7 +106,6 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Picked Up"
                         android:id="@+id/pickup"
                         android:layout_weight="1"
@@ -126,7 +120,7 @@
         </LinearLayout>
 
     </LinearLayout>
-    </android.support.v7.widget.CardView>
 
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

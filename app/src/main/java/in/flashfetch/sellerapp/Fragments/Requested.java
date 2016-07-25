@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -19,8 +18,9 @@ import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.Adapters.RequestedDealsAdapter;
 import in.flashfetch.sellerapp.Constants.Constants;
-import in.flashfetch.sellerapp.Objects.Notification;
+import in.flashfetch.sellerapp.Objects.Transactions;
 import in.flashfetch.sellerapp.R;
+import it.gmariotti.recyclerview.itemanimator.ScaleInOutItemAnimator;
 
 public class Requested extends Fragment {
 
@@ -29,11 +29,11 @@ public class Requested extends Fragment {
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private ArrayList<Notification> transactions;
+    private ArrayList<Transactions> transactions;
     private RequestedDealsAdapter requestedDealsAdapter;
-    private boolean isAccessed = false;
+    private boolean isAccessed;
 
-    public static int noOfRequests = 0;
+    public static int noOfRequests = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class Requested extends Fragment {
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            isAccessed = bundle.getBoolean("ACCESS");
+            isAccessed = bundle.getBoolean(Constants.IS_ACCESS_ALLOWED);
         }
     }
 
@@ -63,9 +63,9 @@ public class Requested extends Fragment {
             public void onRefresh() {
                 transactions.clear();
 
-                transactions.add(Constants.DUMMY_TRANSACTION);
-                transactions.add(Constants.DUMMY_TRANSACTION);
-                transactions.add(Constants.DUMMY_TRANSACTION);
+                transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
+                transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
+                transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
 
                 requestedDealsAdapter.notifyDataSetChanged();
 
@@ -91,15 +91,15 @@ public class Requested extends Fragment {
         swipeRefreshLayout.setProgressViewEndTarget(true, actionBarHeight);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.requested_transactions);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setItemAnimator(new ScaleInOutItemAnimator(recyclerView));
         layoutManager = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
 
         recyclerView.setLayoutManager(layoutManager);
 
-        transactions = Notification.getAllNotifications(getActivity());
+        transactions = Transactions.getAllTransactions(getActivity());
 
-        transactions.add(Constants.DUMMY_TRANSACTION);
-        transactions.add(Constants.DUMMY_TRANSACTION);
+        transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
+        transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
 
         requestedDealsAdapter = new RequestedDealsAdapter(context, transactions);
 

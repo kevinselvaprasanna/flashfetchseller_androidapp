@@ -3,6 +3,7 @@ package in.flashfetch.sellerapp;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -21,7 +22,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,13 +30,13 @@ import com.astuetz.PagerSlidingTabStrip;
 import java.util.concurrent.TimeUnit;
 
 import in.flashfetch.sellerapp.Adapters.PagerAdapter;
+import in.flashfetch.sellerapp.Animations.ZoomOutPageTransformer;
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
 import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.UserProfile;
-import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private ViewPager pager;
     private PagerSlidingTabStrip pagerSlidingTabStrip;
     private EditText accessCodeText;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private AlertDialog alertDialog;
     private boolean isAccessAllowed;
     private boolean isFromRegistrationFlow,isFromLoginFlow = false;
@@ -71,26 +71,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         Bundle bundle = getIntent().getExtras();
 
-//        if(bundle != null){
-//            if(bundle.getBoolean("FROM_LOGIN",false)){
-//                isFromLoginFlow = true;
-//                isAccessAllowed = UserProfile.getAccess(MainActivity.this);
-//            }else if(bundle.getBoolean("FROM_REGISTRATION",false)){
-//                isFromRegistrationFlow = true;
-//            }else if(bundle.getBoolean("IS_FROM_QUOTE_FLOW",false)){
-//                pager.setCurrentItem(1,true);
-//            }else{
-//                isAccessAllowed = UserProfile.getAccess(MainActivity.this);
-//            }
-//        }
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("FlashFetch Seller");
         font = getTypeface();
 
-        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        progressDialog = getProgressDialog(this);
 
         accessCodeText = (EditText) findViewById(R.id.access_text);
 
@@ -118,15 +105,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         setTypeface();
 
-//        if(isFromRegistrationFlow){
-//            showAccessDialog();
-//        }else if(isFromLoginFlow){
-//            if(!isAccessAllowed){
-//                showAccessDialog();
-//            }
-//        }
+        if(bundle != null){
+            if(bundle.getBoolean("FROM_LOGIN",false)){
+                isFromLoginFlow = true;
+                isAccessAllowed = UserProfile.getAccess(MainActivity.this);
+            }else if(bundle.getBoolean("FROM_REGISTRATION",false)){
+                isFromRegistrationFlow = true;
+            }else{
+                isAccessAllowed = UserProfile.getAccess(MainActivity.this);
+            }
+        }
 
-        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(), this, false));
+        if(isFromRegistrationFlow){
+            showAccessDialog();
+        }else if(isFromLoginFlow){
+            if(!isAccessAllowed){
+                showAccessDialog();
+            }
+        }
+
+        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(), this, UserProfile.getAccess(this)));
+        pager.setPageTransformer(false,new ZoomOutPageTransformer());
         pagerSlidingTabStrip.setViewPager(pager);
     }
 
@@ -134,13 +133,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         if(Utils.isInternetAvailable(MainActivity.this)){
 
-            progressBar.setVisibility(View.VISIBLE);
+            progressDialog.show();
 
             ServiceManager.callAccessCodeVerificationService(MainActivity.this,UserProfile.getToken(MainActivity.this), UserProfile.getEmail(MainActivity.this), accessCodeText.getText().toString(), new UIListener() {
                 @Override
                 public void onSuccess() {
                     UserProfile.setAccess(true,MainActivity.this);
-                    progressBar.setVisibility(View.GONE);
+                    progressDialog.dismiss();
                     alertDialog.dismiss();
                     Toast.makeText(MainActivity.this,"Hurray! You are ready to receive your orders",Toast.LENGTH_SHORT).show();
                 }
@@ -148,21 +147,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 @Override
                 public void onFailure() {
                     UserProfile.setAccess(false,MainActivity.this);
-                    progressBar.setVisibility(View.GONE);
+                    progressDialog.dismiss();
                     Toast.makeText(MainActivity.this,"Enter correct access code",Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onConnectionError() {
                     UserProfile.setAccess(false,MainActivity.this);
-                    progressBar.setVisibility(View.GONE);
+                    progressDialog.dismiss();
                     Toast.makeText(MainActivity.this,"Server is currently busy please try again after sometime",Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onCancelled() {
                     UserProfile.setAccess(false,MainActivity.this);
-                    progressBar.setVisibility(View.GONE);
+                    progressDialog.dismiss();
                 }
             });
         }else{
@@ -289,7 +288,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (id == R.id.helpimp) {
             startActivity(new Intent(this, FeedBackActivity.class));
         } else if (id == R.id.notif) {
-            startActivity(new Intent(this, notif.class));
+            startActivity(new Intent(this, NotificationsActivity.class));
         } else if (id == R.id.reqad) {
             startActivity(new Intent(this, RequestAds.class));
         } else if (id == R.id.shopdet) {
@@ -301,7 +300,32 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }else if(id == R.id.demo) {
             startActivity(new Intent(this,DemoActivity.class));
         }else if (id == R.id.logout) {
-            Utils.doLogout(MainActivity.this);
+
+            final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Logging out...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+            Utils.doLogout(MainActivity.this, new UIListener() {
+                @Override
+                public void onSuccess() {
+                    progressDialog.show();
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+
+                @Override
+                public void onConnectionError() {
+
+                }
+
+                @Override
+                public void onCancelled() {
+                    progressDialog.dismiss();
+                }
+            });
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

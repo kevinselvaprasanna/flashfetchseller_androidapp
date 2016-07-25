@@ -91,6 +91,8 @@ public class ForgotPassword extends AppCompatActivity {
 
                         progressBar.setVisibility(View.VISIBLE);
                         forgotPasswordLayout.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.VISIBLE);
+                        forgotPasswordLayout.setVisibility(View.GONE);
 
                         ServiceManager.callForgotPasswordService(ForgotPassword.this, emailText.getText().toString(), new UIListener() {
                             @Override

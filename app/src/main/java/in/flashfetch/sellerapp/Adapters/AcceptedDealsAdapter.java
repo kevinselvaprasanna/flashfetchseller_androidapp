@@ -22,38 +22,26 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import in.flashfetch.sellerapp.Helper.DatabaseHelper;
-import in.flashfetch.sellerapp.Objects.Notification;
-import in.flashfetch.sellerapp.R;
-
-
 import java.util.ArrayList;
+
+import in.flashfetch.sellerapp.Objects.Transactions;
+import in.flashfetch.sellerapp.R;
 
 public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdapter.ViewHolder> {
 
-    Context mContext;
-    Typeface font;
-    int condition = 0;
-    ArrayList<Notification> mItems;
-    //TimeHelper th;
+    private Context mContext;
+    private Typeface font;
+    private ArrayList<Transactions> mItems;
     private static String LOG_TAG = "EventDetails";
-    int LayoutSelector;
 
-    /*0 -> item_notification
-     1 -> list_item_provided_2
-     2 -> list_item_provided_2
-     3-> list_item_accepted
-    */
-
-
-    public AcceptedDealsAdapter(Context context, int LayoutSelect, ArrayList<Notification> items) {
+    public AcceptedDealsAdapter(Context context, ArrayList<Transactions> items) {
         mContext = context;
         mItems = items;
-        LayoutSelector = LayoutSelect;
     }
 
 
     public static class ViewHolder extends RequestedDealsAdapter.ViewHolder{
+
         TextView name,price_final,caller,pickup,buyer_name,header;
         LinearLayout notsfeed,pickup_accept;
         ImageView imageview;
@@ -61,6 +49,7 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             imageview = (ImageView)itemView.findViewById(R.id.image);
             name =(TextView)itemView.findViewById(R.id.name);
             header = (TextView)itemView.findViewById(R.id.header);
@@ -80,15 +69,10 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
     }
 
     public AcceptedDealsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout;
 
+        View view = LayoutInflater.from(parent.getContext()).inflate( R.layout.list_item_accepted, parent, false);
 
-       /* font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");*/
-                layout = R.layout.list_item_accepted;
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(layout, parent, false);
-                return new ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -96,49 +80,32 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
 
         //TODO: Populate items depending on the holder returned via LayoutSelect
         //TODO: Set typeface for text
-        //th = new TimeHelper();
 
-        holder.name.setText(mItems.get(position).name);
+        font = Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto_Medium.ttf");
+
+        holder.name.setText(mItems.get(position).productName);
         holder.name.setTypeface(font);
         holder.price_final.setTypeface(font);
-        holder.price_final.setText("Final price" + mItems.get(position).qprice);
+        holder.price_final.setText("Final price" + mItems.get(position).quotedPrice);
+
         holder.caller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "Call", Toast.LENGTH_SHORT).show();
             }
         });
+
         holder.pickup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "Picked Up", Toast.LENGTH_SHORT).show();
-                //Toast.makeText(mContext,"Picked Up",Toast.LENGTH_SHORT).show();
                 holder.pickup_accept.setVisibility(View.INVISIBLE);
             }
         });
-        holder.buyer_name.setText("Buyer Name: "+mItems.get(position).buyer_name);
 
-        //NOTE:
-        /*
-        To switch between the three views, you can change the visibility of pickup_accept layout and
-        To display both call and pick up option, leave everything as is
-        For the layout of pre-delivery, change visibility of call to GONE and change the text of PickUp to 'Delivery Executive Picked Up
-        For the layout after pickup, change visibility of pickup_accept to INVISIBLE'
-        code with coniditon as the variable to be modified has been added accordingly
-        * */
+        holder.buyer_name.setText("Buyer Name: "+mItems.get(position).buyerName);
 
-
-        /*
-        Condition values, and behaviour
-        0 -> call and picked up visible
-        1 -> only picked up visible
-        2 -> call and delivered visible
-        */
-
-
-
-
-        switch(mItems.get(position).del)
+        switch(mItems.get(position).deliveryType)
         {
             case 1:         //When no delivery
             {
@@ -148,7 +115,7 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
                 holder.header.setText("Buyer Pickup:");
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_black));
             }
-            case 2:         //flashfetch deliveryj
+            case 2:         //flash fetch delivery
             {
                 holder.caller.setVisibility(View.GONE);
                 holder.pickup_accept.setVisibility(View.VISIBLE);
@@ -157,43 +124,49 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_green));
 
             }
-            case 3:         //seller has to delivered
+            case 3:         //seller has to deliver
             {
                 holder.caller.setVisibility(View.VISIBLE);
                 holder.pickup.setText("Delivered");
                 holder.pickup_accept.setVisibility(View.VISIBLE);
-                holder.header.setText("Deliver to buyer: "+mItems.get(position).buyer_name);
+                holder.header.setText("Deliver to buyer: "+mItems.get(position).buyerName);
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_red));
             }
             case 4:
             {
                 holder.caller.setVisibility(View.VISIBLE);
                 holder.pickup.setText("Returned");
+
                 holder.pickup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         final Dialog dialog = new Dialog(mContext);
                         dialog.setContentView(R.layout.dialog_returns);
+
                         final RadioButton ret = (RadioButton)dialog.findViewById(R.id.ret);
                         final RadioButton exc = (RadioButton)dialog.findViewById(R.id.exc);
+
                         Button button = (Button)dialog.findViewById(R.id.button);
+
                         ret.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 exc.setChecked(false);
                             }
                         });
+
                         exc.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 ret.setChecked(false);
                             }
                         });
+
                         button.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(ret.isChecked()||exc.isChecked())
-                                {
+                                if(ret.isChecked()||exc.isChecked()) {
                                     //TODO: Add methods
                                     dialog.cancel();
                                 }
@@ -202,47 +175,13 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
                         dialog.show();
                     }
                 });
+
                 holder.pickup_accept.setVisibility(View.VISIBLE);
                 holder.header.setText("Return Requested:");
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_red));
             }
-
         }
-
-        Glide
-                .with(mContext)
-                .load(mItems.get(position).imgurl)
-                .centerCrop()
-                .into(holder.imageview);
-
-
-
-
-        //mItems.get(position).email + " wants " + mItems.get(position).category + " at price Rs." + mItems.get(position).price);
-        /*holder.notsfeed.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Price");
-                builder.setMessage("Enter price that you want to bargain");
-                final EditText price = new EditText(mContext);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                price.setLayoutParams(lp);
-                builder.setView(price);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-                    }
-                });
-                builder.show();
-
-            }
-        });*/
-
-
+        Glide.with(mContext).load(mItems.get(position).imageURL).centerCrop().into(holder.imageview);
     }
 
     @Override

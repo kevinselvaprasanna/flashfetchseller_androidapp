@@ -25,7 +25,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_quote">Flashfetch Seller</string>
+    <string name="title_activity_quote">FlashFetch Seller</string>
 
     <string name="action1">Contact Us</string>
     <string name="action2">Connect</string>

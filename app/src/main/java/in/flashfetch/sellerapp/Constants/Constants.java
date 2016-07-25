@@ -1,17 +1,21 @@
 package in.flashfetch.sellerapp.Constants;
 
-import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.SignUpObject;
+import in.flashfetch.sellerapp.Objects.Transactions;
 
 /**
  * Created by kranthikumar_b on 7/6/2016.
  */
 public class Constants {
 
-    public static final SignUpObject DUMMY_SIGN_UP_OBJECT = new SignUpObject("Dummy","abc@gmail.com","123123","4567891230","Bhagya Lakshmi Provisional Store","9884","32032032","Chennai",
-            "Tamil Nadu","Ramapuram",true);
+    public static final String DUMMY_EMAIL = "abc@gmail.com";
 
-    public static final Notification DUMMY_TRANSACTION = new Notification("123",
+    public static final String DUMMY_PASSWORD = "123123123";
+
+    public static final SignUpObject DUMMY_SIGN_UP_OBJECT = new SignUpObject("Kranthi","abc@gmail.com","123123123","1234567890","Bhagya Lakshmi Provisional Store","9884","32032032","Chennai",
+            "TamilNadu","Ramapuram",true);
+
+    public static final Transactions DUMMY_REQUESTED_TRANSACTION = new Transactions("123",
             "Vamshi",
             "Yonex Badminton Shuttles and Rackets",
             "http://www.yonex.com/products/badminton/shuttlecocks",
@@ -21,6 +25,28 @@ public class Constants {
             System.currentTimeMillis()+ 120000,
             "Adyar",
             false,
+            "",
+            false,
+            true,
+            "Good Shuttle to Play Similar Available",
+            false,
+            "",
+            0,
+            false,
+            false,
+            1,
+            1234567890);
+
+    public static final Transactions DUMMY_PROVIDED_TRANSACTION = new Transactions("123",
+            "Vamshi",
+            "Yonex Badminton Shuttles and Rackets",
+            "http://www.yonex.com/products/badminton/shuttlecocks",
+            "http://www.yonex.com/_assets/images/cache/products/categorythumbnail/M-600.jpg",
+            "250",
+            System.currentTimeMillis(),
+            System.currentTimeMillis()+ 120000,
+            "Adyar",
+            true,
             "",
             false,
             true,
@@ -59,11 +85,9 @@ public class Constants {
 
     public static final String SELECT_START_DATE = "selectStartDate";
 
+    public static final String IS_ACCESS_ALLOWED = "ACCESS_ALLOWED";
+
     public static final String SELECT_END_DATE = "selectEndDate";
-
-    public static final String DUMMY_EMAIL = "abc@gmail.com";
-
-    public static final String DUMMY_PASSWORD = "123123";
 
     public static final String CONTACT_NUMBER = "+919940126973";
 

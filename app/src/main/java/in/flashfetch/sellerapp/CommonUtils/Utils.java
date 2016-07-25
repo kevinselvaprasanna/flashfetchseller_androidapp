@@ -16,13 +16,17 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.regex.Pattern;
 
 import in.flashfetch.sellerapp.Constants.Constants;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
 import in.flashfetch.sellerapp.LoginActivity;
+import in.flashfetch.sellerapp.Objects.IEvent;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
@@ -30,6 +34,8 @@ import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
  * Created by KRANTHI on 05-06-2016.
  */
 public class Utils {
+
+    private static EventBus eventBus;
 
     public static boolean isValidEmail(String emailText) {
         if (emailText == null) {
@@ -143,7 +149,7 @@ public class Utils {
         return false;
     }
 
-    public static void doLogout(final Activity activity) {
+    public static void doLogout(final Activity activity, final UIListener uiListener) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
@@ -153,7 +159,9 @@ public class Utils {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                uiListener.onSuccess();
                 logout(activity);
+                uiListener.onCancelled();
                 Toast.makeText(activity, "Successfully Logged out", Toast.LENGTH_SHORT).show();
             }
         });
@@ -189,7 +197,7 @@ public class Utils {
         activity.finish();
     }
 
-    public static void clearApplicationData(Context context) {
+    private static void clearApplicationData(Context context) {
         File cache = context.getCacheDir();
         File appDir = new File(cache.getParent());
         if (appDir.exists()) {
@@ -203,7 +211,7 @@ public class Utils {
         }
     }
 
-    public static boolean deleteDir(File dir) {
+    private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
             for (int i = 0; i < children.length; i++) {
@@ -214,5 +222,44 @@ public class Utils {
             }
         }
         return dir.delete();
+    }
+
+    private static void initEventBus(){
+        if (eventBus == null) {
+            eventBus = EventBus.getDefault();
+        }
+    }
+
+    public static void registerEventBus(Object receiver){
+        initEventBus();
+        eventBus.register(receiver);
+    }
+
+    public static void unregisterEventBus(Object receiver){
+        initEventBus();
+        eventBus.unregister(receiver);
+    }
+
+    public static void postEvent(Object event){
+        initEventBus();
+        eventBus.post(event);
+    }
+
+    public static void postStickyEvent(Object event){
+        initEventBus();
+        eventBus.postSticky(event);
+    }
+
+    public static void registerSticky(Object receiver){
+        initEventBus();
+        eventBus.register(receiver);
+    }
+
+    public static void postEvent(String eventName, int eventId, Object object){
+        IEvent.Builder builder = new IEvent.Builder();
+        builder.setEventID(eventId);
+        builder.setEventName(eventName);
+        builder.setEventObject(object);
+        postEvent(builder.build());
     }
 }

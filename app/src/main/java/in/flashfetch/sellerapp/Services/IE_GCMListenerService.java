@@ -27,7 +27,6 @@ import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.MainActivity;
 import in.flashfetch.sellerapp.R;
 
-
 public class IE_GCMListenerService extends GcmListenerService{
 
     private static final String TAG = "GcmListenerService";
@@ -62,8 +61,10 @@ public class IE_GCMListenerService extends GcmListenerService{
             cv.put("id", data.getString("id"));
             cv.put("text", data.getString("text"));
             cv.put("time",data.getString("time"));
+
             DatabaseHelper dh = new DatabaseHelper(this);
-            dh.add(cv);
+            dh.addNotification(cv);
+
             sendNotification("FlashFetch",data.getString("text"));
         }
         else {
@@ -115,7 +116,7 @@ public class IE_GCMListenerService extends GcmListenerService{
             }
 
             DatabaseHelper dh = new DatabaseHelper(this);
-            dh.addNot(cv);
+            dh.addTransaction(cv);
         }
     }
 
