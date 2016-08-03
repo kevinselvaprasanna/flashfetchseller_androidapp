@@ -51,8 +51,9 @@ public class ChangePassword extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChangePassword.this, PasswordVerification.class);
-                startActivity(intent);
+//                Intent intent = new Intent(ChangePassword.this, PasswordVerification.class);
+//                  startActivity(intent);
+                onBackPressed();
             }
         });
 
@@ -86,11 +87,11 @@ public class ChangePassword extends AppCompatActivity {
 
                                     if (UserProfile.getCategory(ChangePassword.this) == 1) {
                                         Intent i = new Intent(ChangePassword.this, CategoryActivity.class);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(i);
                                     } else {
                                         Intent i = new Intent(ChangePassword.this, MainActivity.class);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(i);
                                         finish();
                                     }
@@ -125,5 +126,10 @@ public class ChangePassword extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

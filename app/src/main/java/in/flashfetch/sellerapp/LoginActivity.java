@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -112,13 +113,13 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
             if (UserProfile.getCategory(LoginActivity.this) == 1) {
                 Intent i = new Intent(LoginActivity.this, CategoryActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 finish();
             } else {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             }
@@ -140,6 +141,15 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         forgotPassword = (TextView) findViewById(R.id.forgot_pass);
         submitButton = (Button) findViewById(R.id.submit);
         registerHere = (TextView) findViewById(R.id.login_register);
+
+        mEmailView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -220,7 +230,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     public void onSuccess() {
                         progressDialog.dismiss();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("FROM_LOGIN", Constants.IS_FROM_LOGIN_FLOW);
                         startActivity(intent);
                         finish();
@@ -332,7 +342,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
         mEmailView.setAdapter(adapter);
     }
@@ -349,6 +358,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     private Thread checkUpdate = new Thread() {
         public void run() {
             try {
+                //TODO: Change the App update URL
                 URL updateURL = new URL("http://my.company.com/update");
                 URLConnection conn = updateURL.openConnection();
                 InputStream is = conn.getInputStream();

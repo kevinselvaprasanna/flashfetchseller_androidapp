@@ -8,6 +8,7 @@ import in.flashfetch.sellerapp.Objects.Transactions;
  */
 public class Constants {
 
+    //TODO: remove this
     public static final String DUMMY_EMAIL = "abc@gmail.com";
 
     public static final String DUMMY_PASSWORD = "123123123";
@@ -15,18 +16,19 @@ public class Constants {
     public static final SignUpObject DUMMY_SIGN_UP_OBJECT = new SignUpObject("Kranthi","abc@gmail.com","123123123","1234567890","Bhagya Lakshmi Provisional Store","9884","32032032","Chennai",
             "TamilNadu","Ramapuram",true);
 
-    public static final Transactions DUMMY_REQUESTED_TRANSACTION = new Transactions("123",
-            "Vamshi",
+    public static final Transactions DUMMY_REQUESTED_TRANSACTION = new Transactions(
+            "123",
+            "FlashFetch",
             "Yonex Badminton Shuttles and Rackets",
             "http://www.yonex.com/products/badminton/shuttlecocks",
             "http://www.yonex.com/_assets/images/cache/products/categorythumbnail/M-600.jpg",
             "250",
             System.currentTimeMillis(),
-            System.currentTimeMillis()+ 120000,
+            System.currentTimeMillis()+ 1200000,
             "Adyar",
             false,
             "",
-            false,
+            true,
             true,
             "Good Shuttle to Play Similar Available",
             false,
@@ -34,7 +36,7 @@ public class Constants {
             0,
             false,
             false,
-            1,
+            3,
             1234567890);
 
     public static final Transactions DUMMY_PROVIDED_TRANSACTION = new Transactions("123",
@@ -47,8 +49,8 @@ public class Constants {
             System.currentTimeMillis()+ 120000,
             "Adyar",
             true,
-            "",
-            false,
+            "230",
+            true,
             true,
             "Good Shuttle to Play Similar Available",
             false,
@@ -59,7 +61,27 @@ public class Constants {
             1,
             1234567890);
 
-
+    public static final Transactions DUMMY_ACCEPTED_TRANSACTION = new Transactions("123",
+            "Vamshi",
+            "Yonex Badminton Shuttles and Rackets",
+            "http://www.yonex.com/products/badminton/shuttlecocks",
+            "http://www.yonex.com/_assets/images/cache/products/categorythumbnail/M-600.jpg",
+            "250",
+            System.currentTimeMillis(),
+            System.currentTimeMillis()+ 120000,
+            "Adyar",
+            true,
+            "230",
+            true,
+            true,
+            "Good Shuttle to Play Similar Available",
+            false,
+            "",
+            0,
+            true,
+            true,
+            1,
+            1234567890);
 
     public static final int REQUEST_READ_CONTACTS = 0;
 

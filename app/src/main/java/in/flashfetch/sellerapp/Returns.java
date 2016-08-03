@@ -70,8 +70,9 @@ public class Returns extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Returns.this,CategoryActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(Returns.this,CategoryActivity.class);
+//                startActivity(intent);
+                onBackPressed();
             }
         });
 
@@ -173,7 +174,7 @@ public class Returns extends AppCompatActivity {
                                 Toast.makeText(Returns.this, "Yours returns policy has been saved", Toast.LENGTH_LONG).show();
                                 UserProfile.setReturns(product,Returns.this);
                                 Intent intent = new Intent(Returns.this, MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("FROM_REGISTRATION", Constants.IS_FROM_REGISTRATION_FLOW);
                                 startActivity(intent);
                                 finish();
@@ -202,6 +203,11 @@ public class Returns extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
 

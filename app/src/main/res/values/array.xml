@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="returns">
+        <item>Exchange Item</item>
+        <item>Return Item</item>
+    </string-array>
+</resources>

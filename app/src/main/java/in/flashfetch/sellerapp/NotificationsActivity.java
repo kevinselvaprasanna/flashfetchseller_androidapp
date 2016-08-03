@@ -38,9 +38,10 @@ public class NotificationsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NotificationsActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(NotificationsActivity.this,MainActivity.class);
+//                startActivity(intent);
+//                finish();
+                onBackPressed();
             }
         });
 
@@ -60,7 +61,10 @@ public class NotificationsActivity extends AppCompatActivity {
         }else{
             emptyNotifications.setVisibility(View.VISIBLE);
         }
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

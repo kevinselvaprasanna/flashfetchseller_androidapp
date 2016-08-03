@@ -31,9 +31,10 @@ public class RewardActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RewardActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(RewardActivity.this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+                onBackPressed();
             }
         });
 
@@ -45,5 +46,10 @@ public class RewardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

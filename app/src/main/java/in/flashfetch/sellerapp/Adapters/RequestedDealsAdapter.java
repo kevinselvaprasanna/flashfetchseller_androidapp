@@ -15,11 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
-
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Interfaces.UIListener;

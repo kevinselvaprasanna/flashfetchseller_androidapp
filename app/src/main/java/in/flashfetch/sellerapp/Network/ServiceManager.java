@@ -175,7 +175,7 @@ public class ServiceManager {
 
                     for (int i=0; i<response.getJSONObject("data").getInt("length"); i++){
                         transactions = new Transactions(transactionsList.getJSONObject(String.valueOf(i)));
-                        transactions.saveNot(context);
+                        transactions.saveTransaction(context);
                     }
 
                     UserProfile.setEmail(mEmail, context);

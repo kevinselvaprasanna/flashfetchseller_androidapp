@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,9 +43,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShopDetailsActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+                onBackPressed();
             }
         });
 
@@ -76,6 +75,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                     tphone = shopphone.getText().toString();
                     tshad1 = shopad1.getText().toString();
                     tshad2 = shopad2.getText().toString();
+
                     SubmitTask st = new SubmitTask();
                     st.execute();
                 }
@@ -85,8 +85,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
     private boolean validate()
     {
-        if(shopname.getText().length()==0||shopid.getText().length()==0||shopphone.getText().length()==0||shopad1.getText().length()==0||shopad2.getText().length()==0)
-        {
+        if(shopname.getText().length()==0||shopid.getText().length()==0||shopphone.getText().length()==0||shopad1.getText().length()==0||shopad2.getText().length()==0) {
             Toast.makeText(this,"One or more fields is empty",Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -135,8 +134,13 @@ public class ShopDetailsActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        Intent intent = new Intent(ShopDetailsActivity.this,MainActivity.class);
+//        startActivity(intent);
     }
 }

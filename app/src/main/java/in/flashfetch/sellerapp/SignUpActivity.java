@@ -60,8 +60,9 @@ public class SignUpActivity extends BaseActivity {
         setContentView(R.layout.activity_sign_up);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null) {
-            setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
+
+        if(getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Registration");
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -71,9 +72,10 @@ public class SignUpActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(viewFlipper.getCurrentView() == firstView){
-                    Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
-                    startActivity(intent);
-                    finish();
+//                    Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
+//                    startActivity(intent);
+//                    finish();
+                    onBackPressed();
                 }else{
                     viewFlipper.showPrevious();
                 }
@@ -187,7 +189,7 @@ public class SignUpActivity extends BaseActivity {
                                 UserProfile.setLocation(shopLocation,SignUpActivity.this);
 
                                 Intent intent = new Intent(SignUpActivity.this,CategoryActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
 
                                 intent = new Intent(SignUpActivity.this, IE_RegistrationIntentService.class);
@@ -345,5 +347,10 @@ public class SignUpActivity extends BaseActivity {
     private boolean isempty(EditText editText)
     {
         return editText.getText().toString().isEmpty();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

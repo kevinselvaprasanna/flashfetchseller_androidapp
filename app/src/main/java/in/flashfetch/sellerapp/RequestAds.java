@@ -64,9 +64,10 @@ public class RequestAds extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RequestAds.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(RequestAds.this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+                onBackPressed();
             }
         });
 
@@ -188,6 +189,11 @@ public class RequestAds extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
 
 

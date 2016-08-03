@@ -47,16 +47,9 @@ public class IE_GCMListenerService extends GcmListenerService{
     @Override
     public void onMessageReceived(String from, Bundle data) {
 
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
-        //JSONObject notjs;
         Log.i("GCM-message",data.toString());
 
-        if(!(data.getString("not")==null)){
+        if(!(data.getString("not") == null)){
             ContentValues cv = new ContentValues();
             cv.put("id", data.getString("id"));
             cv.put("text", data.getString("text"));
@@ -66,8 +59,7 @@ public class IE_GCMListenerService extends GcmListenerService{
             dh.addNotification(cv);
 
             sendNotification("FlashFetch",data.getString("text"));
-        }
-        else {
+        } else {
 
             ContentValues cv = new ContentValues();
 
@@ -77,7 +69,6 @@ public class IE_GCMListenerService extends GcmListenerService{
             cv.put("loc", data.getString("loc"));
             cv.put("url",data.getString("url"));
             cv.put("buyer_name", data.getString("buyer_name"));
-            //cv.put("price", Integer.parseInt(data.getString("price")));
             cv.put("time", Long.parseLong(data.getString("time")));
             cv.put("id", data.getString("id"));
             cv.put("timesent",Long.parseLong(data.getString("timenow")));
@@ -88,20 +79,23 @@ public class IE_GCMListenerService extends GcmListenerService{
                 cv.put("type", Integer.parseInt(data.getString("type")));
                 cv.put("deltype", Integer.parseInt(data.getString("deltype")));
                 cv.put("comment", data.getString("comment"));
+
                 if(data.getString("bargained").equals("1")){
                     cv.put("bargained",1);
                     cv.put("bgprice",data.getString("bgprice"));
                     cv.put("bgexptime",Long.parseLong(data.getString("bgexptime")));
+
                     long yourmilliseconds =  Long.parseLong(data.getString("bgexptime"));
                     SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
                     Date resultdate = new Date(yourmilliseconds);
+
                     if(data.getString("cuscon").equals("0")){
                         sendNotification("Bargain Request", "You have a bargain request for the deal provided on " + data.getString("name") + ". You have to respond by" + resultdate);
                         cv.put("del",data.getInt("del"));
                         cv.put("buyno",data.getLong("buyno"));
                     }
 
-                }else ;
+                }
                 cv.put("selcon", Integer.parseInt(data.getString("selcon")));
                 if(data.getString("cuscon").equals("1")){
                     cv.put("cuscon", 1);

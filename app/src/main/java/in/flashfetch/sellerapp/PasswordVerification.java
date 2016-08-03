@@ -63,8 +63,9 @@ public class PasswordVerification extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PasswordVerification.this,ForgotPassword.class);
-                startActivity(intent);
+//                Intent intent = new Intent(PasswordVerification.this,ForgotPassword.class);
+//                startActivity(intent);
+                onBackPressed();
             }
         });
 
@@ -126,5 +127,10 @@ public class PasswordVerification extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

@@ -53,9 +53,10 @@ public class FeedBackActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(FeedBackActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(FeedBackActivity.this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+                onBackPressed();
             }
         });
 
@@ -116,4 +117,8 @@ public class FeedBackActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

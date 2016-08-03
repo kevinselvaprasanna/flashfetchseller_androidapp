@@ -11,8 +11,8 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal|center"
         android:id="@+id/acceptedtext"
-        android:padding="16dp"
         android:textSize="14sp"
+        android:padding="16dp"
         android:text="It’s so empty in here!!\nHint: Provide the best prices or deals to stay in the game." />
 
     <android.support.v7.widget.RecyclerView

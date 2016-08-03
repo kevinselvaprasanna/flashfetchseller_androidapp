@@ -42,9 +42,10 @@ public class ReferAndEarn extends AppCompatActivity implements View.OnClickListe
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ReferAndEarn.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(ReferAndEarn.this,MainActivity.class);
+//                startActivity(intent);
+//                finish();
+                onBackPressed();
             }
         });
 
@@ -127,5 +128,10 @@ public class ReferAndEarn extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

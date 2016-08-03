@@ -96,8 +96,9 @@ public class Requested extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        transactions = Transactions.getAllTransactions(getActivity());
+        transactions = Transactions.getRequestedTransactions(getActivity());
 
+        //TODO: remove this
         transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
         transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
 

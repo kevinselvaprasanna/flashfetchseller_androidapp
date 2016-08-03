@@ -45,7 +45,9 @@ public class Provided extends Fragment {
 
         mContext= getActivity();
 
-        transactions = Transactions.getAllTransactions(mContext);
+        transactions = Transactions.getQuotedTransactions(mContext);
+
+        //TODO: remove this
         transactions.add(Constants.DUMMY_PROVIDED_TRANSACTION);
         transactions.add(Constants.DUMMY_PROVIDED_TRANSACTION);
 

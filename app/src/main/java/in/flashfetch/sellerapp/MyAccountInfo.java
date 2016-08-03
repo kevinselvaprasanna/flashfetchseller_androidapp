@@ -31,7 +31,7 @@ import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
-public class MyAccountInfo extends AppCompatActivity {
+public class MyAccountInfo extends BaseActivity {
 
     TextView name,email,phone;
     EditText edit_phone;
@@ -55,9 +55,7 @@ public class MyAccountInfo extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyAccountInfo.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+                onBackPressed();
             }
         });
 
@@ -193,5 +191,10 @@ public class MyAccountInfo extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

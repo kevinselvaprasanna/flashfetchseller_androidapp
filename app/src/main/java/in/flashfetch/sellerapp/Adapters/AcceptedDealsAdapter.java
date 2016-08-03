@@ -4,8 +4,10 @@ package in.flashfetch.sellerapp.Adapters;
  * Created by SAM10795 on 02-03-2016.
  */
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -30,6 +32,7 @@ import in.flashfetch.sellerapp.R;
 public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdapter.ViewHolder> {
 
     private Context mContext;
+    private AlertDialog alertDialog;
     private Typeface font;
     private ArrayList<Transactions> mItems;
     private static String LOG_TAG = "EventDetails";
@@ -38,7 +41,6 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
         mContext = context;
         mItems = items;
     }
-
 
     public static class ViewHolder extends RequestedDealsAdapter.ViewHolder{
 
@@ -78,15 +80,12 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
     @Override
     public void onBindViewHolder(final AcceptedDealsAdapter.ViewHolder holder, final int position) {
 
-        //TODO: Populate items depending on the holder returned via LayoutSelect
-        //TODO: Set typeface for text
-
         font = Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto_Medium.ttf");
 
         holder.name.setText(mItems.get(position).productName);
         holder.name.setTypeface(font);
         holder.price_final.setTypeface(font);
-        holder.price_final.setText("Final price" + mItems.get(position).quotedPrice);
+        holder.price_final.setText("Final price : " + mItems.get(position).quotedPrice);
 
         holder.caller.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +102,7 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
             }
         });
 
-        holder.buyer_name.setText("Buyer Name: "+mItems.get(position).buyerName);
+        holder.buyer_name.setText("Buyer Name : "+mItems.get(position).buyerName);
 
         switch(mItems.get(position).deliveryType)
         {
@@ -112,14 +111,14 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
                 holder.caller.setVisibility(View.VISIBLE);
                 holder.pickup_accept.setVisibility(View.VISIBLE);
                 holder.pickup.setText("Picked Up");
-                holder.header.setText("Buyer Pickup:");
+                holder.header.setText("Buyer Pickup");
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_black));
             }
             case 2:         //flash fetch delivery
             {
                 holder.caller.setVisibility(View.GONE);
                 holder.pickup_accept.setVisibility(View.VISIBLE);
-                holder.header.setText("Flashfetch Delivery:");
+                holder.header.setText("Flashfetch Delivery");
                 holder.pickup.setText("Picked Up");
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_green));
 
@@ -129,7 +128,7 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
                 holder.caller.setVisibility(View.VISIBLE);
                 holder.pickup.setText("Delivered");
                 holder.pickup_accept.setVisibility(View.VISIBLE);
-                holder.header.setText("Deliver to buyer: "+mItems.get(position).buyerName);
+                holder.header.setText("Deliver to buyer "+mItems.get(position).buyerName);
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_red));
             }
             case 4:
@@ -140,44 +139,34 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
                 holder.pickup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        final Dialog dialog = new Dialog(mContext);
-                        dialog.setContentView(R.layout.dialog_returns);
-
-                        final RadioButton ret = (RadioButton)dialog.findViewById(R.id.ret);
-                        final RadioButton exc = (RadioButton)dialog.findViewById(R.id.exc);
-
-                        Button button = (Button)dialog.findViewById(R.id.button);
-
-                        ret.setOnClickListener(new View.OnClickListener() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setTitle("Choose Returns").setSingleChoiceItems(R.array.returns, 0, new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                exc.setChecked(false);
-                            }
-                        });
-
-                        exc.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ret.setChecked(false);
-                            }
-                        });
-
-                        button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if(ret.isChecked()||exc.isChecked()) {
-                                    //TODO: Add methods
-                                    dialog.cancel();
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(which == 0){
+                                    Toast.makeText(mContext,"Exchange Selected",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(mContext,"Returns Selected",Toast.LENGTH_SHORT).show();
                                 }
                             }
+                        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO: Add methods when returns is selected
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                alertDialog.dismiss();
+                            }
                         });
-                        dialog.show();
+                        alertDialog = builder.create();
+                        alertDialog.show();
                     }
                 });
 
                 holder.pickup_accept.setVisibility(View.VISIBLE);
-                holder.header.setText("Return Requested:");
+                holder.header.setText("Return Requested");
                 holder.header.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ff_red));
             }
         }

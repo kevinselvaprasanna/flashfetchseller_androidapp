@@ -51,16 +51,18 @@ public class Accepted extends Fragment {
         TextView acctext=(TextView)view.findViewById(R.id.acceptedtext);
         acctext.setVisibility(View.GONE);
 
+        transactions = Transactions.getAcceptedTransactions(mContext);
+
+        //TODO; remove this
+
+        transactions.add(Constants.DUMMY_ACCEPTED_TRANSACTION);
+        transactions.add(Constants.DUMMY_ACCEPTED_TRANSACTION);
+
         recyclerView = (RecyclerView)view.findViewById(R.id.rvNotifications);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
         recyclerView.setItemAnimator(new ScaleInOutItemAnimator(recyclerView));
 
-        // Load events from Database
-        // events = Event.getAllRelevantEvents(getActivity());
-        //nots = NotificationsActivity.getAllTransactions(mContext);
-
-        //initialize events feed adapter
-        acceptedDealsAdapter = new AcceptedDealsAdapter(mContext, Transactions.getAcceptedTransactions(mContext));
+        acceptedDealsAdapter = new AcceptedDealsAdapter(mContext, transactions);
 
         recyclerView.setAdapter(acceptedDealsAdapter);
 
@@ -77,48 +79,6 @@ public class Accepted extends Fragment {
             acctext.setVisibility(View.VISIBLE);
             acctext.setText("You will receive product requests after FlashFetch Buyer App is launched. Meanwhile get familiarized with the features of your App. Stay tuned!");
         }
-
         return view;
-
     }
-    /*
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     *//*
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
 }

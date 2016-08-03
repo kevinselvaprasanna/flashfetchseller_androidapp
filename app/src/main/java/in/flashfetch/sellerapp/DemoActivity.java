@@ -35,9 +35,10 @@ public class DemoActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DemoActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(DemoActivity.this,MainActivity.class);
+//                startActivity(intent);
+//                finish();
+                onBackPressed();
             }
         });
 
@@ -45,5 +46,10 @@ public class DemoActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.demo_viewPager);
         viewPager.setAdapter(demoViewPagerAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
