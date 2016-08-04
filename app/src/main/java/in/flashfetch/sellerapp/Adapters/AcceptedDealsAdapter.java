@@ -45,23 +45,21 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
     public static class ViewHolder extends RequestedDealsAdapter.ViewHolder{
 
         TextView name,price_final,caller,pickup,buyer_name,header;
-        LinearLayout notsfeed,pickup_accept;
+        LinearLayout pickup_accept;
         ImageView imageview;
-        CardView cv;
 
         public ViewHolder(View itemView) {
             super(itemView);
+
+            pickup_accept = (LinearLayout) itemView.findViewById(R.id.pickup_accept);
 
             imageview = (ImageView)itemView.findViewById(R.id.image);
             name =(TextView)itemView.findViewById(R.id.name);
             header = (TextView)itemView.findViewById(R.id.header);
             buyer_name = (TextView) itemView.findViewById(R.id.buyer_name);
             price_final = (TextView)itemView.findViewById(R.id.price_final);
-            notsfeed = (LinearLayout)itemView.findViewById(R.id.notsfeed);
             caller = (TextView) itemView.findViewById(R.id.caller);
             pickup = (TextView) itemView.findViewById(R.id.pickup);
-            pickup_accept = (LinearLayout) itemView.findViewById(R.id.pickup_accept);
-            cv = (CardView)itemView.findViewById(R.id.card_view);
         }
     }
 
@@ -82,10 +80,17 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
 
         font = Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto_Medium.ttf");
 
-        holder.name.setText(mItems.get(position).productName);
         holder.name.setTypeface(font);
+        holder.header.setTypeface(font);
+        holder.buyer_name.setTypeface(font);
         holder.price_final.setTypeface(font);
+        holder.caller.setTypeface(font);
+        holder.pickup.setTypeface(font);
+
+
+        holder.name.setText(mItems.get(position).productName);
         holder.price_final.setText("Final price : " + mItems.get(position).quotedPrice);
+        holder.buyer_name.setText("Buyer Name : "+mItems.get(position).buyerName);
 
         holder.caller.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,8 +106,6 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
                 holder.pickup_accept.setVisibility(View.INVISIBLE);
             }
         });
-
-        holder.buyer_name.setText("Buyer Name : "+mItems.get(position).buyerName);
 
         switch(mItems.get(position).deliveryType)
         {

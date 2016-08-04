@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,13 +33,13 @@ import in.flashfetch.sellerapp.Objects.PostParam;
 /**
  * Created by KRANTHI on 03-07-2016.
  */
-public class ForgotPassword extends AppCompatActivity {
+public class ForgotPassword extends BaseActivity {
 
     private TextInputLayout emailInputLayout;
     private EditText emailText;
     private Button button;
     private TextView registerHere;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private LinearLayout forgotPasswordLayout;
 
     @Override
@@ -67,7 +68,7 @@ public class ForgotPassword extends AppCompatActivity {
 
         forgotPasswordLayout = (LinearLayout)findViewById(R.id.forgot_password_layout);
 
-        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        progressDialog = getProgressDialog(ForgotPassword.this);
 
         registerHere = (TextView)findViewById(R.id.login_forgot);
 
@@ -90,10 +91,7 @@ public class ForgotPassword extends AppCompatActivity {
 
                     if(Utils.isInternetAvailable(ForgotPassword.this)){
 
-                        progressBar.setVisibility(View.VISIBLE);
-                        forgotPasswordLayout.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.VISIBLE);
-                        forgotPasswordLayout.setVisibility(View.GONE);
+                        progressDialog.show();
 
                         ServiceManager.callForgotPasswordService(ForgotPassword.this, emailText.getText().toString(), new UIListener() {
                             @Override
@@ -101,7 +99,7 @@ public class ForgotPassword extends AppCompatActivity {
 
                                 Toasts.successfullySentMailToast(ForgotPassword.this);
 
-                                progressBar.setVisibility(View.GONE);
+                                progressDialog.dismiss();
 
                                 Intent intent = new Intent(ForgotPassword.this,PasswordVerification.class);
                                 intent.putExtra("EMAIL",emailText.getText().toString());
@@ -113,21 +111,19 @@ public class ForgotPassword extends AppCompatActivity {
                             public void onFailure() {
                                 Toasts.notRegisteredEmailToast(ForgotPassword.this);
 
-                                progressBar.setVisibility(View.GONE);
-                                forgotPasswordLayout.setVisibility(View.VISIBLE);
-
+                                progressDialog.dismiss();
                                 registerHere.setVisibility(View.VISIBLE);
                             }
 
                             @Override
                             public void onConnectionError() {
+                                progressDialog.dismiss();
                                 Toasts.serverBusyToast(ForgotPassword.this);
                             }
 
                             @Override
                             public void onCancelled() {
-                                progressBar.setVisibility(View.GONE);
-                                forgotPasswordLayout.setVisibility(View.VISIBLE);
+                                progressDialog.dismiss();
                             }
                         });
                     }else{

@@ -1,6 +1,5 @@
 package in.flashfetch.sellerapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -53,7 +52,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        notifications = Notifications.getAllNots(NotificationsActivity.this);
+        notifications = Notifications.getAllNotifications(NotificationsActivity.this);
 
         if(notifications.size() > 0) {
             NotificationsAdapter notsAdapter = new NotificationsAdapter(NotificationsActivity.this, notifications);

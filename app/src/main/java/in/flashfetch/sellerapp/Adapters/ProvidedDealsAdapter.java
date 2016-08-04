@@ -26,16 +26,16 @@ import in.flashfetch.sellerapp.R;
 
 public class ProvidedDealsAdapter extends RecyclerView.Adapter<ProvidedDealsAdapter.ViewHolder> {
 
-    private Context mContext;
+    private Context context;
     private Typeface font;
     private ArrayList<Transactions> mItems;
-    private static String LOG_TAG = "ProvidedDeals";
+    private static String LOG_TAG = "ProvidedDealsAdapter";
 
     private static int ITEM_QUOTED = 1;
     private static int ITEM_BARGAINED = 0;
 
     public ProvidedDealsAdapter(Context context, ArrayList<Transactions> items) {
-        mContext = context;
+        this.context = context;
         mItems = items;
     }
 
@@ -50,7 +50,7 @@ public class ProvidedDealsAdapter extends RecyclerView.Adapter<ProvidedDealsAdap
 
             cardView = (CardView) itemView.findViewById(R.id.provided_card_view);
 
-            imageview = (ImageView) itemView.findViewById(R.id.provided_image);
+            imageView = (ImageView) itemView.findViewById(R.id.provided_item_image);
             itemName = (TextView) itemView.findViewById(R.id.item_name);
             timeLeft = (TextView) itemView.findViewById(R.id.time_left);
             price1 = (TextView) itemView.findViewById(R.id.price_1);
@@ -81,9 +81,22 @@ public class ProvidedDealsAdapter extends RecyclerView.Adapter<ProvidedDealsAdap
     @Override
     public void onBindViewHolder(final ProvidedDealsAdapter.ViewHolder holder, final int position) {
 
+        font = Typeface.createFromAsset(context.getAssets(),"fonts/Roboto_Medium.ttf");
+
+        Glide.with(context).load(mItems.get(position).imageURL).centerCrop().into(holder.imageView);
+
+        holder.itemName.setTypeface(font);
+        holder.timeLeft.setTypeface(font);
+        holder.price1.setTypeface(font);
+        holder.price2.setTypeface(font);
+        holder.priceText1.setTypeface(font);
+        holder.priceText2.setTypeface(font);
+        holder.button1.setTypeface(font);
+        holder.button2.setTypeface(font);
+
         if (getItemViewType(position) == ITEM_BARGAINED) {
 
-//            Glide.with(mContext).load(mItems.get(position).imageURL).centerCrop().into(holder.imageView);
+
             holder.itemName.setText(mItems.get(position).productName);
 
             holder.priceText1.setText("Offered");
@@ -129,11 +142,11 @@ public class ProvidedDealsAdapter extends RecyclerView.Adapter<ProvidedDealsAdap
                 @Override
                 public void onClick(View v) {
 
-                    if(Utils.isInternetAvailable(mContext)){
+                    if(Utils.isInternetAvailable(context)){
 
                         //TODO: Put progress dialog
 
-                        ServiceManager.callItemAcceptService(mContext, mItems.get(position).productId, new UIListener() {
+                        ServiceManager.callItemAcceptService(context, mItems.get(position).productId, new UIListener() {
                             @Override
                             public void onSuccess() {
                                 holder.decline.setVisibility(View.GONE);
@@ -145,35 +158,34 @@ public class ProvidedDealsAdapter extends RecyclerView.Adapter<ProvidedDealsAdap
 
                             @Override
                             public void onFailure() {
-                                Toasts.serverBusyToast(mContext);
+                                Toasts.serverBusyToast(context);
                             }
 
                             @Override
                             public void onConnectionError() {
-                                Toasts.serverBusyToast(mContext);
+                                Toasts.serverBusyToast(context);
                             }
 
                             @Override
                             public void onCancelled() {
-                                Toasts.serviceInterrupted(mContext);
+                                Toasts.serviceInterrupted(context);
                             }
                         });
 
                     }else{
-                        Toasts.internetUnavailableToast(mContext);
+                        Toasts.internetUnavailableToast(context);
                     }
                 }
             });
 
         } else if(getItemViewType(position) == ITEM_QUOTED){
 
-//            Glide.with(mContext).load(mItems.get(position).imageURL).centerCrop().into(holder.imageView);
             holder.itemName.setText(mItems.get(position).productName);
 
             holder.priceText1.setText("Price");
-            holder.priceText1.setTypeface(font);
+
             holder.priceText2.setText("Provided");
-            holder.priceText2.setTypeface(font);
+
 
             holder.price1.setText(mItems.get(position).quotedPrice);
             holder.price2.setText(mItems.get(position).bargainPrice);

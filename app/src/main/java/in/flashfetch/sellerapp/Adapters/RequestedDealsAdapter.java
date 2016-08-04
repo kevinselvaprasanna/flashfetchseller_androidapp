@@ -30,7 +30,7 @@ public class RequestedDealsAdapter extends RecyclerView.Adapter<RequestedDealsAd
     private Context context;
     private Typeface font;
     private ArrayList<Transactions> transactions;
-    private static String LOG_TAG = "EventDetails";
+    private static String LOG_TAG = "RequestedDealsAdapter";
 
     public RequestedDealsAdapter(Context context, ArrayList<Transactions> transactions) {
         this.context = context;
@@ -67,7 +67,13 @@ public class RequestedDealsAdapter extends RecyclerView.Adapter<RequestedDealsAd
 
     @Override
     public void onBindViewHolder(final RequestedDealsAdapter.ViewHolder holder, final int position) {
-//        font = Typeface.createFromAsset(context.getAssets(),"fonts/Roboto_Medium.ttf");
+        font = Typeface.createFromAsset(context.getAssets(),"fonts/Roboto_Medium.ttf");
+
+        holder.itemName.setTypeface(font);
+        holder.itemPrice.setTypeface(font);
+        holder.time.setTypeface(font);
+        holder.decline.setTypeface(font);
+        holder.quote.setTypeface(font);
 
         holder.itemName.setText(transactions.get(position).productName);
         holder.itemPrice.setText("Rs. " + String.valueOf(transactions.get(position).productPrice));

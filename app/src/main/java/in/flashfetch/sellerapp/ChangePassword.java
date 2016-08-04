@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,12 +23,12 @@ import in.flashfetch.sellerapp.Objects.UserProfile;
  * Created by KRANTHI on 03-07-2016.
  */
 
-public class ChangePassword extends AppCompatActivity {
+public class ChangePassword extends BaseActivity {
 
     private EditText newPassword, confirmPassword;
     private Button changePassword;
     private String email;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private LinearLayout changePasswordLayout;
 
     @Override
@@ -58,7 +59,7 @@ public class ChangePassword extends AppCompatActivity {
         });
 
         changePasswordLayout = (LinearLayout) findViewById(R.id.change_password_layout);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressDialog = getProgressDialog(ChangePassword.this);
 
         newPassword = (EditText) findViewById(R.id.forgot_new_password);
         confirmPassword = (EditText) findViewById(R.id.forgot_confirm_password);
@@ -76,8 +77,7 @@ public class ChangePassword extends AppCompatActivity {
 
                         if (Utils.isInternetAvailable(ChangePassword.this)) {
 
-                            progressBar.setVisibility(View.VISIBLE);
-                            changePasswordLayout.setVisibility(View.GONE);
+                            progressDialog.show();
 
                             ServiceManager.callPasswordChangeService(ChangePassword.this, email, newPassword.getText().toString(), new UIListener() {
 
@@ -99,22 +99,19 @@ public class ChangePassword extends AppCompatActivity {
 
                                 @Override
                                 public void onFailure() {
-                                    progressBar.setVisibility(View.GONE);
-                                    changePasswordLayout.setVisibility(View.VISIBLE);
+                                    progressDialog.dismiss();
                                     Toasts.serverBusyToast(ChangePassword.this);
                                 }
 
                                 @Override
                                 public void onConnectionError() {
-                                    progressBar.setVisibility(View.GONE);
-                                    changePasswordLayout.setVisibility(View.VISIBLE);
+                                    progressDialog.dismiss();
                                     Toasts.serverBusyToast(ChangePassword.this);
                                 }
 
                                 @Override
                                 public void onCancelled() {
-                                    progressBar.setVisibility(View.GONE);
-                                    changePasswordLayout.setVisibility(View.VISIBLE);
+                                    progressDialog.dismiss();
                                 }
                             });
                         } else {

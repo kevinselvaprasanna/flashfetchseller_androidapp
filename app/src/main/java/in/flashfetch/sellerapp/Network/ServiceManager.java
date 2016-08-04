@@ -18,11 +18,13 @@ import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.QuoteObject;
+import in.flashfetch.sellerapp.Objects.ShopInfoObject;
 import in.flashfetch.sellerapp.Objects.SignUpObject;
 import in.flashfetch.sellerapp.Objects.Transactions;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 import in.flashfetch.sellerapp.R;
 import in.flashfetch.sellerapp.Returns;
+import in.flashfetch.sellerapp.ShopDetailsActivity;
 
 /**
  * Created by KRANTHI on 03-07-2016.
@@ -30,21 +32,6 @@ import in.flashfetch.sellerapp.Returns;
 public class ServiceManager {
 
     public static void callSignUpService(Context context, SignUpObject signUpObject, final UIListener uiListener) {
-
-        if(signUpObject.isDummyObject()){
-            UserProfile.setName(signUpObject.getName(), context);
-            UserProfile.setEmail(signUpObject.getEmail(), context);
-            UserProfile.setPhone(signUpObject.getPhone(), context);
-            UserProfile.setPassword(signUpObject.getPassword(),context);
-            UserProfile.setShopId(signUpObject.getShopId(), context);
-            UserProfile.setShopPhone(signUpObject.getPhone(), context);
-            UserProfile.setAddress1(signUpObject.getShopAddress1(), context);
-            UserProfile.setAddress2(signUpObject.getShopAddress2(), context);
-            UserProfile.setShopName(signUpObject.getShopName(), context);
-            UserProfile.setLocation(signUpObject.getShopLocation(),context);
-
-            uiListener.onSuccess();
-        }
 
         SignUpTask signUpTask = new SignUpTask(context,signUpObject,uiListener);
         signUpTask.execute();
@@ -810,20 +797,20 @@ public class ServiceManager {
         }
     }
 
-    public static void callUpdateService(Context context, String newPhoneNumber, final UIListener uiListener) {
+    public static void callUpdateAccountInfoService(Context context, String newPhoneNumber, final UIListener uiListener) {
 
-        UpdateTask updateTask = new UpdateTask(context,newPhoneNumber,uiListener);
-        updateTask.execute();
+        UpdateAccountInfoTask updateAccountInfoTask = new UpdateAccountInfoTask(context,newPhoneNumber,uiListener);
+        updateAccountInfoTask.execute();
     }
 
-    public static class UpdateTask extends AsyncTask<Void, Void, Boolean> {
+    public static class UpdateAccountInfoTask extends AsyncTask<Void, Void, Boolean> {
 
         private JSONObject response;
         private Context context;
         private UIListener uiListener;
         private String newPhoneNumber;
 
-        public UpdateTask(Context context, String newPhoneNumber, final UIListener uiListener){
+        public UpdateAccountInfoTask(Context context, String newPhoneNumber, final UIListener uiListener){
             this.context = context;
             this.uiListener = uiListener;
             this.newPhoneNumber = newPhoneNumber;
@@ -872,6 +859,76 @@ public class ServiceManager {
                 e.printStackTrace();
                 uiListener.onConnectionError();
             }
+        }
+    }
+
+    public static void callUpdateShopInfoService(Context context, ShopInfoObject shopInfoObject, final UIListener uiListener) {
+
+        UpdateShopInfoTask updateShopInfoTask = new UpdateShopInfoTask(context,shopInfoObject,uiListener);
+        updateShopInfoTask.execute();
+    }
+
+    public static class UpdateShopInfoTask extends AsyncTask<Void, Void, Boolean> {
+
+        private JSONObject response;
+        private Context context;
+        private UIListener uiListener;
+        private ShopInfoObject shopInfoObject;
+
+        public UpdateShopInfoTask(Context context, ShopInfoObject shopInfoObject, final UIListener uiListener){
+            this.context = context;
+            this.uiListener = uiListener;
+            this.shopInfoObject = shopInfoObject;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
+
+            PostParams.add(new PostParam("email", UserProfile.getEmail(context)));
+            PostParams.add(new PostParam("token",UserProfile.getToken(context)));
+            PostParams.add(new PostParam("name",UserProfile.getName(context)));
+            PostParams.add(new PostParam("mobile",UserProfile.getPhone(context)));
+            PostParams.add(new PostParam("pass",UserProfile.getPassword(context)));
+            PostParams.add(new PostParam("sel_loc",UserProfile.getLocation(context)));
+            PostParams.add(new PostParam("shopName",shopInfoObject.getShopName()));
+            PostParams.add(new PostParam("address1",shopInfoObject.getShopAddress1()));
+            PostParams.add(new PostParam("address2",shopInfoObject.getShopAddress2()));
+            PostParams.add(new PostParam("sid",shopInfoObject.getShopId()));
+            PostParams.add(new PostParam("office",shopInfoObject.getShopTelephone()));
+
+            response = PostRequest.execute(URLConstants.URLUpdate, PostParams, null);
+            Log.d("RESPONSE", response.toString());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            try {
+                if(response.getJSONObject("data").getInt("result") == 1){
+                    uiListener.onSuccess();
+                }else{
+                    uiListener.onFailure();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                uiListener.onFailure();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            uiListener.onCancelled();
         }
     }
 

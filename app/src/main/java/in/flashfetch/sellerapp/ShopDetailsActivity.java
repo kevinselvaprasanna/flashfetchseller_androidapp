@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -17,16 +18,21 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import in.flashfetch.sellerapp.CommonUtils.Toasts;
+import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Constants.URLConstants;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
 import in.flashfetch.sellerapp.Network.PostRequest;
+import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.PostParam;
+import in.flashfetch.sellerapp.Objects.ShopInfoObject;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
-public class ShopDetailsActivity extends AppCompatActivity {
+public class ShopDetailsActivity extends BaseActivity {
 
-    EditText shopname,shopid,shopad1,shopad2,shopphone;
-    String tsname,tsid,tshad1,tshad2,tphone;
-    Button editcat,submit;
+    private EditText shopname,shopid,shopad1,shopad2,shopphone;
+    private Button editcat,submit;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        progressDialog = getProgressDialog(ShopDetailsActivity.this);
 
         shopname = (EditText)findViewById(R.id.shop_name);
         shopid = (EditText)findViewById(R.id.shop_id);
@@ -67,17 +75,46 @@ public class ShopDetailsActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validate())
-                {
-                    //TODO: Submit
-                    tsname = shopname.getText().toString();
-                    tsid = shopid.getText().toString();
-                    tphone = shopphone.getText().toString();
-                    tshad1 = shopad1.getText().toString();
-                    tshad2 = shopad2.getText().toString();
+                if(validate()) {
 
-                    SubmitTask st = new SubmitTask();
-                    st.execute();
+                    ShopInfoObject shopInfoObject = new ShopInfoObject();
+
+                    shopInfoObject.setShopId(shopid.getText().toString());
+                    shopInfoObject.setShopName(shopname.getText().toString());
+                    shopInfoObject.setShopAddress1(shopad1.getText().toString());
+                    shopInfoObject.setShopAddress2(shopad2.getText().toString());
+                    shopInfoObject.setShopTelephone(shopphone.getText().toString());
+
+                    if(Utils.isInternetAvailable(ShopDetailsActivity.this)){
+
+                        progressDialog.show();
+
+                        ServiceManager.callUpdateShopInfoService(ShopDetailsActivity.this, shopInfoObject, new UIListener() {
+                            @Override
+                            public void onSuccess() {
+                                progressDialog.dismiss();
+                                Toast.makeText(ShopDetailsActivity.this,"Your shop details have been successfully saved",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                progressDialog.dismiss();
+                                Toasts.serverBusyToast(ShopDetailsActivity.this);
+                            }
+
+                            @Override
+                            public void onConnectionError() {
+
+                            }
+
+                            @Override
+                            public void onCancelled() {
+                                progressDialog.dismiss();
+                            }
+                        });
+                    }else{
+                        Toasts.internetUnavailableToast(ShopDetailsActivity.this);
+                    }
                 }
             }
         });
@@ -91,56 +128,9 @@ public class ShopDetailsActivity extends AppCompatActivity {
         }
         return true;
     }
-    public class SubmitTask extends AsyncTask<Void, Void, Boolean> {
-        JSONObject ResponseJSON;
-        SubmitTask(){
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            ArrayList<PostParam> PostParams = new ArrayList<PostParam>();
-            PostParams.add(new PostParam("email", UserProfile.getEmail(ShopDetailsActivity.this)));
-            PostParams.add(new PostParam("token",UserProfile.getToken(ShopDetailsActivity.this)));
-            PostParams.add(new PostParam("name",UserProfile.getName(ShopDetailsActivity.this)));
-            PostParams.add(new PostParam("mobile",UserProfile.getPhone(ShopDetailsActivity.this)));
-            PostParams.add(new PostParam("shopName",tsname));
-            PostParams.add(new PostParam("address1",tshad1));
-            PostParams.add(new PostParam("address2",tshad2));
-            PostParams.add(new PostParam("pass",UserProfile.getPassword(ShopDetailsActivity.this)));
-            PostParams.add(new PostParam("sid",tsid));
-            PostParams.add(new PostParam("office",tphone));
-            PostParams.add(new PostParam("sel_loc",UserProfile.getLocation(ShopDetailsActivity.this)));
-            ResponseJSON = PostRequest.execute(URLConstants.URLUpdate, PostParams, null);
-            Log.d("RESPONSE", ResponseJSON.toString());
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            try {
-                if(ResponseJSON.getJSONObject("data").getInt("result")==1){
-                    finish();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        Intent intent = new Intent(ShopDetailsActivity.this,MainActivity.class);
-//        startActivity(intent);
     }
 }

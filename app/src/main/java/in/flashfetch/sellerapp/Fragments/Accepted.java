@@ -3,9 +3,12 @@ package in.flashfetch.sellerapp.Fragments;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +25,9 @@ import it.gmariotti.recyclerview.itemanimator.ScaleInOutItemAnimator;
 public class Accepted extends Fragment {
 
     private Context mContext;
-    private Typeface font;
-    private TextView noAccessText;
     private boolean isAccessed;
     private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<Transactions> transactions;
     private AcceptedDealsAdapter acceptedDealsAdapter;
 
@@ -44,8 +46,6 @@ public class Accepted extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Medium.ttf");
-
         View view = inflater.inflate(R.layout.fragment_accepted, container, false);
 
         TextView acctext=(TextView)view.findViewById(R.id.acceptedtext);
@@ -54,9 +54,41 @@ public class Accepted extends Fragment {
         transactions = Transactions.getAcceptedTransactions(mContext);
 
         //TODO; remove this
+        transactions.add(Constants.DUMMY_ACCEPTED_TRANSACTION);
+        transactions.add(Constants.DUMMY_ACCEPTED_TRANSACTION);
 
-        transactions.add(Constants.DUMMY_ACCEPTED_TRANSACTION);
-        transactions.add(Constants.DUMMY_ACCEPTED_TRANSACTION);
+        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.refresh_container);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                transactions.add(Constants.DUMMY_ACCEPTED_TRANSACTION);
+                transactions.add(Constants.DUMMY_ACCEPTED_TRANSACTION);
+                transactions.add(Constants.DUMMY_ACCEPTED_TRANSACTION);
+
+                acceptedDealsAdapter.notifyDataSetChanged();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(swipeRefreshLayout.isRefreshing()){
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                },3000);
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.ff_green,R.color.ff_black);
+
+        TypedValue typedValue = new TypedValue();
+        int actionBarHeight = 0;
+        if (getActivity().getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(typedValue.data, getResources().getDisplayMetrics());
+        }
+
+        swipeRefreshLayout.setProgressViewEndTarget(true, actionBarHeight);
 
         recyclerView = (RecyclerView)view.findViewById(R.id.rvNotifications);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));

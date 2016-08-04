@@ -2,25 +2,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.Provided"
+    android:background="#d5d6d9"
     android:orientation="vertical"
-    android:background="#d5d6d9">
+    tools:context=".Fragments.Provided">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/providedtext"
-        android:gravity="center"
-        android:textSize="14sp"
-        android:text="All the deals provided will be here!\nQuote for product requests to make a deal." />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvNotifications"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fastScrollAlwaysVisible="true"
-        android:fastScrollEnabled="true"
-        android:overScrollMode="always" />
+        android:gravity="center"
+        android:text="All the deals provided will be here!\nQuote for product requests to make a deal."
+        android:textSize="14sp" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fastScrollAlwaysVisible="true"
+            android:fastScrollEnabled="true"
+            android:overScrollMode="always"
+            android:visibility="gone" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

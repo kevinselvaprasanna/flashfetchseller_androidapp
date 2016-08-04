@@ -1,5 +1,6 @@
 package in.flashfetch.sellerapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,12 +35,12 @@ import static in.flashfetch.sellerapp.Constants.Constants.IS_FROM_FORGOT_PASSWOR
 /**
  * Created by KRANTHI on 03-07-2016.
  */
-public class PasswordVerification extends AppCompatActivity {
+public class PasswordVerification extends BaseActivity {
 
     private String email;
     private EditText verificationEditText;
     private Button submitButton;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private LinearLayout passwordVerificationLayout;
 
     @Override
@@ -70,7 +71,7 @@ public class PasswordVerification extends AppCompatActivity {
         });
 
         passwordVerificationLayout = (LinearLayout)findViewById(R.id.password_verification_layout);
-        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        progressDialog = getProgressDialog(PasswordVerification.this);
         verificationEditText = (EditText)findViewById(R.id.verification_edit_text);
         submitButton = (Button)findViewById(R.id.submit_verification_button);
 
@@ -82,16 +83,13 @@ public class PasswordVerification extends AppCompatActivity {
 
                     if(Utils.isInternetAvailable(PasswordVerification.this)) {
 
-                        progressBar.setVisibility(View.VISIBLE);
-                        passwordVerificationLayout.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.VISIBLE);
-                        passwordVerificationLayout.setVisibility(View.GONE);
+                        progressDialog.show();
 
                         ServiceManager.callPasswordVerificationService(PasswordVerification.this, email, verificationEditText.getText().toString(), new UIListener() {
                             @Override
                             public void onSuccess() {
                                 Toasts.verificationCodeSuccessfullyVerified(PasswordVerification.this);
-                                progressBar.setVisibility(View.GONE);
+                                progressDialog.dismiss();
 
                                 Intent intent = new Intent(PasswordVerification.this, ChangePassword.class);
                                 intent.putExtra("EMAIL", email);
@@ -102,21 +100,18 @@ public class PasswordVerification extends AppCompatActivity {
                             @Override
                             public void onFailure() {
                                 Toasts.enterValidVerificationCode(PasswordVerification.this);
-                                progressBar.setVisibility(View.GONE);
-                                passwordVerificationLayout.setVisibility(View.VISIBLE);
+                                progressDialog.dismiss();
                             }
 
                             @Override
                             public void onConnectionError() {
                                 Toasts.serverBusyToast(PasswordVerification.this);
-                                progressBar.setVisibility(View.GONE);
-                                passwordVerificationLayout.setVisibility(View.VISIBLE);
+                                progressDialog.dismiss();
                             }
 
                             @Override
                             public void onCancelled() {
-                                progressBar.setVisibility(View.GONE);
-                                passwordVerificationLayout.setVisibility(View.VISIBLE);
+                                progressDialog.dismiss();
                             }
                         });
                     }else{

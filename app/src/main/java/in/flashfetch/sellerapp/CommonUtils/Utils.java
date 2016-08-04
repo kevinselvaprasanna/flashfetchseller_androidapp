@@ -150,6 +150,7 @@ public class Utils {
     }
 
     public static void doLogout(final Activity activity, final UIListener uiListener) {
+        final AlertDialog alertDialog;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
@@ -166,7 +167,8 @@ public class Utils {
             }
         });
         builder.setNegativeButton("Cancel", null);
-        builder.show();
+        alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private static void logout(Activity activity) {

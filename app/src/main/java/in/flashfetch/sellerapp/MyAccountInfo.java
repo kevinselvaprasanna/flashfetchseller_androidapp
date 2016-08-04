@@ -1,13 +1,9 @@
 package in.flashfetch.sellerapp;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,19 +12,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.text.Line;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
-import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
-import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Network.ServiceManager;
-import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
 public class MyAccountInfo extends BaseActivity {
@@ -107,7 +94,7 @@ public class MyAccountInfo extends BaseActivity {
                                     progressBar.setVisibility(View.VISIBLE);
                                     accountForm.setVisibility(View.GONE);
 
-                                    ServiceManager.callUpdateService(MyAccountInfo.this, newPhoneNumber, new UIListener() {
+                                    ServiceManager.callUpdateAccountInfoService(MyAccountInfo.this, newPhoneNumber, new UIListener() {
                                         @Override
                                         public void onSuccess() {
                                             progressBar.setVisibility(View.GONE);

@@ -34,8 +34,6 @@ public class IE_GCMListenerService extends GcmListenerService{
     String data="";
     String type=" ",category,scoreBoardId,title=" ";
 
-
-
     /**
      * Called when message is received.
      *
@@ -44,6 +42,7 @@ public class IE_GCMListenerService extends GcmListenerService{
      *             For Set of keys use data.keySet().
      */
     // [START receive_message]
+
     @Override
     public void onMessageReceived(String from, Bundle data) {
 

@@ -12,7 +12,7 @@ import in.flashfetch.sellerapp.Fragments.Accepted;
 import in.flashfetch.sellerapp.Fragments.Provided;
 import in.flashfetch.sellerapp.Fragments.Requested;
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
+public class DealsPagerAdapter extends FragmentStatePagerAdapter {
 
     private String[] titles = {"Requested", "Provided", "Accepted" };
     private final FragmentManager fm;
@@ -20,7 +20,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     private Bundle bundle = new Bundle();
     private Fragment fragment;
 
-    public PagerAdapter(FragmentManager fm, Context context, boolean isAccessed) {
+    public DealsPagerAdapter(FragmentManager fm, Context context, boolean isAccessed) {
         super(fm);
         this.fm = fm;
         mContext = context;

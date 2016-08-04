@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +30,7 @@ import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.concurrent.TimeUnit;
 
-import in.flashfetch.sellerapp.Adapters.PagerAdapter;
+import in.flashfetch.sellerapp.Adapters.DealsPagerAdapter;
 import in.flashfetch.sellerapp.Animations.ZoomOutPageTransformer;
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
@@ -124,8 +125,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         }
 
-        pager.setAdapter(new PagerAdapter(getSupportFragmentManager(), this, UserProfile.getAccess(this)));
+        pager.setAdapter(new DealsPagerAdapter(getSupportFragmentManager(), this, UserProfile.getAccess(this)));
         pager.setPageTransformer(false,new ZoomOutPageTransformer());
+        pager.setOffscreenPageLimit(3);
         pagerSlidingTabStrip.setViewPager(pager);
     }
 
@@ -179,7 +181,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                checkAccessCode();
+                if(!TextUtils.isEmpty(accessCodeText.getText())) {
+                    checkAccessCode();
+                }else{
+                    Toast.makeText(MainActivity.this,"Enter your access code",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -301,9 +307,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             startActivity(new Intent(this,DemoActivity.class));
         }else if (id == R.id.logout) {
 
-            final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
             progressDialog.setMessage("Logging out...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
             Utils.doLogout(MainActivity.this, new UIListener() {
                 @Override

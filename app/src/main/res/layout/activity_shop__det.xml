@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:ems="10"
+            android:maxLength="8"
             android:hint="Telephone"
             android:inputType="phone" />
 

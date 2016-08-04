@@ -50,6 +50,7 @@ public class SignUpActivity extends BaseActivity {
     private ProgressDialog progressDialog;
     private String shopLocation = null;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+    private static final LatLngBounds BOUNDS_CHENNAI = new LatLngBounds(new LatLng(13.080680,80.260718),new LatLng(13.082680, 80.270718) );
     private SignUpObject signUpObject = new SignUpObject();
     private Toolbar toolbar;
 
@@ -112,7 +113,7 @@ public class SignUpActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                builder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
+                builder.setLatLngBounds(BOUNDS_CHENNAI);
 
                 try {
                     startActivityForResult(builder.build(SignUpActivity.this), PLACE_PICKER_REQUEST);

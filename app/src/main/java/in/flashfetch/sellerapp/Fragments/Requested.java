@@ -25,7 +25,6 @@ import it.gmariotti.recyclerview.itemanimator.ScaleInOutItemAnimator;
 public class Requested extends Fragment {
 
     private Context context = getActivity();
-    private Typeface font;
     private LinearLayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
@@ -48,8 +47,6 @@ public class Requested extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto_Medium.ttf");
-
         View view = inflater.inflate(R.layout.fragment_requested, container, false);
 
         context = getActivity();
@@ -61,7 +58,6 @@ public class Requested extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                transactions.clear();
 
                 transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
                 transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);

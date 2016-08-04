@@ -1,6 +1,7 @@
 package in.flashfetch.sellerapp;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -25,6 +26,9 @@ import java.util.ArrayList;
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Constants.Constants;
+import in.flashfetch.sellerapp.Helper.DatabaseHelper;
+import in.flashfetch.sellerapp.Interfaces.UIListener;
+import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.QuoteObject;
 import in.flashfetch.sellerapp.Objects.Transactions;
 
@@ -224,53 +228,49 @@ public class QuoteActivity extends BaseActivity {
                         quoteObject.setProductType(productType);
                         quoteObject.setDeliveryType(deliveryType);
 
-//                        progressDialog.show();
+                        progressDialog.show();
 
-                        Intent intent = new Intent(QuoteActivity.this,MainActivity.class);
-                        intent.putExtra("FROM_QUOTE_FLOW",Constants.IS_FROM_QUOTE_FLOW);
-                        startActivity(intent);
-                        finish();
+                        ServiceManager.callQuoteService(QuoteActivity.this, quoteObject, new UIListener() {
 
-//                        ServiceManager.callQuoteService(QuoteActivity.this, quoteObject, new UIListener() {
-//                            @Override
-//                            public void onSuccess() {
-//                                progressDialog.dismiss();
-//
-//                                ContentValues cv = new ContentValues();
-//                                cv.put("name",productName);
-//                                cv.put("qprice",quotedPrice);
-//                                cv.put("type",productType);
-//                                cv.put("deltype",deliveryType);
-//                                cv.put("comment",comments);
-//                                cv.put("quoted", true);
-//                                cv.put("id",productId);
-//
-//                                DatabaseHelper dh = new DatabaseHelper(QuoteActivity.this);
-//                                dh.addTransaction(cv);
-//
-//                                Intent intent = new Intent(QuoteActivity.this,MainActivity.class);
-//                                intent.putExtra("FROM_QUOTE_FLOW",Constants.IS_FROM_QUOTE_FLOW);
-//                                startActivity(intent);
-//                                finish();
-//                            }
-//
-//                            @Override
-//                            public void onFailure() {
-//                                progressDialog.dismiss();
-//                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
-//                            }
-//
-//                            @Override
-//                            public void onConnectionError() {
-//                                progressDialog.dismiss();
-//                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled() {
-//                                progressDialog.dismiss();
-//                            }
-//                        });
+                            @Override
+                            public void onSuccess() {
+                                progressDialog.dismiss();
+
+                                ContentValues cv = new ContentValues();
+                                cv.put("name",productName);
+                                cv.put("qprice",quotedPrice);
+                                cv.put("type",productType);
+                                cv.put("deltype",deliveryType);
+                                cv.put("comment",comments);
+                                cv.put("quoted", true);
+                                cv.put("id",productId);
+
+                                DatabaseHelper dh = new DatabaseHelper(QuoteActivity.this);
+                                dh.addTransaction(cv);
+
+                                Intent intent = new Intent(QuoteActivity.this,MainActivity.class);
+                                intent.putExtra("FROM_QUOTE_FLOW",Constants.IS_FROM_QUOTE_FLOW);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                progressDialog.dismiss();
+                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onConnectionError() {
+                                progressDialog.dismiss();
+                                Toast.makeText(QuoteActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onCancelled() {
+                                progressDialog.dismiss();
+                            }
+                        });
 
                     }else{
                         Toasts.internetUnavailableToast(QuoteActivity.this);

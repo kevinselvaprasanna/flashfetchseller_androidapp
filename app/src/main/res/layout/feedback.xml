@@ -24,7 +24,7 @@
             android:layout_height="200dp"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:focusable="false"
+            android:focusable="true"
             android:id="@+id/feedback"
             android:hint="Enter Feedback Here"
             android:gravity="top"

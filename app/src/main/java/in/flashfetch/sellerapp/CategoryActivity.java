@@ -61,6 +61,10 @@ public class CategoryActivity extends BaseActivity implements CompoundButton.OnC
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Intent intent = new Intent(CategoryActivity.this,LoginActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                finish();
                 onBackPressed();
             }
         });
