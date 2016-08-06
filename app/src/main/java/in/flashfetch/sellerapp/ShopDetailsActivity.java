@@ -10,11 +10,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -30,8 +31,8 @@ import in.flashfetch.sellerapp.Objects.UserProfile;
 
 public class ShopDetailsActivity extends BaseActivity {
 
-    private EditText shopname,shopid,shopad1,shopad2,shopphone;
-    private Button editcat,submit;
+    private TextView shopname,shopid,shopad1,shopad2,shopphone;
+    private Button editcat;//,submit;
     private ProgressDialog progressDialog;
 
     @Override
@@ -55,14 +56,20 @@ public class ShopDetailsActivity extends BaseActivity {
 
         progressDialog = getProgressDialog(ShopDetailsActivity.this);
 
-        shopname = (EditText)findViewById(R.id.shop_name);
-        shopid = (EditText)findViewById(R.id.shop_id);
-        shopad1 = (EditText)findViewById(R.id.add_1);
-        shopad2 = (EditText)findViewById(R.id.add_2);
-        shopphone = (EditText)findViewById(R.id.telephone);
+        shopname = (TextView) findViewById(R.id.shop_name);
+        shopid = (TextView) findViewById(R.id.shop_id);
+        shopad1 = (TextView) findViewById(R.id.add_1);
+        shopad2 = (TextView) findViewById(R.id.add_2);
+        shopphone = (TextView) findViewById(R.id.telephone);
 
-        submit = (Button)findViewById(R.id.submit);
+        //submit = (Button)findViewById(R.id.submit);
         editcat = (Button)findViewById(R.id.editCategories);
+
+        shopname.setText("ShopName " + UserProfile.getShopName(ShopDetailsActivity.this));
+        shopid.setText("Shop ID: " + UserProfile.getShopId(ShopDetailsActivity.this));
+        shopad1.setText("Address Line 1: " + UserProfile.getAddress1(ShopDetailsActivity.this));
+        shopad2.setText("Address Line 2: " +UserProfile.getAddress2(ShopDetailsActivity.this));
+        shopphone.setText("Shop Name: " +UserProfile.getShopPhone(ShopDetailsActivity.this));
 
         editcat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +79,7 @@ public class ShopDetailsActivity extends BaseActivity {
             }
         });
 
-        submit.setOnClickListener(new View.OnClickListener() {
+        /*submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate()) {
@@ -117,17 +124,17 @@ public class ShopDetailsActivity extends BaseActivity {
                     }
                 }
             }
-        });
+        });*/
     }
 
-    private boolean validate()
+   /* private boolean validate()
     {
         if(shopname.getText().length()==0||shopid.getText().length()==0||shopphone.getText().length()==0||shopad1.getText().length()==0||shopad2.getText().length()==0) {
             Toast.makeText(this,"One or more fields is empty",Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

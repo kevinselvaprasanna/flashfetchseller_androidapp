@@ -17,7 +17,7 @@
         android:paddingRight="16dp"
         android:layout_weight="1">
 
-        <EditText
+       <!-- <EditText
             android:id="@+id/shop_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,7 +59,43 @@
             android:layout_marginBottom="16dp"
             android:ems="10"
             android:hint="Address 2"
-            android:inputType="textPostalAddress" />
+            android:inputType="textPostalAddress" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shop_name"
+            android:textSize="@dimen/textSize"
+            android:layout_marginBottom="32dp"
+            android:textAppearance="@android:style/TextAppearance.Medium"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shop_id"
+            android:textSize="@dimen/textSize"
+            android:layout_marginBottom="32dp"
+            android:textAppearance="@android:style/TextAppearance.Medium"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/telephone"
+            android:textSize="@dimen/textSize"
+            android:layout_marginBottom="32dp"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_1"
+            android:textSize="@dimen/textSize"
+            android:layout_marginBottom="32dp"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_2"
+            android:textSize="@dimen/textSize"/>
+
 
     </LinearLayout>
 

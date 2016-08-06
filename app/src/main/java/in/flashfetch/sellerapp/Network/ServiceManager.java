@@ -685,6 +685,8 @@ public class ServiceManager {
         categoryTask.execute();
     }
 
+
+
     public static class CategoryTask extends AsyncTask<String, Void, Void> {
 
         private JSONObject response;
@@ -740,6 +742,62 @@ public class ServiceManager {
             uiListener.onCancelled();
         }
     }
+
+    public static void getProfile(Context context, final UIListener uiListener) {
+
+        GetProfileTask getProfileTask = new GetProfileTask(context,uiListener);
+        getProfileTask.execute();
+    }
+
+    public static class GetProfileTask extends AsyncTask<String, Void, Void> {
+
+        private JSONObject response;
+        private Context context;
+        private final UIListener uiListener;
+
+        public GetProfileTask(Context context,  final UIListener uiListener){
+
+            this.context = context;
+            this.uiListener = uiListener;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            ArrayList<PostParam> instiPostParams = new ArrayList<PostParam>();
+            instiPostParams.add(new PostParam("token",UserProfile.getToken(context)));
+            instiPostParams.add(new PostParam("email",UserProfile.getEmail(context)));
+            response = PostRequest.execute(URLConstants.URLCategory, instiPostParams, null);
+            Log.d("RESPONSE",response.toString());
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            try {
+                if(response.getJSONObject("data").getInt("result") == 1) {
+                    super.onPostExecute(aVoid);
+                    uiListener.onSuccess();
+                }else {
+                    uiListener.onFailure();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                uiListener.onConnectionError();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            uiListener.onCancelled();
+        }
+    }
+
     public static void callRewardsService(Context context, String referralCode, final UIListener uiListener) {
 
         RewardsTask rewardsTask = new RewardsTask(context,referralCode,uiListener);

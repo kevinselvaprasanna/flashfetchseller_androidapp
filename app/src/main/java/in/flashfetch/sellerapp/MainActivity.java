@@ -1,6 +1,7 @@
 package in.flashfetch.sellerapp;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -8,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.NavigationView;
@@ -171,12 +173,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    @SuppressLint("NewApi")
+
     private void showAccessDialog() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Enter Access Code");
-        builder.setView(R.layout.alert_edit_text);
+        //builder.setView(R.layout.alert_edit_text);
 
         builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override

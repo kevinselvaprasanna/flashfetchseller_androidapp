@@ -44,5 +44,19 @@
     <string name="logout">Log Out</string>
     <string name="ret_pol">Returns Policy</string>
     <string name="SERVER_ERROR">server error</string>
+    <string name="title_activity_referal">ReferalActivity</string>
+    <string name="nav_refer">Invite &amp; Earn</string>
+    <string name="title_activity_contact_us">ContactUs</string>
+    <string name="title_activity_fill__address">Fill_Address</string>
+    <string name="title_activity_wallet">Wallet</string>
+    <string name="total_credit">Total Credit: ₹</string>
+    <string name="invite_text">INVITE FRIENDS TO EARN MORE</string>
+    <string name="message">Your friend will get ₹50 for downloading the app and you will receive... </string>
+    <string name="chooser_title">Share Your Code</string>
+    <string name="title_activity_refer_and_earn">ReferAndEarn</string>
+    <string name="title_activity_account">Account</string>
+    <string name="title_activity_address">Address</string>
+    <string name="title_activity_verify_email">VerifyEmail</string>
+
 
 </resources>

@@ -1,8 +1,10 @@
 package in.flashfetch.sellerapp;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -43,6 +45,7 @@ public class Returns extends AppCompatActivity {
     private int[] primeNumbersList;
     private int product = 1;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
