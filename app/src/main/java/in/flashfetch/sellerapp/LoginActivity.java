@@ -70,7 +70,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private Button submitButton;
-    private View mProgressView, mLoginFormView;
+    private View mLoginFormView;
     private TextView forgotPassword, registerHere;
     private Typeface font;
     private ProgressDialog progressDialog;
@@ -81,7 +81,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     protected void onCreate(Bundle savedInstanceState) {
 
         try {
-            TimeUnit.MILLISECONDS.sleep(5000);
+            TimeUnit.MILLISECONDS.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -91,11 +91,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         handler = new Handler();
 
-    /* Get Last Update Time from Preferences */
+        /* Get Last Update Time from Preferences */
         SharedPreferences prefs = this.getPreferences(0);
         lastUpdateTime = prefs.getLong("lastUpdateTime", 0);
 
-    /* Should Activity Check for Updates Now? */
+        /* Should Activity Check for Updates Now? */
         if ((lastUpdateTime + (24 * 60 * 60 * 1000)) < System.currentTimeMillis()) {
 
             Log.d("Check for update","UpdateChecked");
@@ -131,16 +131,17 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         font = getTypeface();
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.progress_bar);
-
         progressDialog = getProgressDialog(this);
+
+        mLoginFormView = findViewById(R.id.login_form);
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.EmailID);
         mPasswordView = (EditText) findViewById(R.id.Password);
         forgotPassword = (TextView) findViewById(R.id.forgot_pass);
         submitButton = (Button) findViewById(R.id.submit);
         registerHere = (TextView) findViewById(R.id.login_register);
+
+        mEmailView.clearFocus();
 
         mEmailView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

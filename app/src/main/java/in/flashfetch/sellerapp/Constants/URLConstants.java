@@ -1,7 +1,8 @@
 package in.flashfetch.sellerapp.Constants;
 
 public class URLConstants {
-    public static String SERVER = "http://52.35.108.81/";
+    public static String SERVER = "http://ec2-52-35-108-81.us-west-2.compute.amazonaws.com/";
+
     public static String URLSignup = SERVER + "signup/";
     public static String URLLogin = SERVER + "login/";
     public static String URLCategory = SERVER + "category/";

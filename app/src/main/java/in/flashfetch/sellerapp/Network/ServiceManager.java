@@ -108,22 +108,22 @@ public class ServiceManager {
 
     public static void callLoginService(Context context, String email, String password, final UIListener uiListener) {
 
-        if(email.equals(Constants.DUMMY_EMAIL) && password.equals(Constants.DUMMY_PASSWORD)){
-            UserProfile.setEmail(Constants.DUMMY_SIGN_UP_OBJECT.getEmail(), context);
-            UserProfile.setPassword(Constants.DUMMY_SIGN_UP_OBJECT.getPassword(),context);
-            UserProfile.setCategory(20,context);
-            UserProfile.setName(Constants.DUMMY_SIGN_UP_OBJECT.getName(),context);
-            UserProfile.setPhone(Constants.DUMMY_SIGN_UP_OBJECT.getPhone(),context);
-            UserProfile.setShopId(Constants.DUMMY_SIGN_UP_OBJECT.getShopId(),context);
-            UserProfile.setShopName(Constants.DUMMY_SIGN_UP_OBJECT.getShopName(),context);
-            UserProfile.setShopPhone(Constants.DUMMY_SIGN_UP_OBJECT.getShopTelephone(),context);
-            UserProfile.setAddress1(Constants.DUMMY_SIGN_UP_OBJECT.getShopAddress1(),context);
-            UserProfile.setAddress2(Constants.DUMMY_SIGN_UP_OBJECT.getShopAddress1(),context);
-            UserProfile.setLocation(Constants.DUMMY_SIGN_UP_OBJECT.getShopLocation(),context);
-            UserProfile.setAccess(true,context);
-            uiListener.onSuccess();
-            return;
-        }
+//        if(email.equals(Constants.DUMMY_EMAIL) && password.equals(Constants.DUMMY_PASSWORD)){
+//            UserProfile.setEmail(Constants.DUMMY_SIGN_UP_OBJECT.getEmail(), context);
+//            UserProfile.setPassword(Constants.DUMMY_SIGN_UP_OBJECT.getPassword(),context);
+//            UserProfile.setCategory(20,context);
+//            UserProfile.setName(Constants.DUMMY_SIGN_UP_OBJECT.getName(),context);
+//            UserProfile.setPhone(Constants.DUMMY_SIGN_UP_OBJECT.getPhone(),context);
+//            UserProfile.setShopId(Constants.DUMMY_SIGN_UP_OBJECT.getShopId(),context);
+//            UserProfile.setShopName(Constants.DUMMY_SIGN_UP_OBJECT.getShopName(),context);
+//            UserProfile.setShopPhone(Constants.DUMMY_SIGN_UP_OBJECT.getShopTelephone(),context);
+//            UserProfile.setAddress1(Constants.DUMMY_SIGN_UP_OBJECT.getShopAddress1(),context);
+//            UserProfile.setAddress2(Constants.DUMMY_SIGN_UP_OBJECT.getShopAddress1(),context);
+//            UserProfile.setLocation(Constants.DUMMY_SIGN_UP_OBJECT.getShopLocation(),context);
+//            UserProfile.setAccess(true,context);
+//            uiListener.onSuccess();
+//            return;
+//        }
 
         UserLoginTask userLoginTask = new UserLoginTask(context,email,password,uiListener);
         userLoginTask.execute();

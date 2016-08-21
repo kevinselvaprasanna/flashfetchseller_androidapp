@@ -58,9 +58,10 @@ public class Returns extends AppCompatActivity {
 //        setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_returns);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setHomeButtonEnabled(true);

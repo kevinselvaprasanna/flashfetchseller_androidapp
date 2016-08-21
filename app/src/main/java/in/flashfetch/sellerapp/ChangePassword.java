@@ -42,7 +42,7 @@ public class ChangePassword extends BaseActivity {
             email = bundle.getString("EMAIL");
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Change Password");

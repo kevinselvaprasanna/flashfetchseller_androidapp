@@ -1,6 +1,8 @@
 package in.flashfetch.sellerapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -31,16 +33,21 @@ import in.flashfetch.sellerapp.Objects.UserProfile;
 
 public class ShopDetailsActivity extends BaseActivity {
 
+    private Context context;
     private TextView shopname,shopid,shopad1,shopad2,shopphone;
-    private Button editcat;//,submit;
+    private Button editcat,editInfo;
     private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = ShopDetailsActivity.this;
+
         setContentView(R.layout.activity_shop__det);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Shop Details");
@@ -54,7 +61,7 @@ public class ShopDetailsActivity extends BaseActivity {
             }
         });
 
-        progressDialog = getProgressDialog(ShopDetailsActivity.this);
+        progressDialog = getProgressDialog(context);
 
         shopname = (TextView) findViewById(R.id.shop_name);
         shopid = (TextView) findViewById(R.id.shop_id);
@@ -62,20 +69,39 @@ public class ShopDetailsActivity extends BaseActivity {
         shopad2 = (TextView) findViewById(R.id.add_2);
         shopphone = (TextView) findViewById(R.id.telephone);
 
-        //submit = (Button)findViewById(R.id.submit);
+        editInfo = (Button)findViewById(R.id.submit);
         editcat = (Button)findViewById(R.id.editCategories);
 
-        shopname.setText("ShopName " + UserProfile.getShopName(ShopDetailsActivity.this));
-        shopid.setText("Shop ID: " + UserProfile.getShopId(ShopDetailsActivity.this));
-        shopad1.setText("Address Line 1: " + UserProfile.getAddress1(ShopDetailsActivity.this));
-        shopad2.setText("Address Line 2: " +UserProfile.getAddress2(ShopDetailsActivity.this));
-        shopphone.setText("Shop Name: " +UserProfile.getShopPhone(ShopDetailsActivity.this));
+        shopname.setText("ShopName " + UserProfile.getShopName(context));
+        shopid.setText("Shop ID: " + UserProfile.getShopId(context));
+        shopad1.setText("Address Line 1: " + UserProfile.getAddress1(context));
+        shopad2.setText("Address Line 2: " +UserProfile.getAddress2(context));
+        shopphone.setText("Shop Name: " +UserProfile.getShopPhone(context));
 
         editcat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShopDetailsActivity.this,CategoryActivity.class);
-                startActivity(intent);
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Contact us for changing your product categories, we will update it after validating");
+                builder.setPositiveButton("OK",null);
+
+                alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
+        editInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Contact us for changing your shop information, we will update it after validating");
+                builder.setPositiveButton("OK",null);
+
+                alertDialog = builder.create();
+                alertDialog.show();
+
             }
         });
 
@@ -92,21 +118,21 @@ public class ShopDetailsActivity extends BaseActivity {
                     shopInfoObject.setShopAddress2(shopad2.getText().toString());
                     shopInfoObject.setShopTelephone(shopphone.getText().toString());
 
-                    if(Utils.isInternetAvailable(ShopDetailsActivity.this)){
+                    if(Utils.isInternetAvailable(context)){
 
                         progressDialog.show();
 
-                        ServiceManager.callUpdateShopInfoService(ShopDetailsActivity.this, shopInfoObject, new UIListener() {
+                        ServiceManager.callUpdateShopInfoService(context, shopInfoObject, new UIListener() {
                             @Override
                             public void onSuccess() {
                                 progressDialog.dismiss();
-                                Toast.makeText(ShopDetailsActivity.this,"Your shop details have been successfully saved",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context,"Your shop details have been successfully saved",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onFailure() {
                                 progressDialog.dismiss();
-                                Toasts.serverBusyToast(ShopDetailsActivity.this);
+                                Toasts.serverBusyToast(context);
                             }
 
                             @Override
@@ -120,7 +146,7 @@ public class ShopDetailsActivity extends BaseActivity {
                             }
                         });
                     }else{
-                        Toasts.internetUnavailableToast(ShopDetailsActivity.this);
+                        Toasts.internetUnavailableToast(context);
                     }
                 }
             }

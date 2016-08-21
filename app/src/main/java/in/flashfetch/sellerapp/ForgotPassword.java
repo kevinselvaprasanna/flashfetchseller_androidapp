@@ -48,7 +48,7 @@ public class ForgotPassword extends BaseActivity {
 
         setContentView(R.layout.forgot_password);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Forgot Password");

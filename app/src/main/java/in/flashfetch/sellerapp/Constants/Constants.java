@@ -8,6 +8,8 @@ import in.flashfetch.sellerapp.Objects.Transactions;
  */
 public class Constants {
 
+    public static final String PACKAGE_NAME = "in.flashfetch.sellerapp";
+
     //TODO: remove this
     public static final String DUMMY_EMAIL = "abc@gmail.com";
 

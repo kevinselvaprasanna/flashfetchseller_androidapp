@@ -25,7 +25,7 @@ public class DemoActivity extends AppCompatActivity {
 
         setContentView(R.layout.demo);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Demo");

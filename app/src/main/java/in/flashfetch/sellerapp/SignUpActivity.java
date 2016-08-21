@@ -60,7 +60,7 @@ public class SignUpActivity extends BaseActivity {
 
         setContentView(R.layout.activity_sign_up);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         if(getSupportActionBar() != null) {

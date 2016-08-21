@@ -19,7 +19,7 @@ import in.flashfetch.sellerapp.R;
  */
 public class DemoImageFragment extends Fragment {
 
-    private static int[] images = new int[]{R.drawable.demo_1,R.drawable.demo_2,R.drawable.demo_3,R.drawable.demo_4,R.drawable.demo_5};
+    private static int[] images = new int[]{R.drawable.demo,R.drawable.demo_2,R.drawable.demo_3,R.drawable.demo_4,R.drawable.demo_5};
 
     public static DemoImageFragment newInstance(int index){
         DemoImageFragment demoImageFragment = new DemoImageFragment();

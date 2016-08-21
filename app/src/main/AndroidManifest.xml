@@ -92,11 +92,11 @@
 
         <activity android:name=".CategoryActivity" />
 
-        <activity android:name=".ForgotPassword" android:parentActivityName=".LoginActivity"/>
+        <activity android:name=".ForgotPassword" />
 
-        <activity android:name=".PasswordVerification" android:parentActivityName=".ForgotPassword"/>
+        <activity android:name=".PasswordVerification" />
 
-        <activity android:name=".ChangePassword" android:parentActivityName=".PasswordVerification"/>
+        <activity android:name=".ChangePassword" />
 
         <activity android:name=".QuoteActivity" />
 

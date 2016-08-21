@@ -6,7 +6,7 @@
         <!--<item name="colorPrimaryDark">#29303f</item>-->
 
         <item name="colorAccent">@color/ff_green</item>
-        <item name="colorPrimary">#37474F</item>
+        <item name="colorPrimary">#29303F</item>
         <item name="colorPrimaryDark">#29303f</item>
     </style>
 

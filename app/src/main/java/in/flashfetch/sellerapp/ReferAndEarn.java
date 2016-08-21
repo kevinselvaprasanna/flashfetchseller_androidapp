@@ -34,7 +34,7 @@ public class ReferAndEarn extends BaseActivity implements View.OnClickListener{
 
         setContentView(R.layout.refer_earn);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Refer and Earn");

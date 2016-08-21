@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         Bundle bundle = getIntent().getExtras();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("FlashFetch Seller");
@@ -82,12 +82,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         progressDialog = getProgressDialog(this);
 
-        accessCodeText = (EditText) findViewById(R.id.access_text);
-
         pager = (ViewPager) findViewById(R.id.pager);
         pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id. drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -133,58 +131,62 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         pagerSlidingTabStrip.setViewPager(pager);
     }
 
-    private void checkAccessCode() {
-
-        if(Utils.isInternetAvailable(MainActivity.this)){
-
-            progressDialog.show();
-
-            ServiceManager.callAccessCodeVerificationService(MainActivity.this,UserProfile.getToken(MainActivity.this), UserProfile.getEmail(MainActivity.this), accessCodeText.getText().toString(), new UIListener() {
-                @Override
-                public void onSuccess() {
-                    UserProfile.setAccess(true,MainActivity.this);
-                    progressDialog.dismiss();
-                    alertDialog.dismiss();
-                    Toast.makeText(MainActivity.this,"Hurray! You are ready to receive your orders",Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure() {
-                    UserProfile.setAccess(false,MainActivity.this);
-                    progressDialog.dismiss();
-                    Toast.makeText(MainActivity.this,"Enter correct access code",Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onConnectionError() {
-                    UserProfile.setAccess(false,MainActivity.this);
-                    progressDialog.dismiss();
-                    Toast.makeText(MainActivity.this,"Server is currently busy please try again after sometime",Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onCancelled() {
-                    UserProfile.setAccess(false,MainActivity.this);
-                    progressDialog.dismiss();
-                }
-            });
-        }else{
-            Toasts.internetUnavailableToast(MainActivity.this);
-        }
-    }
-
-
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void showAccessDialog() {
+
+        View view = getLayoutInflater().inflate(R.layout.alert_edit_text,null);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Enter Access Code");
-        //builder.setView(R.layout.alert_edit_text);
+        builder.setView(view);
+
+        accessCodeText = (EditText)view.findViewById(R.id.alert_edit_text);
 
         builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(!TextUtils.isEmpty(accessCodeText.getText())) {
-                    checkAccessCode();
+
+                    if(Utils.isInternetAvailable(MainActivity.this)){
+
+                        progressDialog.show();
+
+                        ServiceManager.callAccessCodeVerificationService(MainActivity.this,UserProfile.getToken(MainActivity.this), UserProfile.getEmail(MainActivity.this), accessCodeText.getText().toString(), new UIListener() {
+                            @Override
+                            public void onSuccess() {
+                                UserProfile.setAccess(true,MainActivity.this);
+                                progressDialog.dismiss();
+                                alertDialog.dismiss();
+                                Toast.makeText(MainActivity.this,"Hurray! You are ready to receive your orders",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                UserProfile.setAccess(false,MainActivity.this);
+                                progressDialog.dismiss();
+                                alertDialog.show();
+                                Toast.makeText(MainActivity.this,"Enter correct access code",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onConnectionError() {
+                                UserProfile.setAccess(false,MainActivity.this);
+                                progressDialog.dismiss();
+                                alertDialog.show();
+                                Toast.makeText(MainActivity.this,"Server is currently busy please try again after sometime",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onCancelled() {
+                                UserProfile.setAccess(false,MainActivity.this);
+                                progressDialog.dismiss();
+                                alertDialog.show();
+                            }
+                        });
+                    }else{
+                        Toasts.internetUnavailableToast(MainActivity.this);
+                    }
+
                 }else{
                     Toast.makeText(MainActivity.this,"Enter your access code",Toast.LENGTH_LONG).show();
                 }

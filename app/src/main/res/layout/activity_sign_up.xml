@@ -207,7 +207,7 @@
                         android:layout_marginBottom="16dp"
                         android:ems="10"
                         android:imeOptions="actionNext"
-                        android:hint="Address 1"
+                        android:hint="Address Line 1"
                         android:inputType="textPostalAddress"
                         android:textSize="14sp" />
 
@@ -219,7 +219,7 @@
                         android:layout_marginBottom="16dp"
                         android:ems="10"
                         android:imeOptions="actionDone"
-                        android:hint="Address 2"
+                        android:hint="Address Line 2"
                         android:inputType="textPostalAddress"
                         android:textSize="14sp" />
 

@@ -87,7 +87,6 @@ public class AcceptedDealsAdapter extends RecyclerView.Adapter<AcceptedDealsAdap
         holder.caller.setTypeface(font);
         holder.pickup.setTypeface(font);
 
-
         holder.name.setText(mItems.get(position).productName);
         holder.price_final.setText("Final price : " + mItems.get(position).quotedPrice);
         holder.buyer_name.setText("Buyer Name : "+mItems.get(position).buyerName);

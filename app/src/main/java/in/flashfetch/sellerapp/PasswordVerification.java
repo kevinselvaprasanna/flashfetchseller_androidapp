@@ -54,7 +54,7 @@ public class PasswordVerification extends BaseActivity {
             email = bundle.getString("EMAIL");
         }
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Password Verification");

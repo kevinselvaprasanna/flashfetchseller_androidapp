@@ -23,6 +23,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.MainActivity;
 import in.flashfetch.sellerapp.R;
@@ -122,7 +123,7 @@ public class IE_GCMListenerService extends GcmListenerService{
         NotificationManager notificationManager;
         pendingIntent = PendingIntent.getActivity(this, 0, i,PendingIntent.FLAG_ONE_SHOT);
 
-        defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        defaultSoundUri = Uri.parse("android.resource://" + Constants.PACKAGE_NAME + "/" + R.raw.flashfetch_ringtone);
         notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.nav)
                 .setContentTitle("FlashFetch")

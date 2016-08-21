@@ -21,7 +21,7 @@ public class RewardActivity extends AppCompatActivity {
 
         setContentView(R.layout.rewards);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Rewards Points");

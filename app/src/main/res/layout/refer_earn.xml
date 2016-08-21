@@ -56,7 +56,7 @@
                         android:padding="8dp"
                         android:text="Your Code: "
                         android:textStyle="bold"
-                        android:background="@drawable/edit_text_border"/>
+                        android:background="@drawable/edit_text_black_border"/>
 
                 </FrameLayout>
 

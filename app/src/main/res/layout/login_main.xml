@@ -8,8 +8,6 @@
 
     <!--<include layout="@layout/app_bar" />-->
 
-    <include layout="@layout/progress_bar"/>
-
     <ImageView
         android:src="@drawable/logo_seller_login"
         android:layout_marginTop="48dp"

@@ -8,135 +8,154 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="in.flashfetch.sellerapp.CategoryActivity">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Electronics"
-        android:id="@+id/electronics"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mobiles"
-        android:id="@+id/mobiles"
-        android:layout_below="@id/electronics"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Laptops"
-        android:id="@+id/laptops"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/mobiles" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tablets"
-        android:id="@+id/tablets"
-        android:layout_below="@+id/laptops"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Computer Peripherals"
-        android:id="@+id/computer"
-        android:layout_below="@+id/tablets"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mobile Accesories"
-        android:id="@+id/mobile_acccesories"
-        android:layout_below="@+id/computer"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Kitchen Accessories"
-        android:id="@+id/kitchen"
-        android:layout_below="@+id/mobile_acccesories"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Camera"
-        android:id="@+id/camera"
-        android:layout_below="@+id/kitchen"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Books and Media"
-        android:id="@+id/tv2"
-        android:layout_below="@+id/camera"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Books"
-        android:id="@+id/books"
-        android:layout_below="@+id/tv2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Music"
-        android:id="@+id/music"
-        android:layout_below="@+id/books"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gaming"
-        android:id="@+id/gaming"
-        android:layout_below="@+id/music"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stationery"
-        android:id="@+id/stationery"
-        android:layout_below="@+id/gaming"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Office Equipment"
-        android:id="@+id/office"
-        android:layout_below="@+id/stationery"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
-            <Button
+            <TextView
+                android:id="@+id/electronics"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Submit"
-                android:id="@+id/submit2"
-                android:layout_below="@+id/office"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Electronics"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <CheckBox
+                android:id="@+id/mobiles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/electronics"
+                android:text="Mobiles" />
+
+            <CheckBox
+                android:id="@+id/laptops"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/mobiles"
+                android:text="Laptops" />
+
+            <CheckBox
+                android:id="@+id/tablets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/laptops"
+                android:text="Tablets" />
+
+            <CheckBox
+                android:id="@+id/computer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tablets"
+                android:text="Computer Peripherals" />
+
+            <CheckBox
+                android:id="@+id/mobile_acccesories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/computer"
+                android:text="Mobile Accesories" />
+
+            <CheckBox
+                android:id="@+id/kitchen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/mobile_acccesories"
+                android:text="Kitchen Accessories" />
+
+            <CheckBox
+                android:id="@+id/camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/kitchen"
+                android:text="Camera" />
+
+            <TextView
+                android:id="@+id/tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/camera"
+                android:text="Books and Media"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <CheckBox
+                android:id="@+id/books"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tv2"
+                android:text="Books" />
+
+            <CheckBox
+                android:id="@+id/music"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/books"
+                android:text="Music" />
+
+            <CheckBox
+                android:id="@+id/gaming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/music"
+                android:text="Gaming" />
+
+            <CheckBox
+                android:id="@+id/stationery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/gaming"
+                android:text="Stationery" />
+
+            <CheckBox
+                android:id="@+id/office"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/stationery"
+                android:text="Office Equipment" />
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/stationery"
+                android:text="Office Equipment" />
+
+            <Button
+                android:id="@+id/submit2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/office"
+                android:text="Submit" />
 
         </RelativeLayout>
     </ScrollView>

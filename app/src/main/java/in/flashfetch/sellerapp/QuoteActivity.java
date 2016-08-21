@@ -194,7 +194,7 @@ public class QuoteActivity extends BaseActivity {
 //        params.setBehavior(behavior);
 //        appBar.setLayoutParams(params);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.quote_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Quote your Products");

@@ -44,7 +44,6 @@
     <string name="logout">Log Out</string>
     <string name="ret_pol">Returns Policy</string>
     <string name="SERVER_ERROR">server error</string>
-    <string name="title_activity_referal">ReferalActivity</string>
     <string name="nav_refer">Invite &amp; Earn</string>
     <string name="title_activity_contact_us">ContactUs</string>
     <string name="title_activity_fill__address">Fill_Address</string>
