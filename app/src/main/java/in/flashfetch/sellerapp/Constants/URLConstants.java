@@ -1,29 +1,29 @@
 package in.flashfetch.sellerapp.Constants;
 
 public class URLConstants {
-    public static String SERVER = "http://ec2-52-35-108-81.us-west-2.compute.amazonaws.com/";
+    public static String BASE_SERVER_URL = "http://ec2-52-43-70-85.us-west-2.compute.amazonaws.com/";
 
-    public static String URLSignup = SERVER + "signup/";
-    public static String URLLogin = SERVER + "login/";
-    public static String URLCategory = SERVER + "category/";
-    public static String URLGCM_Register = SERVER + "gcmid/";
-    public static String URL_Quote = SERVER + "s2c/";
-    public static String URLImage = SERVER + "";
+    public static String URLSignup = BASE_SERVER_URL + "signup/";
+    public static String URLLogin = BASE_SERVER_URL + "login/";
+    public static String URLCategory = BASE_SERVER_URL + "category/";
+    public static String URLGCM_Register = BASE_SERVER_URL + "gcmid/";
+    public static String URL_Quote = BASE_SERVER_URL + "s2c/";
+    public static String URLImage = BASE_SERVER_URL + "";
 
-    public static String URLDecline = SERVER + "decline/";
+    public static String URLDecline = BASE_SERVER_URL + "decline/";
 
-    public static String URLFeedback = SERVER + "feed/";
-    public static String URLAd = SERVER + "adv/";
-    public static String URLUpdate = SERVER + "updateuser/";
-    public static String URLAccept = SERVER + "selconf/";
+    public static String URLFeedback = BASE_SERVER_URL + "feed/";
+    public static String URLAd = BASE_SERVER_URL + "adv/";
+    public static String URLUpdate = BASE_SERVER_URL + "updateuser/";
+    public static String URLAccept = BASE_SERVER_URL + "selconf/";
 
-    public static String URL_FORGOT_PASSWORD = SERVER + "forgotpassword_sel/";
-    public static String URL_PASSWORD_VERIFICATION = SERVER + "passverification_sel/";
-    public static String URL_PASSWORD_CHANGE = SERVER + "passchange_sel/";
+    public static String URL_FORGOT_PASSWORD = BASE_SERVER_URL + "forgotpassword_sel/";
+    public static String URL_PASSWORD_VERIFICATION = BASE_SERVER_URL + "passverification_sel/";
+    public static String URL_PASSWORD_CHANGE = BASE_SERVER_URL + "passchange_sel/";
 
-    public static String URL_RETURNS = SERVER + "returnpolicy/";
+    public static String URL_RETURNS = BASE_SERVER_URL + "returnpolicy/";
 
-    public static String URL_ACCESS_CODE_VERIFICATION = SERVER + "accesscode/";
+    public static String URL_ACCESS_CODE_VERIFICATION = BASE_SERVER_URL + "accesscode/";
 
-    public static String URL_FETCH_REFERRAL_CODE = SERVER + "recommend_sel/";
+    public static String URL_FETCH_REFERRAL_CODE = BASE_SERVER_URL + "recommend_sel/";
 }
