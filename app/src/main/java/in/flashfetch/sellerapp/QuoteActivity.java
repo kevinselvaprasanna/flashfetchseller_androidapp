@@ -222,6 +222,7 @@ public class QuoteActivity extends BaseActivity {
                     if(Utils.isInternetAvailable(QuoteActivity.this)){
 
                         QuoteObject quoteObject  = new QuoteObject();
+
                         quoteObject.setProductId(productId);
                         quoteObject.setQuotedPrice(quotedPrice);
                         quoteObject.setComments(comments);
@@ -237,6 +238,7 @@ public class QuoteActivity extends BaseActivity {
                                 progressDialog.dismiss();
 
                                 ContentValues cv = new ContentValues();
+
                                 cv.put("name",productName);
                                 cv.put("qprice",quotedPrice);
                                 cv.put("type",productType);
