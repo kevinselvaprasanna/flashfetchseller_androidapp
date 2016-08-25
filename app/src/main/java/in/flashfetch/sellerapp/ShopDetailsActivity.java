@@ -153,15 +153,6 @@ public class ShopDetailsActivity extends BaseActivity {
         });*/
     }
 
-   /* private boolean validate()
-    {
-        if(shopname.getText().length()==0||shopid.getText().length()==0||shopphone.getText().length()==0||shopad1.getText().length()==0||shopad2.getText().length()==0) {
-            Toast.makeText(this,"One or more fields is empty",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }*/
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();

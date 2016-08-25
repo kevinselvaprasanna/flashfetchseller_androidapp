@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import java.util.ArrayList;
-import in.flashfetch.sellerapp.Objects.Notifications;
+import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.Objects.Transactions;
 
 public class DatabaseHelper {
@@ -34,7 +34,7 @@ public class DatabaseHelper {
            /* db.execSQL(" DROP TABLE IF EXISTS " + Notification.TABLE_NAME);*/
             db.execSQL("CREATE TABLE " + Transactions.TABLE_NAME + "(id VARCHAR PRIMARY KEY,buyer_name VARCHAR, name VARCHAR,url VARCHAR DEFAULT 'http://www.jfgbuofbgabwiewak.com/', imgurl VARCHAR, price VARCHAR, timesent BIGINT, time BIGINT,loc VARCHAR, quoted INT DEFAULT 0, qprice VARCHAR DEFAULT '0', type INT DEFAULT 0, deltype INT DEFAULT 0, comment VARCHAR DEFAULT ' ',bargained INT DEFAULT 0,bgprice VARCHAR DEFAULT ' ',bgexptime BIGINT DEFAULT 1459424183578,cuscon INT DEFAULT 0,selcon INT DEFAULT 0,del INT DEFAULT 0,buyno BIGINT DEFAULT 0)");
             Log.d("dmydb", "DATABSE CREATED");
-            db.execSQL("CREATE TABLE " + Notifications.TABLE_NAME + "(id VARCHAR PRIMARY KEY,text VARCHAR,time BIGINT)");
+            db.execSQL("CREATE TABLE " + Notification.TABLE_NAME + "(id VARCHAR PRIMARY KEY,text VARCHAR,time BIGINT)");
             Log.d("dmydb", "DATABSE CREATED");
         }
 
@@ -62,17 +62,17 @@ public class DatabaseHelper {
 
     public long addNotification(ContentValues cv) {
         open();
-        long id = ourDatabase.insert(Notifications.TABLE_NAME, null, cv);
+        long id = ourDatabase.insert(Notification.TABLE_NAME, null, cv);
         Log.d("dmydb","NOT ADDED");
         close();
         return id;
     }
 
-    public ArrayList<Notifications> getAllNotifications() {
+    public ArrayList<Notification> getAllNotifications() {
         open();
-        String[] columns = Notifications.columns;
-        Cursor c = ourDatabase.query(Notifications.TABLE_NAME, columns, null, null, null, null, "time DESC");
-        ArrayList<Notifications> arrayList = Notifications.getArrayList(c);
+        String[] columns = Notification.columns;
+        Cursor c = ourDatabase.query(Notification.TABLE_NAME, columns, null, null, null, null, "time DESC");
+        ArrayList<Notification> arrayList = Notification.getArrayList(c);
         close();
         return arrayList;
     }

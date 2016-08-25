@@ -1,7 +1,6 @@
 package in.flashfetch.sellerapp;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,13 +11,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.Adapters.NotificationsAdapter;
-import in.flashfetch.sellerapp.Objects.Notifications;
+import in.flashfetch.sellerapp.Objects.Notification;
 
-public class NotificationsActivity extends AppCompatActivity {
+public class NotificationsActivity extends BaseActivity {
 
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private ArrayList<Notifications> notifications;
+    private ArrayList<Notification> notifications;
     private TextView emptyNotifications;
 
     @Override
@@ -52,11 +51,11 @@ public class NotificationsActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        notifications = Notifications.getAllNotifications(NotificationsActivity.this);
+        notifications = Notification.getAllNotifications(NotificationsActivity.this);
 
         if(notifications.size() > 0) {
-            NotificationsAdapter notsAdapter = new NotificationsAdapter(NotificationsActivity.this, notifications);
-            recyclerView.setAdapter(notsAdapter);
+            NotificationsAdapter notificationsAdapter = new NotificationsAdapter(NotificationsActivity.this, notifications);
+            recyclerView.setAdapter(notificationsAdapter);
         }else{
             emptyNotifications.setVisibility(View.VISIBLE);
         }

@@ -6,39 +6,39 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-import in.flashfetch.sellerapp.Objects.Notifications;
+import in.flashfetch.sellerapp.Objects.Notification;
 import in.flashfetch.sellerapp.R;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
 
-    Context mContext;
-    Typeface font;
-    ArrayList<Notifications> mItems;
+    private Context context;
+    private Typeface font;
+    private ArrayList<Notification> notificationsArrayList;
 
-    /*0 -> item_notification
-     1 -> list_item_provided_2
-     2 -> list_item_provided_2
-     3-> list_item_accepted
-    */
-
-
-    public NotificationsAdapter(Context context, ArrayList<Notifications> items) {
-        mContext = context;
-        mItems = items;
+    public NotificationsAdapter(Context context, ArrayList<Notification> notificationsArrayList) {
+        this.context = context;
+        this.notificationsArrayList = notificationsArrayList;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView not;
+        public ImageView imageView;
+        public TextView heading,description,timer;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            not = (TextView)itemView.findViewById(R.id.not);
 
+            imageView = (ImageView)itemView.findViewById(R.id.notifications_image_view);
+            heading = (TextView)itemView.findViewById(R.id.notifications_heading);
+            description = (TextView)itemView.findViewById(R.id.notifications_description);
+            timer = (TextView)itemView.findViewById(R.id.notifications_timer);
         }
     }
 
@@ -48,30 +48,40 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     }
 
     public NotificationsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout;
 
+        font = Typeface.createFromAsset(context.getAssets(), "fonts/Roboto_Medium.ttf");
 
-       /* font = Typeface.createFromAsset(mContext.getAssets(),
-                "fonts/Lato-Medium.ttf");*/
-
-        layout = R.layout.item_nots;
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_nots, parent, false);
 
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.not.setText(mItems.get(position).text);
+        Notification notification = notificationsArrayList.get(position);
+
+        if(notification.getImageURL() != null) {
+            Glide.with(context).load(notification.getImageURL()).centerCrop().into(holder.imageView);
+        }else {
+            holder.imageView.setVisibility(View.GONE);
+        }
+
+        holder.heading.setText(notification.getHeading());
+        holder.description.setText(notification.getDescription());
+
+        long time = System.currentTimeMillis();
+
+        int difference = (int) ((time - notification.getTimeInMillis())/60000);
+
+        if(difference < 60){
+            holder.timer.setText(difference + "ago");
+        }else{
+            holder.timer.setText((difference/60) + "ago");
+        }
     }
-
-
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return notificationsArrayList.size();
     }
-
-
 }

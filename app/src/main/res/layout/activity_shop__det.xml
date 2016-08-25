@@ -17,49 +17,6 @@
         android:paddingRight="16dp"
         android:layout_weight="1">
 
-       <!-- <EditText
-            android:id="@+id/shop_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:ems="10"
-            android:hint="Shop Name"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/shop_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Shop ID" />
-
-        <EditText
-            android:id="@+id/telephone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:ems="10"
-            android:maxLength="8"
-            android:hint="Telephone"
-            android:inputType="phone" />
-
-        <EditText
-            android:id="@+id/add_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:ems="10"
-            android:hint="Address 1"
-            android:inputType="textPostalAddress" />
-
-        <EditText
-            android:id="@+id/add_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:ems="10"
-            android:hint="Address 2"
-            android:inputType="textPostalAddress" />-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,14 +71,14 @@
             android:text="Edit Categories"
             android:textColor="#fff" />
 
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#0BC6A0"
-            android:text="EDIT INFO"
-            android:textColor="#fff" />
+        <!--<Button-->
+            <!--android:id="@+id/submit"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="#0BC6A0"-->
+            <!--android:text="EDIT INFO"-->
+            <!--android:textColor="#fff" />-->
     </LinearLayout>
 
 </LinearLayout>
