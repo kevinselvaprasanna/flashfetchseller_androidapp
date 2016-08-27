@@ -40,7 +40,7 @@ public class ServiceManager {
     public static class SignUpTask extends AsyncTask<String, Void, Void> {
 
         private JSONObject response;
-        private String name, email, password, phone, shopName, shopId, shopTelephone, address1, address2, shopLocation;
+        private String name, email, password, phone, shopName, shopId, shopTelephone, address1, address2, shopLocation, referralCode;
         private Context context;
         private UIListener uiListener;
 
@@ -58,6 +58,7 @@ public class ServiceManager {
             this.address1 = signUpObject.getShopAddress1();
             this.address2 = signUpObject.getShopAddress2();
             this.shopLocation = signUpObject.getShopLocation();
+            this.referralCode = signUpObject.getReferralCode();
         }
 
 
@@ -80,6 +81,7 @@ public class ServiceManager {
             instiPostParams.add(new PostParam("sid",shopId));
             instiPostParams.add(new PostParam("office",shopTelephone));
             instiPostParams.add(new PostParam("sel_loc",shopLocation));
+            instiPostParams.add(new PostParam("referral_code",referralCode));
 
             response = PostRequest.execute(URLConstants.URLSignup, instiPostParams, null);
             Log.d("RESPONSE", response.toString());

@@ -117,6 +117,8 @@ public class Constants {
 
     public static final String APP_NAME = "FlashFetch";
 
+    // app links
+
     public static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp&hl=en";
 
     public static final String TWITTER_URL = "https://twitter.com/flashfetch";

@@ -351,7 +351,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         public void run() {
             try {
                 //TODO: Change the App update URL
-                URL updateURL = new URL("http://my.company.com/update");
+                URL updateURL = new URL(Constants.PLAY_STORE_URL);
                 URLConnection conn = updateURL.openConnection();
                 InputStream is = conn.getInputStream();
                 BufferedInputStream bis = new BufferedInputStream(is);
@@ -388,14 +388,12 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     .setMessage("Mandatory Update for the App")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                        /* User clicked OK so do some stuff */
-                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp"));
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.PLAY_STORE_URL));
                             startActivity(intent);
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                        /* User clicked Cancel */
                             finish();
                         }
                     })

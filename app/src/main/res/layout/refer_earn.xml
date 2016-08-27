@@ -9,8 +9,6 @@
 
     <include layout="@layout/app_bar"/>
 
-    <include layout="@layout/progress_bar"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -77,7 +75,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="@drawable/whatsapp" />
+                            android:background="@drawable/WhatsApp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -129,6 +127,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
@@ -137,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="@drawable/more" />
+                            android:background="@drawable/dots_horizontal" />
 
                         <TextView
                             android:layout_width="wrap_content"

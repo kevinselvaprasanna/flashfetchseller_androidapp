@@ -57,5 +57,8 @@
     <string name="title_activity_address">Address</string>
     <string name="title_activity_verify_email">VerifyEmail</string>
 
+    <!-- app urls-->
+
+    <string name="google_play_app_url"><u>http://goo.gl/xnwC9V</u></string>
 
 </resources>

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
+import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
 import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.UserProfile;
@@ -41,15 +42,17 @@ public class ReferAndEarn extends BaseActivity implements View.OnClickListener{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(ReferAndEarn.this,MainActivity.class);
-//                startActivity(intent);
-//                finish();
-                onBackPressed();
-            }
-        });
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+    //                Intent intent = new Intent(ReferAndEarn.this,MainActivity.class);
+    //                startActivity(intent);
+    //                finish();
+                    onBackPressed();
+                }
+            });
+        }
 
         code = (TextView)findViewById(R.id.code);
 
@@ -107,7 +110,7 @@ public class ReferAndEarn extends BaseActivity implements View.OnClickListener{
         Intent intent;
         intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "Your Code : " + referralCode);
+        intent.putExtra(Intent.EXTRA_TEXT, "Hello, I have found this great app which increased my sales. Get it here" + R.string.google_play_app_url + "Use Code : " + referralCode + "to get Reward points");
 
         switch (v.getId()){
             case R.id.whatsapp:

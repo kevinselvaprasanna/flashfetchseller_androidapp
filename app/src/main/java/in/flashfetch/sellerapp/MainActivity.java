@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -77,7 +78,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("FlashFetch Seller");
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("FlashFetch Seller");
+        }
+
         font = getTypeface();
 
         progressDialog = getProgressDialog(this);
@@ -87,11 +91,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id. drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        if (drawer != null) {
+            drawer.setDrawerListener(toggle);
+        }
         toggle.syncState();
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
 
         View header = navigationView.getHeaderView(0);
 
