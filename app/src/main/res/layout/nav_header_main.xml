@@ -15,7 +15,7 @@
         android:layout_width="165dp"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/nav_logo" />
+        android:src="@drawable/navigation" />
 
     <TextView
         android:id="@+id/shop_name"

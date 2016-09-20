@@ -51,7 +51,7 @@ public class DemoImageFragment extends Fragment {
         ImageView imageView = (ImageView)view.findViewById(R.id.demo_imageView);
         Glide.with(getActivity()).load(images[index]).into(imageView);
 
-        if(index == 4){
+        if(index == 5){
             Toast.makeText(getContext(),"You reached end of demo",Toast.LENGTH_SHORT).show();
         }
     }
