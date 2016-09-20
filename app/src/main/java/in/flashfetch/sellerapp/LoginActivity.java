@@ -127,8 +127,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         setContentView(R.layout.login_main);
 
-        Utils.startPlayServices(this);
-
         font = getTypeface();
 
         progressDialog = getProgressDialog(this);

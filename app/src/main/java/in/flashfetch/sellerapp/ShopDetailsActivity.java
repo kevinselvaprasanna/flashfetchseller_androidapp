@@ -69,7 +69,7 @@ public class ShopDetailsActivity extends BaseActivity {
         shopad2 = (TextView) findViewById(R.id.add_2);
         shopphone = (TextView) findViewById(R.id.telephone);
 
-        editInfo = (Button)findViewById(R.id.submit);
+//        editInfo = (Button)findViewById(R.id.submit);
         editcat = (Button)findViewById(R.id.editCategories);
 
         shopname.setText("ShopName " + UserProfile.getShopName(context));
@@ -91,19 +91,19 @@ public class ShopDetailsActivity extends BaseActivity {
             }
         });
 
-        editInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Contact us for changing your shop information, we will update it after validating");
-                builder.setPositiveButton("OK",null);
-
-                alertDialog = builder.create();
-                alertDialog.show();
-
-            }
-        });
+//        editInfo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage("Contact us for changing your shop information, we will update it after validating");
+//                builder.setPositiveButton("OK",null);
+//
+//                alertDialog = builder.create();
+//                alertDialog.show();
+//
+//            }
+//        });
 
         /*submit.setOnClickListener(new View.OnClickListener() {
             @Override

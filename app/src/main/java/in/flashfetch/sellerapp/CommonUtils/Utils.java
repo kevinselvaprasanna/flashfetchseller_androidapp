@@ -149,7 +149,7 @@ public class Utils {
         return false;
     }
 
-    public static void doLogout(final Activity activity, final UIListener uiListener) {
+    public static void doLogout(final Activity activity) {
         final AlertDialog alertDialog;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -160,9 +160,7 @@ public class Utils {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                uiListener.onSuccess();
                 logout(activity);
-                uiListener.onCancelled();
                 Toast.makeText(activity, "Successfully Logged out", Toast.LENGTH_SHORT).show();
             }
         });

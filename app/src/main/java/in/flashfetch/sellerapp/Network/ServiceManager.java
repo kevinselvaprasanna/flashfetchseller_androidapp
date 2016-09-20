@@ -71,6 +71,7 @@ public class ServiceManager {
         protected Void doInBackground(String... params) {
 
             ArrayList<PostParam> instiPostParams = new ArrayList<>();
+
             instiPostParams.add(new PostParam("name", name));
             instiPostParams.add(new PostParam("email", email));
             instiPostParams.add(new PostParam("pass", password));
@@ -93,8 +94,21 @@ public class ServiceManager {
             super.onPostExecute(aVoid);
             try {
                 if(response.getJSONObject("data").getInt("result") == 1) {
+
                     UserProfile.setToken(response.getJSONObject("data").getString("token"), context);
+                    UserProfile.setName(name, context);
+                    UserProfile.setEmail(email, context);
+                    UserProfile.setPhone(phone, context);
+                    UserProfile.setPassword(password,context);
+                    UserProfile.setShopId(shopId, context);
+                    UserProfile.setShopPhone(shopTelephone, context);
+                    UserProfile.setAddress1(address1, context);
+                    UserProfile.setAddress2(address2, context);
+                    UserProfile.setShopName(shopName, context);
+                    UserProfile.setLocation(shopLocation,context);
+
                     uiListener.onSuccess();
+
                 }else if(response.getJSONObject("data").getInt("result") == 0) {
                     uiListener.onFailure();
                 }
@@ -150,11 +164,11 @@ public class ServiceManager {
         protected Boolean doInBackground(Void... params) {
 
             ArrayList<PostParam> postParams = new ArrayList<>();
+
             postParams.add(new PostParam("email", mEmail));
             postParams.add(new PostParam("pass",mPassword));
 
             response = PostRequest.execute(URLConstants.URLLogin, postParams, null);
-            Log.d("RESPONSE", response.toString());
 
             try {
                 if(response.getJSONObject("data").getInt("result") == 1) {
@@ -167,18 +181,18 @@ public class ServiceManager {
                         transactions.saveTransaction(context);
                     }
 
-                    UserProfile.setEmail(mEmail, context);
-                    UserProfile.setAccess(response.getJSONObject("data").getBoolean("accesscode"),context);
-                    UserProfile.setCategory(response.getJSONObject("data").getInt("cat"), context);
-                    UserProfile.setToken(response.getJSONObject("data").getString("token"), context);
                     UserProfile.setName(response.getJSONObject("data").getString("user"), context);
-                    UserProfile.setPhone(response.getJSONObject("data").getString("mobile"), context);
                     UserProfile.setPassword(response.getJSONObject("data").getString("password"), context);
+                    UserProfile.setEmail(mEmail, context);
+                    UserProfile.setToken(response.getJSONObject("data").getString("token"), context);
+                    UserProfile.setAccess(response.getJSONObject("data").getBoolean("access"),context);
+                    UserProfile.setCategory(response.getJSONObject("data").getInt("category"), context);
+                    UserProfile.setPhone(response.getJSONObject("data").getString("mobile"), context);
                     UserProfile.setShopId(response.getJSONObject("data").getString("shopid"), context);
                     UserProfile.setShopPhone(response.getJSONObject("data").getString("office_no"), context);
                     UserProfile.setAddress1(response.getJSONObject("data").getString("Address1"), context);
                     UserProfile.setAddress2(response.getJSONObject("data").getString("Address2"), context);
-                    UserProfile.setShopName(response.getJSONObject("data").getString("shopName"), context);
+                    UserProfile.setShopName(response.getJSONObject("data").getString("shopname"), context);
                     UserProfile.setLocation(response.getJSONObject("data").getString("sel_loc"), context);
 
                     return true;

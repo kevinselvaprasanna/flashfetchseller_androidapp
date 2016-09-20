@@ -59,6 +59,6 @@
 
     <!-- app urls-->
 
-    <string name="google_play_app_url"><u>http://goo.gl/xnwC9V</u></string>
+    <string name="google_play_app_url">http://goo.gl/xnwC9V</string>
 
 </resources>

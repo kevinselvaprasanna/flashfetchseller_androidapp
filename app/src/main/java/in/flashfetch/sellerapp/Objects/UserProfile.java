@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import in.flashfetch.sellerapp.SignUpActivity;
 
@@ -117,6 +118,19 @@ public class UserProfile {
         editor.commit();
     }
 
+    public static void setShopLatitude(String latitude, Context context){
+        SharedPreferences preferences = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("latitude", latitude);
+        editor.commit();
+    }
+
+    public static void setShopLongitude(String longitude, Context context){
+        SharedPreferences preferences = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("longitude", longitude);
+        editor.commit();
+    }
 
     public static String getName(Context context) {
         SharedPreferences pref = context.getSharedPreferences("sp", Context.MODE_PRIVATE);

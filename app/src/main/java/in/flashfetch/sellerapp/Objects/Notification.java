@@ -9,7 +9,7 @@ import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 
 public class Notification {
 
-    public static String[] columns = {"notificationID","heading","description","imageURL","time"};
+    public static String[] columns = {"notificationId","heading","description","imageURL","time"};
     public static String TABLE_NAME = "Notifications";
 
     private int notificationId;

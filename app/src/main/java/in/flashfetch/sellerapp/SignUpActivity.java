@@ -1,6 +1,7 @@
 package in.flashfetch.sellerapp;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -37,9 +38,10 @@ import in.flashfetch.sellerapp.Services.IE_RegistrationIntentService;
 
 public class SignUpActivity extends BaseActivity {
 
-    private EditText name, shopName, email, phone,password, confirmPassword, shopId, shopTelephone, address1, address2, referralCode;
+    private Context context;
+    private EditText name, shopName, email, phone, password, confirmPassword, shopId, shopTelephone, address1, address2, referralCode;
     private Button submitButton, nextButton, backButton;
-    private TextView loc_gps,shopimg;
+    private TextView loc_gps, shopimg;
     private ViewFlipper viewFlipper;
     private String selectedImagePath;
     private View firstView;
@@ -50,7 +52,7 @@ public class SignUpActivity extends BaseActivity {
     private ProgressDialog progressDialog;
     private String shopLocation = null;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
-    private static final LatLngBounds BOUNDS_CHENNAI = new LatLngBounds(new LatLng(13.080680,80.260718),new LatLng(13.082680, 80.270718) );
+    private static final LatLngBounds BOUNDS_CHENNAI = new LatLngBounds(new LatLng(13.080680, 80.260718), new LatLng(13.082680, 80.270718));
     private SignUpObject signUpObject = new SignUpObject();
     private Toolbar toolbar;
 
@@ -63,7 +65,7 @@ public class SignUpActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Registration");
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,12 +74,12 @@ public class SignUpActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(viewFlipper.getCurrentView() == firstView){
+                if (viewFlipper.getCurrentView() == firstView) {
 //                    Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
 //                    startActivity(intent);
 //                    finish();
                     onBackPressed();
-                }else{
+                } else {
                     viewFlipper.showPrevious();
                 }
             }
@@ -85,29 +87,29 @@ public class SignUpActivity extends BaseActivity {
 
         progressDialog = getProgressDialog(SignUpActivity.this);
 
-        viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper2);
+        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper2);
 
-        firstView = (View)findViewById(R.id.first_view);
+        firstView = (View) findViewById(R.id.first_view);
 
-        name = (EditText)findViewById(R.id.Name);
-        email = (EditText)findViewById(R.id.EmailID);
-        phone = (EditText)findViewById(R.id.MobileNum);
-        password = (EditText)findViewById(R.id.Password);
-        confirmPassword = (EditText)findViewById(R.id.confPass);
-        referralCode = (EditText)findViewById(R.id.referral_code);
+        name = (EditText) findViewById(R.id.Name);
+        email = (EditText) findViewById(R.id.EmailID);
+        phone = (EditText) findViewById(R.id.MobileNum);
+        password = (EditText) findViewById(R.id.Password);
+        confirmPassword = (EditText) findViewById(R.id.confPass);
+        referralCode = (EditText) findViewById(R.id.referral_code);
 
-        shopName = (EditText)findViewById(R.id.shop_name);
-        shopId = (EditText)findViewById(R.id.shop_id);
-        shopTelephone = (EditText)findViewById(R.id.telephone);
-        address1 = (EditText)findViewById(R.id.add_1);
-        address2 = (EditText)findViewById(R.id.add_2);
+        shopName = (EditText) findViewById(R.id.shop_name);
+        shopId = (EditText) findViewById(R.id.shop_id);
+        shopTelephone = (EditText) findViewById(R.id.telephone);
+        address1 = (EditText) findViewById(R.id.add_1);
+        address2 = (EditText) findViewById(R.id.add_2);
 
-        loc_gps = (TextView)findViewById(R.id.location);
-        shopimg = (TextView)findViewById(R.id.shop_img);
+        loc_gps = (TextView) findViewById(R.id.location);
+//        shopimg = (TextView)findViewById(R.id.shop_img);
 
-        nextButton = (Button)findViewById(R.id.Next);
-        backButton = (Button)findViewById(R.id.back);
-        submitButton = (Button)findViewById(R.id.next);
+        nextButton = (Button) findViewById(R.id.Next);
+        backButton = (Button) findViewById(R.id.back);
+        submitButton = (Button) findViewById(R.id.next);
 
         loc_gps.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,19 +127,19 @@ public class SignUpActivity extends BaseActivity {
             }
         });
 
-        shopimg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-            }
-        });
+//        shopimg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+//                photoPickerIntent.setType("image/*");
+//                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+//            }
+//        });
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate1()) {
+                if (validate1()) {
                     viewFlipper.showNext();
                 }
             }
@@ -153,7 +155,7 @@ public class SignUpActivity extends BaseActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                if(validate2()) {
+                if (validate2()) {
 
                     signUpObject.setName(name.getText().toString());
                     signUpObject.setEmail(email.getText().toString());
@@ -167,7 +169,7 @@ public class SignUpActivity extends BaseActivity {
                     signUpObject.setShopLocation(shopLocation);
                     signUpObject.setReferralCode(referralCode.getText().toString());
 
-                    if(Utils.isInternetAvailable(SignUpActivity.this)){
+                    if (Utils.isInternetAvailable(SignUpActivity.this)) {
 
                         progressDialog.show();
                         viewFlipper.setVisibility(View.GONE);
@@ -178,24 +180,9 @@ public class SignUpActivity extends BaseActivity {
 
                                 progressDialog.dismiss();
 
-                                UserProfile.setName(name.getText().toString(), SignUpActivity.this);
-                                UserProfile.setEmail(email.getText().toString(), SignUpActivity.this);
-                                UserProfile.setPhone(phone.getText().toString(), SignUpActivity.this);
-                                UserProfile.setPassword(password.getText().toString(),SignUpActivity.this);
-                                UserProfile.setShopId(shopId.getText().toString(), SignUpActivity.this);
-                                UserProfile.setShopPhone(shopTelephone.getText().toString(), SignUpActivity.this);
-                                UserProfile.setAddress1(address1.getText().toString(), SignUpActivity.this);
-                                UserProfile.setAddress2(address2.getText().toString(), SignUpActivity.this);
-                                UserProfile.setShopName(shopName.getText().toString(), SignUpActivity.this);
-                                UserProfile.setLocation(shopLocation,SignUpActivity.this);
-
-                                Intent intent = new Intent(SignUpActivity.this,CategoryActivity.class);
-//                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                Intent intent = new Intent(SignUpActivity.this, CategoryActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
-
-                                intent = new Intent(SignUpActivity.this, IE_RegistrationIntentService.class);
-                                startService(intent);
-                                finish();
                             }
 
                             @Override
@@ -205,7 +192,7 @@ public class SignUpActivity extends BaseActivity {
 
                                 //TODO: set the viewflipper to first registration page
 
-                                Toast.makeText(SignUpActivity.this,"Email is already registered",Toast.LENGTH_LONG).show();
+                                Toast.makeText(SignUpActivity.this, "Email is already registered", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -213,7 +200,7 @@ public class SignUpActivity extends BaseActivity {
                                 progressDialog.dismiss();
                                 viewFlipper.setVisibility(View.VISIBLE);
 
-                                Toast.makeText(SignUpActivity.this,"Server is currently busy",Toast.LENGTH_LONG).show();
+                                Toast.makeText(SignUpActivity.this, "Server is currently busy", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -222,26 +209,29 @@ public class SignUpActivity extends BaseActivity {
                                 viewFlipper.setVisibility(View.VISIBLE);
                             }
                         });
-                    }else{
+                    } else {
                         Toasts.internetUnavailableToast(SignUpActivity.this);
                     }
                 }
             }
         });
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(requestCode) {
+        switch (requestCode) {
             case SELECT_PHOTO:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     selectedImageUri = data.getData();
                     selectedImagePath = getPath(selectedImageUri);
                     Toast.makeText(this, selectedImagePath, Toast.LENGTH_LONG).show();
-                    Log.d("imagepath",selectedImageUri.toString());
+                    Log.d("imagepath", selectedImageUri.toString());
                     break;
                 }
             case PLACE_PICKER_REQUEST:
                 if (resultCode == RESULT_OK) {
                     Place place = PlacePicker.getPlace(this, data);
+                    UserProfile.setShopLatitude(place.getLatLng().latitude+"", context);
+                    UserProfile.setShopLongitude(place.getLatLng().longitude+"", context);
                     shopLocation = String.format("%s", place.getName());
                     break;
                 }
@@ -251,15 +241,15 @@ public class SignUpActivity extends BaseActivity {
 
 
     public String getPath(Uri uri) {
-        if( uri == null ) {
+        if (uri == null) {
             // TODO perform some logging or show user FeedBackActivity
             return null;
         }
         // try to retrieve the image from the media store first
         // this will only work for images selected from gallery
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if( cursor != null ){
+        if (cursor != null) {
             int column_index = cursor
                     .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
@@ -268,40 +258,32 @@ public class SignUpActivity extends BaseActivity {
         return uri.getPath();
     }
 
-    private boolean validate1()
-    {
-        if(TextUtils.isEmpty(name.getText().toString()))
-        {
-            Toast.makeText(this,"Name cannot be empty",Toast.LENGTH_SHORT).show();
+    private boolean validate1() {
+        if (TextUtils.isEmpty(name.getText().toString())) {
+            Toast.makeText(this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(TextUtils.isEmpty(email.getText().toString()))
-        {
-            Toast.makeText(this,"Email cannot be empty",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(email.getText().toString())) {
+            Toast.makeText(this, "Email cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(!(email.getText().toString().contains(".")&&email.getText().toString().contains(".")))
-        {
-            Toast.makeText(this,"Invalid Email",Toast.LENGTH_SHORT).show();
+        if (!(email.getText().toString().contains(".") && email.getText().toString().contains("."))) {
+            Toast.makeText(this, "Invalid Email", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(phone))
-        {
-            Toast.makeText(this,"Phone cannot be empty",Toast.LENGTH_SHORT).show();
+        if (isempty(phone)) {
+            Toast.makeText(this, "Phone cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(password)||password.getText().length()<8)
-        {
-            Toast.makeText(this,"Password cannot be empty or less than 8 letters",Toast.LENGTH_SHORT).show();
+        if (isempty(password) || password.getText().length() < 8) {
+            Toast.makeText(this, "Password cannot be empty or less than 8 letters", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(confirmPassword))
-        {
-            Toast.makeText(this,"Password cannot be empty",Toast.LENGTH_SHORT).show();
+        if (isempty(confirmPassword)) {
+            Toast.makeText(this, "Password cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(!password.getText().toString().equals(confirmPassword.getText().toString()))
-        {
+        if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
             Toast.makeText(this, "Password and Confirm Password do not match", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -309,44 +291,36 @@ public class SignUpActivity extends BaseActivity {
         return true;
     }
 
-    private boolean validate2()
-    {
-        if(isempty(shopName))
-        {
-            Toast.makeText(this,"Shop Name cannot be empty",Toast.LENGTH_SHORT).show();
+    private boolean validate2() {
+        if (isempty(shopName)) {
+            Toast.makeText(this, "Shop Name cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(shopId))
-        {
-            Toast.makeText(this,"Shop ID cannot be empty",Toast.LENGTH_SHORT).show();
+        if (isempty(shopId)) {
+            Toast.makeText(this, "Shop ID cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(shopTelephone))
-        {
-            Toast.makeText(this,"Shop Telephone cannot be empty",Toast.LENGTH_SHORT).show();
+        if (isempty(shopTelephone)) {
+            Toast.makeText(this, "Shop Telephone cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(address1))
-        {
-            Toast.makeText(this,"Address 1 cannot be empty",Toast.LENGTH_SHORT).show();
+        if (isempty(address1)) {
+            Toast.makeText(this, "Address 1 cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(isempty(address2))
-        {
-            Toast.makeText(this,"Address 2 cannot be empty",Toast.LENGTH_SHORT).show();
+        if (isempty(address2)) {
+            Toast.makeText(this, "Address 2 cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(shopLocation.isEmpty())
-        {
-            Toast.makeText(this,"Select your location",Toast.LENGTH_SHORT).show();
+        if (shopLocation.isEmpty()) {
+            Toast.makeText(this, "Select your location", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
     }
 
 
-    private boolean isempty(EditText editText)
-    {
+    private boolean isempty(EditText editText) {
         return editText.getText().toString().isEmpty();
     }
 

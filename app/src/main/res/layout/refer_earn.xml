@@ -75,7 +75,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="@drawable/WhatsApp" />
+                            android:background="@drawable/whatsapp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -136,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="@drawable/dots_horizontal" />
+                            android:background="@drawable/more" />
 
                         <TextView
                             android:layout_width="wrap_content"

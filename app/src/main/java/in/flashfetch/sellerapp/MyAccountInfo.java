@@ -33,7 +33,7 @@ public class MyAccountInfo extends BaseActivity {
 
         setContentView(R.layout.activity_my__acc);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("My Account");
@@ -49,48 +49,48 @@ public class MyAccountInfo extends BaseActivity {
 
         existingPhoneNumber = UserProfile.getPhone(MyAccountInfo.this);
 
-        accountForm = (LinearLayout)findViewById(R.id.account_form);
+        accountForm = (LinearLayout) findViewById(R.id.account_form);
 
-        name = (TextView)findViewById(R.id.name);
-        email = (TextView)findViewById(R.id.email);
-        phone = (TextView)findViewById(R.id.phone);
-        edit_phone = (EditText)findViewById(R.id.edit_phone);
+        name = (TextView) findViewById(R.id.name);
+        email = (TextView) findViewById(R.id.email);
+        phone = (TextView) findViewById(R.id.phone);
+        edit_phone = (EditText) findViewById(R.id.edit_phone);
 
         name.setText(UserProfile.getName(MyAccountInfo.this));
         email.setText(UserProfile.getEmail(MyAccountInfo.this));
         phone.setText(UserProfile.getPhone(MyAccountInfo.this));
 
-        progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        edit = (Button)findViewById(R.id.edit);
+        edit = (Button) findViewById(R.id.edit);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isEdited){
+                if (!isEdited) {
                     edit.setText("Submit");
                     phone.setVisibility(View.GONE);
                     edit_phone.setVisibility(View.VISIBLE);
                     isEdited = true;
-                }else{
+                } else {
                     newPhoneNumber = edit_phone.getText().toString();
 
-                    if(TextUtils.isEmpty(newPhoneNumber)){
-                        Toast.makeText(MyAccountInfo.this,"Enter your new phone number",Toast.LENGTH_SHORT).show();
+                    if (TextUtils.isEmpty(newPhoneNumber)) {
+                        Toast.makeText(MyAccountInfo.this, "Enter your new phone number", Toast.LENGTH_SHORT).show();
                         edit.setText("Edit");
                         phone.setVisibility(View.VISIBLE);
                         edit_phone.setVisibility(View.GONE);
                         phone.setText(existingPhoneNumber);
                         isEdited = false;
-                    }else{
-                        if(Utils.validatePhoneNumberUpdate(existingPhoneNumber,newPhoneNumber)){
-                            if(Utils.checkPhoneNumberLength(newPhoneNumber)){
+                    } else {
+                        if (Utils.validatePhoneNumberUpdate(existingPhoneNumber, newPhoneNumber)) {
+                            if (Utils.checkPhoneNumberLength(newPhoneNumber)) {
                                 edit.setText("Edit");
                                 phone.setVisibility(View.VISIBLE);
                                 edit_phone.setVisibility(View.GONE);
                                 isEdited = false;
 
-                                if(Utils.isInternetAvailable(MyAccountInfo.this)){
+                                if (Utils.isInternetAvailable(MyAccountInfo.this)) {
 
                                     progressBar.setVisibility(View.VISIBLE);
                                     accountForm.setVisibility(View.GONE);
@@ -101,7 +101,7 @@ public class MyAccountInfo extends BaseActivity {
                                             progressBar.setVisibility(View.GONE);
                                             accountForm.setVisibility(View.VISIBLE);
                                             phone.setText(newPhoneNumber);
-                                            UserProfile.setPhone(newPhoneNumber,MyAccountInfo.this);
+                                            UserProfile.setPhone(newPhoneNumber, MyAccountInfo.this);
                                             Toast.makeText(MyAccountInfo.this, "Your information has been successfully saved", Toast.LENGTH_SHORT).show();
                                         }
 
@@ -126,16 +126,16 @@ public class MyAccountInfo extends BaseActivity {
                                             phone.setText(existingPhoneNumber);
                                         }
                                     });
-                                }else{
+                                } else {
                                     Toasts.internetUnavailableToast(MyAccountInfo.this);
                                 }
-                            }else{
+                            } else {
                                 edit_phone.setVisibility(View.VISIBLE);
                                 phone.setVisibility(View.GONE);
                                 edit.setText("Submit");
                                 Toast.makeText(MyAccountInfo.this, "Enter correct phone phone number", Toast.LENGTH_SHORT).show();
                             }
-                        }else{
+                        } else {
                             edit_phone.setVisibility(View.VISIBLE);
                             phone.setVisibility(View.GONE);
                             edit.setText("Submit");
@@ -146,7 +146,7 @@ public class MyAccountInfo extends BaseActivity {
             }
         });
 
-        logout = (Button)findViewById(R.id.logout);
+        logout = (Button) findViewById(R.id.logout);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,27 +156,7 @@ public class MyAccountInfo extends BaseActivity {
                 progressDialog.setMessage("Logging out...");
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-                Utils.doLogout(MyAccountInfo.this, new UIListener() {
-                    @Override
-                    public void onSuccess() {
-                        progressDialog.show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-
-                    }
-
-                    @Override
-                    public void onConnectionError() {
-
-                    }
-
-                    @Override
-                    public void onCancelled() {
-                        progressDialog.dismiss();
-                    }
-                });
+                Utils.doLogout(MyAccountInfo.this);
             }
         });
     }

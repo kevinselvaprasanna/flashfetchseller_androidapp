@@ -1,6 +1,8 @@
 package in.flashfetch.sellerapp;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
@@ -10,6 +12,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +41,7 @@ import in.flashfetch.sellerapp.Network.ServiceManager;
 import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
-public class Returns extends AppCompatActivity {
+public class Returns extends BaseActivity {
 
     private CheckBox[] check;
     private EditText other;
@@ -44,18 +49,12 @@ public class Returns extends AppCompatActivity {
     private CheckBox acceptReturns;
     private int[] primeNumbersList;
     private int product = 1;
+    private ProgressDialog progressDialog;
+    private Context context;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-//        try {
-//            TimeUnit.MILLISECONDS.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-//        setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
 
@@ -79,6 +78,8 @@ public class Returns extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        progressDialog = getProgressDialog(context);
 
         primeNumbersList = Utils.generatePrimeNumbers(11);
         submit = (Button) findViewById(R.id.return_submit_button);
@@ -171,14 +172,16 @@ public class Returns extends AppCompatActivity {
                     }
 
                     if(Utils.isInternetAvailable(Returns.this)){
-                        //TODO: Block Service Call if Return URL is not working
+
+                        progressDialog.show();
+
                         ServiceManager.callReturnPolicyService(Returns.this, product, new UIListener() {
                             @Override
                             public void onSuccess() {
+                                progressDialog.dismiss();
                                 Toast.makeText(Returns.this, "Yours returns policy has been saved", Toast.LENGTH_LONG).show();
                                 UserProfile.setReturns(product,Returns.this);
                                 Intent intent = new Intent(Returns.this, MainActivity.class);
-//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("FROM_REGISTRATION", Constants.IS_FROM_REGISTRATION_FLOW);
                                 startActivity(intent);
                                 finish();
@@ -186,17 +189,19 @@ public class Returns extends AppCompatActivity {
 
                             @Override
                             public void onFailure() {
+                                progressDialog.dismiss();
                                 Toast.makeText(Returns.this, "Server is currently busy", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onConnectionError() {
+                                progressDialog.dismiss();
                                 Toast.makeText(Returns.this, "Server is currently busy", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onCancelled() {
-
+                                progressDialog.dismiss();
                             }
                         });
                     }else{

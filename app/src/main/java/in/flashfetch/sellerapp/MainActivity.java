@@ -321,27 +321,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             progressDialog.setMessage("Logging out...");
 
-            Utils.doLogout(MainActivity.this, new UIListener() {
-                @Override
-                public void onSuccess() {
-                    progressDialog.show();
-                }
-
-                @Override
-                public void onFailure() {
-
-                }
-
-                @Override
-                public void onConnectionError() {
-
-                }
-
-                @Override
-                public void onCancelled() {
-                    progressDialog.dismiss();
-                }
-            });
+            Utils.doLogout(MainActivity.this);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

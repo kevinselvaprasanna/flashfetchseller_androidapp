@@ -1,5 +1,7 @@
 package in.flashfetch.sellerapp.Constants;
 
+import android.text.SpannableString;
+
 import in.flashfetch.sellerapp.Objects.SignUpObject;
 import in.flashfetch.sellerapp.Objects.Transactions;
 
@@ -118,6 +120,8 @@ public class Constants {
     public static final String APP_NAME = "FlashFetch";
 
     // app links
+
+    public static final String GOOGLE_REFERRAL_URL = "http://goo.gl/xnwC9V";
 
     public static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=in.flashfetch.sellerapp&hl=en";
 

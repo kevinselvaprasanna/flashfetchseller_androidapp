@@ -2,11 +2,17 @@ package in.flashfetch.sellerapp;
 
 import android.app.ProgressDialog;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +30,7 @@ import in.flashfetch.sellerapp.Objects.UserProfile;
  */
 public class ReferAndEarn extends BaseActivity implements View.OnClickListener{
 
+    private Context context;
     private ImageView whatsApp,gMail,facebook,more;
     private TextView code;
     private ProgressDialog progressDialog;
@@ -34,6 +41,8 @@ public class ReferAndEarn extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.refer_earn);
+
+        context = ReferAndEarn.this;
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
@@ -68,39 +77,43 @@ public class ReferAndEarn extends BaseActivity implements View.OnClickListener{
         gMail.setOnClickListener(this);
         more.setOnClickListener(this);
 
-        if(Utils.isInternetAvailable(ReferAndEarn.this)){
-
-            progressDialog.show();
-
-            ServiceManager.callReferralCodeService(ReferAndEarn.this, UserProfile.getShopId(ReferAndEarn.this), new UIListener() {
-                @Override
-                public void onSuccess() {
-                    progressDialog.dismiss();
-                    code.setText("Your code : " + UserProfile.getReferralCode(ReferAndEarn.this));
-                }
-
-                @Override
-                public void onFailure() {
-                    progressDialog.dismiss();
-                    Toasts.serverBusyToast(ReferAndEarn.this);
-                    code.setText("Your code : XXXX");
-                }
-
-                @Override
-                public void onConnectionError() {
-                    progressDialog.dismiss();
-                    Toasts.serverBusyToast(ReferAndEarn.this);
-                    code.setText("Your code : XXXX");
-                }
-
-                @Override
-                public void onCancelled() {
-                    progressDialog.dismiss();
-                    code.setText("Your code : XXXX");
-                }
-            });
+        if(!TextUtils.equals(UserProfile.getReferralCode(context),"")){
+            code.setText("Your code : " + UserProfile.getReferralCode(ReferAndEarn.this));
         }else{
-            Toasts.internetUnavailableToast(ReferAndEarn.this);
+            if(Utils.isInternetAvailable(ReferAndEarn.this)){
+
+                progressDialog.show();
+
+                ServiceManager.callReferralCodeService(ReferAndEarn.this, UserProfile.getShopId(ReferAndEarn.this), new UIListener() {
+                    @Override
+                    public void onSuccess() {
+                        progressDialog.dismiss();
+                        code.setText("Your code : " + UserProfile.getReferralCode(ReferAndEarn.this));
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        progressDialog.dismiss();
+                        Toasts.serverBusyToast(ReferAndEarn.this);
+                        code.setText("Your code : XXXX");
+                    }
+
+                    @Override
+                    public void onConnectionError() {
+                        progressDialog.dismiss();
+                        Toasts.serverBusyToast(ReferAndEarn.this);
+                        code.setText("Your code : XXXX");
+                    }
+
+                    @Override
+                    public void onCancelled() {
+                        progressDialog.dismiss();
+                        code.setText("Your code : XXXX");
+                    }
+                });
+            }else{
+                Toasts.internetUnavailableToast(ReferAndEarn.this);
+            }
         }
     }
 
@@ -110,7 +123,7 @@ public class ReferAndEarn extends BaseActivity implements View.OnClickListener{
         Intent intent;
         intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "Hello, I have found this great app which increased my sales. Get it here" + R.string.google_play_app_url + "Use Code : " + referralCode + "to get Reward points");
+        intent.putExtra(Intent.EXTRA_TEXT, "Hello, I have found this great app which increased my sales. Get it here " + Constants.GOOGLE_REFERRAL_URL+ "  Use Code : " + referralCode + "  to get Reward points");
 
         switch (v.getId()){
             case R.id.whatsapp:
