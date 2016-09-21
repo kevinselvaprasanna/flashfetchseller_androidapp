@@ -179,8 +179,11 @@ public class Returns extends BaseActivity {
                             @Override
                             public void onSuccess() {
                                 progressDialog.dismiss();
+
                                 Toast.makeText(Returns.this, "Yours returns policy has been saved", Toast.LENGTH_LONG).show();
+
                                 UserProfile.setReturns(product,Returns.this);
+
                                 Intent intent = new Intent(Returns.this, MainActivity.class);
                                 intent.putExtra("FROM_REGISTRATION", Constants.IS_FROM_REGISTRATION_FLOW);
                                 startActivity(intent);

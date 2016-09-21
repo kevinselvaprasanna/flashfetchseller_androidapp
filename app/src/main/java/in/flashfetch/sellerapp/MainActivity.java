@@ -120,6 +120,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 isAccessAllowed = UserProfile.getAccess(MainActivity.this);
             }else if(bundle.getBoolean("FROM_REGISTRATION",false)){
                 isFromRegistrationFlow = true;
+                Toast.makeText(MainActivity.this,"Welcome to FlashFetch, Your App is now ready!",Toast.LENGTH_SHORT).show();
             }else{
                 isAccessAllowed = UserProfile.getAccess(MainActivity.this);
             }
