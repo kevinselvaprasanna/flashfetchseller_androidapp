@@ -1,17 +1,23 @@
 package in.flashfetch.sellerapp;
 
+import android.*;
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -30,6 +36,8 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import in.flashfetch.sellerapp.Adapters.DealsPagerAdapter;
@@ -44,6 +52,8 @@ import in.flashfetch.sellerapp.Objects.UserProfile;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+
     private Typeface font;
     private ImageView nav_img;
     private LinearLayout nav_bg;
@@ -51,6 +61,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private ViewPager pager;
     private PagerSlidingTabStrip pagerSlidingTabStrip;
     private EditText accessCodeText;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private ProgressDialog progressDialog;
     private AlertDialog alertDialog;
     private boolean isAccessAllowed;
@@ -73,6 +85,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         Utils.startPlayServices(this);
 
+        getContacts();
+
         Bundle bundle = getIntent().getExtras();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
@@ -89,28 +103,33 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         pager = (ViewPager) findViewById(R.id.pager);
         pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id. drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        if (drawer != null) {
-            drawer.setDrawerListener(toggle);
+        drawerLayout = (DrawerLayout) findViewById(R.id. drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        if (drawerLayout != null) {
+            drawerLayout.setDrawerListener(toggle);
         }
         toggle.syncState();
 
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(this);
         }
 
-        View header = navigationView.getHeaderView(0);
+        View header = null;
+        if (navigationView != null) {
+            header = navigationView.getHeaderView(0);
+        }
 
-        shopName = (TextView) header.findViewById(R.id.shop_name);
-        sellerEmail = (TextView) header.findViewById(R.id.seller_name);
+        if (header != null) {
+            shopName = (TextView) header.findViewById(R.id.shop_name);
+            sellerEmail = (TextView) header.findViewById(R.id.seller_name);
+            nav_img = (ImageView) header.findViewById(R.id.nav_img);
+            nav_bg = (LinearLayout) header.findViewById(R.id.head_layout);
+        }
 
         shopName.setText(UserProfile.getShopName(MainActivity.this));
         sellerEmail.setText(UserProfile.getName(MainActivity.this));
-
-        nav_img = (ImageView) header.findViewById(R.id.nav_img);
-        nav_bg = (LinearLayout) header.findViewById(R.id.head_layout);
 
         setTypeface();
 
@@ -140,13 +159,59 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         pagerSlidingTabStrip.setViewPager(pager);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void getContacts() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},PERMISSIONS_REQUEST_READ_CONTACTS);
+        }else{
+            //TODO:
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == PERMISSIONS_REQUEST_READ_CONTACTS){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                retrieveContacts();
+            }
+        }
+    }
+
+    private List<String> retrieveContacts() {
+
+        ArrayList<String> phoneNumberList = new ArrayList<>();
+
+        ContentResolver contentResolver = getContentResolver();
+
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null);
+
+        if(cursor.moveToFirst()){
+            do {
+                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+
+                if(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0){
+                    Cursor phoneCursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?", new String[]{id}, null);
+
+                    while (phoneCursor.moveToNext()){
+                        String contactNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                        phoneNumberList.add(contactNumber);
+                    }
+                    phoneCursor.close();
+                }
+
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return phoneNumberList;
+    }
+
     private void showAccessDialog() {
 
         View view = getLayoutInflater().inflate(R.layout.alert_edit_text,null);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Enter Access Code");
+        builder.setCancelable(false);
         builder.setView(view);
 
         accessCodeText = (EditText)view.findViewById(R.id.alert_edit_text);
@@ -222,14 +287,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onResume() {
         super.onResume();
+
         Utils.checkPlayServices(MainActivity.this);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
             finish();
@@ -269,6 +334,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     startActivity(browserIntent);
                 }
             });
+
             twitter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -276,6 +342,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     startActivity(browserIntent);
                 }
             });
+
             whatsapp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -287,6 +354,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     startActivity(intent);
                 }
             });
+
             dialog.show();
 
         } else if (id == R.id.rateUs) {
@@ -325,8 +393,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             Utils.doLogout(MainActivity.this);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 }

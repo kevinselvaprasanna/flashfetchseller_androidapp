@@ -152,7 +152,7 @@ public class CategoryActivity extends BaseActivity implements CompoundButton.OnC
                                progressDialog.dismiss();
                                Toast.makeText(CategoryActivity.this,"Categories have been successfully saved",Toast.LENGTH_SHORT).show();
 
-                               Intent intent = new Intent(CategoryActivity.this,Returns.class);
+                               Intent intent = new Intent(CategoryActivity.this,ReturnsActivity.class);
                                startActivity(intent);
                            }
 

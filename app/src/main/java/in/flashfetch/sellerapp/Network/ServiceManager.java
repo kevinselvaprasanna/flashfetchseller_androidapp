@@ -3,16 +3,12 @@ package in.flashfetch.sellerapp.Network;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import in.flashfetch.sellerapp.CommonUtils.Toasts;
-import in.flashfetch.sellerapp.Constants.Constants;
 import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Helper.DatabaseHelper;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
@@ -22,9 +18,6 @@ import in.flashfetch.sellerapp.Objects.ShopInfoObject;
 import in.flashfetch.sellerapp.Objects.SignUpObject;
 import in.flashfetch.sellerapp.Objects.Transactions;
 import in.flashfetch.sellerapp.Objects.UserProfile;
-import in.flashfetch.sellerapp.R;
-import in.flashfetch.sellerapp.Returns;
-import in.flashfetch.sellerapp.ShopDetailsActivity;
 
 /**
  * Created by KRANTHI on 03-07-2016.

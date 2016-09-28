@@ -5,17 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,23 +17,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
 import in.flashfetch.sellerapp.CommonUtils.Toasts;
 import in.flashfetch.sellerapp.CommonUtils.Utils;
 import in.flashfetch.sellerapp.Constants.Constants;
-import in.flashfetch.sellerapp.Constants.URLConstants;
 import in.flashfetch.sellerapp.Interfaces.UIListener;
-import in.flashfetch.sellerapp.Network.PostRequest;
 import in.flashfetch.sellerapp.Network.ServiceManager;
-import in.flashfetch.sellerapp.Objects.PostParam;
 import in.flashfetch.sellerapp.Objects.UserProfile;
 
-public class Returns extends BaseActivity {
+public class ReturnsActivity extends BaseActivity {
 
     private CheckBox[] check;
     private EditText other;
@@ -171,11 +154,11 @@ public class Returns extends BaseActivity {
                         }
                     }
 
-                    if(Utils.isInternetAvailable(Returns.this)){
+                    if(Utils.isInternetAvailable(ReturnsActivity.this)){
 
                         progressDialog.show();
 
-                        ServiceManager.callReturnPolicyService(Returns.this, product, new UIListener() {
+                        ServiceManager.callReturnPolicyService(ReturnsActivity.this, product, new UIListener() {
                             @Override
                             public void onSuccess() {
                                 progressDialog.dismiss();
@@ -193,13 +176,13 @@ public class Returns extends BaseActivity {
                             @Override
                             public void onFailure() {
                                 progressDialog.dismiss();
-                                Toast.makeText(Returns.this, "Server is currently busy", Toast.LENGTH_LONG).show();
+                                Toast.makeText(ReturnsActivity.this, "Server is currently busy", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onConnectionError() {
                                 progressDialog.dismiss();
-                                Toast.makeText(Returns.this, "Server is currently busy", Toast.LENGTH_LONG).show();
+                                Toast.makeText(ReturnsActivity.this, "Server is currently busy", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -208,10 +191,10 @@ public class Returns extends BaseActivity {
                             }
                         });
                     }else{
-                        Toasts.internetUnavailableToast(Returns.this);
+                        Toasts.internetUnavailableToast(ReturnsActivity.this);
                     }
                 }else{
-                    Toast.makeText(Returns.this,"Please accept the terms and conditions",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReturnsActivity.this,"Please accept the terms and conditions",Toast.LENGTH_SHORT).show();
                 }
             }
         });

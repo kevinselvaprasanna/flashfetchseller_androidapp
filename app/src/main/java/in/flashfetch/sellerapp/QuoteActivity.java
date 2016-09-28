@@ -38,7 +38,7 @@ public class QuoteActivity extends BaseActivity {
     private ProgressDialog progressDialog;
     private int deliveryType,productType;
     private Typeface font;
-    private ArrayList<Transactions> transactions;
+    private ArrayList<Transactions> transactions = new ArrayList<>();
     private EditText editComments,quotePrice;
     private String comments,quotedPrice,location,productId,productPrice,productName,buyerName;
     private TextView productNameText,productPriceText,buyerNameText,buyerLocationText,timer,sameProduct,similarProduct,homeDelivery,shopVisit,moreDeals,quoteNow;
@@ -55,7 +55,6 @@ public class QuoteActivity extends BaseActivity {
         }
 
 //        transactions =  Notification.getTransaction(this, productId);
-        transactions = new ArrayList<>();
         transactions.add(Constants.DUMMY_REQUESTED_TRANSACTION);
 
         productName = transactions.get(0).productName;

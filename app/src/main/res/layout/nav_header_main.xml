@@ -7,14 +7,13 @@
     android:background="@color/ff_black"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="5dp">
+    android:paddingRight="@dimen/activity_horizontal_margin">
 
     <ImageView
         android:id="@+id/nav_img"
-        android:layout_width="165dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="160dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/navigation" />
 
     <TextView
@@ -32,7 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:textStyle="bold"
         android:textSize="14sp"
         android:textColor="@color/icons"

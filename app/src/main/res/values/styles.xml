@@ -4,10 +4,10 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--<item name="colorPrimary">#444D62</item>-->
         <!--<item name="colorPrimaryDark">#29303f</item>-->
-
         <item name="colorAccent">@color/ff_green</item>
         <item name="colorPrimary">#29303F</item>
         <item name="colorPrimaryDark">#29303f</item>
+        <item name="android:windowAnimationStyle">@style/AnimationTheme.Window</item>
     </style>
 
     <!--<style name="AppTheme.NoActionBar" parent="AppTheme">-->
@@ -31,6 +31,7 @@
         <item name="colorPrimaryDark">#29303f</item>
         <!--<item name="colorAccent">@color/colorAccent</item>-->
     </style>
+    
 
     <style name="HDivider">
         <item name="android:layout_width">match_parent</item>
@@ -47,5 +48,22 @@
     <style name="AppTheme.AppBarOverlay" parent="AppTheme.NoActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="AnimationTheme" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/AnimationTheme.Window</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="AnimationTheme.Window">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_bottom_to_top</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_top_to_bottom</item>
+    </style>
 
 </resources>
